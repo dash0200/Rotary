@@ -20,7 +20,7 @@
                     </x-jet-nav-link>
 
                     <x-jet-nav-link>
-                        Master
+                       Masters
                     </x-jet-nav-link>
 
                     <x-jet-nav-link>
@@ -41,14 +41,6 @@
 
                     <x-jet-nav-link>
                        Certificates
-                    </x-jet-nav-link>
-
-                    <x-jet-nav-link>
-                       Building Fund
-                    </x-jet-nav-link>
-
-                    <x-jet-nav-link>
-                    General Recipts
                     </x-jet-nav-link>
                 </div>
             </div>
