@@ -19,7 +19,7 @@
                         {{ __('Dashboard') }}
                     </x-jet-nav-link>
 
-                    <div class="hidden sm:flex sm:items-center sm:ml-0 border-b border-b-blue-700">
+                    <div class="hidden sm:flex sm:items-center sm:ml-0 ">
                         <div class="ml-3 relative">
                             <x-jet-dropdown align="right" width="48">
                                 <x-slot name="trigger">
@@ -36,23 +36,6 @@
                                         {{ __('Profile') }}
                                     </x-jet-dropdown-link>
         
-                                    @if (Laravel\Jetstream\Jetstream::hasApiFeatures())
-                                        <x-jet-dropdown-link href="{{ route('api-tokens.index') }}">
-                                            {{ __('API Tokens') }}
-                                        </x-jet-dropdown-link>
-                                    @endif
-        
-                                    <div class="border-t border-gray-100"></div>
-        
-                                    <!-- Authentication -->
-                                    <form method="POST" action="{{ route('logout') }}" x-data>
-                                        @csrf
-        
-                                        <x-jet-dropdown-link href="{{ route('logout') }}"
-                                                 @click.prevent="$root.submit();">
-                                            {{ __('Log Out') }}
-                                        </x-jet-dropdown-link>
-                                    </form>
                                 </x-slot>
                             </x-jet-dropdown>
                         </div>
@@ -60,7 +43,7 @@
                 </div>
             </div>
 
-            <div class="hidden sm:flex sm:items-center sm:ml-6">
+            <div class="hidden sm:flex sm:items-center sm:ml-6 @if(request()->routeIs('profile.show')) border-b border-b-blue-700 @else  @endif">
                 <!-- Teams Dropdown -->
                 {{-- @if (Laravel\Jetstream\Jetstream::hasTeamFeatures())
                     <div class="ml-3 relative">
