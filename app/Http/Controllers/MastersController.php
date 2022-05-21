@@ -8,16 +8,16 @@ class MastersController extends Controller
 {
     public function feesHeads() {
 
-        return view("pages.masters.feesheads");
+        return view("pages.masters.fees-heads");
     }
 
     public function feesDetails() {
 
-        return view("pages.masters.feesdetails");
+        return view("pages.masters.fees-details");
     }
 
     public function castDetails() {
 
-        return view("pages.masters.castdetails");
+        return view("pages.masters.cast-details");
     }
 }

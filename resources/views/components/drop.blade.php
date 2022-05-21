@@ -6,24 +6,19 @@
 @php
 $classes = "";
 
-if($active == true) {
-    $classes = "hidden sm:flex sm:items-center sm:ml-0 border-b-2 border-b-blue-500";
-}else{
-    $classes = "hidden sm:flex sm:items-center sm:ml-0";
-}
-
-// $class = "";
-// if($drop_active == true) {
+// if($active == true) {
 //     $classes = "hidden sm:flex sm:items-center sm:ml-0 border-b-2 border-b-blue-500";
 // }else{
 //     $classes = "hidden sm:flex sm:items-center sm:ml-0";
 // }
 
+$classes = ($active) ? "hidden sm:flex sm:items-center sm:ml-0 border-b-2 border-b-blue-500" : "hidden sm:flex sm:items-center sm:ml-0";
+
 @endphp
 
 <div {{ $attributes->merge(['class' => $classes]) }}>
     <div class="ml-3 relative">
-        <x-jet-dropdown align="right" width="48">
+        <x-dropdown align="right" width="48">
             <x-slot name="trigger">
                 <button type="button" class="inline-flex items-center px-3 py-2 border border-transparent text-sm leading-4 font-medium rounded-md text-gray-500 bg-white hover:text-gray-700 focus:outline-none transition">
                     {{$name}}
@@ -36,6 +31,6 @@ if($active == true) {
             <x-slot name="content">
                 {{$slot}}
             </x-slot>
-        </x-jet-dropdown>
+        </x-dropdown>
     </div>
 </div>

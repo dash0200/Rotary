@@ -19,65 +19,65 @@
                     </x-jet-nav-link>
 
                     <x-drop :name="'Master'" :active="request()->routeIs('master.*')">
-                            <x-jet-dropdown-link href="{{route('master.feesHeads')}}" class="border-b border-b-gray-200" :active="request()->routeIs('master.feesHeads')">
+                            <x-dropdown-link href="{{route('master.feesHeads')}}" class="border-b border-b-gray-200" :active="request()->routeIs('master.feesHeads')">
                                 Fees Heads
-                            </x-jet-dropdown-link>
+                            </x-dropdown-link>
 
-                            <x-jet-dropdown-link href="{{route('master.feesDetails')}}" class="border-b border-b-gray-200" :active="request()->routeIs('master.feesDetails')">
+                            <x-dropdown-link href="{{route('master.feesDetails')}}" class="border-b border-b-gray-200" :active="request()->routeIs('master.feesDetails')">
                                 Feees Details
-                            </x-jet-dropdown-link>
+                            </x-dropdown-link>
                             
-                            <x-jet-dropdown-link href="{{route('master.castDetails')}}" class="border-b border-b-gray-200" :active="request()->routeIs('master.castDetails')">
+                            <x-dropdown-link href="{{route('master.castDetails')}}" class="border-b border-b-gray-200" :active="request()->routeIs('master.castDetails')">
                                 Cast Details
-                            </x-jet-dropdown-link>
+                            </x-dropdown-link>
                     </x-drop>
 
-                    <x-drop :name="'Transactions'" >
-                            <x-jet-dropdown-link href="" class="border-b border-b-gray-200" >
+                    <x-drop :name="'Transactions'" :active="request()->routeIs('trans.*')">
+                            <x-dropdown-link href="{{route('trans.newAdmission')}}" class="border-b border-b-gray-200" :active="request()->routeIs('trans.newAdmission')">
                                 New Admission
-                            </x-jet-dropdown-link>
+                            </x-dropdown-link>
 
-                            <x-jet-dropdown-link href="" class="border-b border-b-gray-200" >
+                            <x-dropdown-link href="{{route('trans.creatingClasses')}}" class="border-b border-b-gray-200" :active="request()->routeIs('trans.creatingClasses')">
                                 Creating Classes
-                            </x-jet-dropdown-link>
+                            </x-dropdown-link>
                             
-                            <x-jet-dropdown-link href="" class="border-b border-b-gray-200" >
+                            <x-dropdown-link href="{{route('trans.leavingCertificate')}}" class="border-b border-b-gray-200" :active="request()->routeIs('trans.leavingCertificate')">
                                 Leaving Certificate
-                            </x-jet-dropdown-link>
+                            </x-dropdown-link>
 
-                            <x-jet-dropdown-link href="" class="border-b border-b-gray-200">
+                            <x-dropdown-link href="{{route('trans.getStudentId')}}" class="border-b border-b-gray-200" :active="request()->routeIs('trans.getStudentId')">
                                 Get Student ID
-                            </x-jet-dropdown-link>
+                            </x-dropdown-link>
                     </x-drop>
 
                     <x-drop :name="'Fees Details'" >
-                            <x-jet-dropdown-link href="" class="border-b border-b-gray-200">
+                            <x-dropdown-link href="" class="border-b border-b-gray-200">
                                 Fees Receipts
-                            </x-jet-dropdown-link>
+                            </x-dropdown-link>
 
-                            <x-jet-dropdown-link href="" class="border-b border-b-gray-200">
+                            <x-dropdown-link href="" class="border-b border-b-gray-200">
                                 Receipts Cancellation
-                            </x-jet-dropdown-link>
+                            </x-dropdown-link>
                             
-                            <x-jet-dropdown-link href="" class="border-b border-b-gray-200">
+                            <x-dropdown-link href="" class="border-b border-b-gray-200">
                                 Fees Arrears
-                            </x-jet-dropdown-link>
+                            </x-dropdown-link>
 
-                            <x-jet-dropdown-link href="" class="border-b border-b-gray-200">
+                            <x-dropdown-link href="" class="border-b border-b-gray-200">
                                 Day Book
-                            </x-jet-dropdown-link>
+                            </x-dropdown-link>
 
-                            <x-jet-dropdown-link href="" class="border-b border-b-gray-200">
+                            <x-dropdown-link href="" class="border-b border-b-gray-200">
                                 Fees Register
-                            </x-jet-dropdown-link>
+                            </x-dropdown-link>
 
-                            <x-jet-dropdown-link href="" class="border-b border-b-gray-200">
+                            <x-dropdown-link href="" class="border-b border-b-gray-200">
                                Receipt Datewise
-                            </x-jet-dropdown-link>
+                            </x-dropdown-link>
 
-                            <x-jet-dropdown-link href="" class="border-b border-b-gray-200">
+                            <x-dropdown-link href="" class="border-b border-b-gray-200">
                                Duplicate Receipt
-                            </x-jet-dropdown-link>
+                            </x-dropdown-link>
                     </x-drop>
 
                     <x-drop :name="'Reports'" >
