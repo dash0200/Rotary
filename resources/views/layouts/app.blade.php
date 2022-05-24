@@ -10,7 +10,7 @@
 
     <!-- Fonts -->
     {{-- <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700&display=swap"> --}}
-    <link rel="stylesheet" href="{{asset('css/ubuntu.css')}}"> 
+    {{-- <link rel="stylesheet" href="{{asset('css/ubuntu.css')}}">  --}}
   
 
     <!-- Styles -->
@@ -22,7 +22,7 @@
     <script src="{{ mix('js/app.js') }}" defer></script>
 </head>
 
-<body class="font-sans antialiased">
+<body>
     <x-jet-banner />
 
     <div class="min-h-screen bg-gray-100">

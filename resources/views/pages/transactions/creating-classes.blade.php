@@ -1,9 +1,4 @@
-<x-app-layout>
-    <div class="py-12">
-        <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
-            <div class="bg-white overflow-hidden shadow-xl sm:rounded-lg p-5">
-                Creating Classes
-            </div>
-        </div>
-    </div>
-</x-app-layout>
+<x-main-card>
+    Creating Classes
+    <div class="w-full bg-gray-200" style="height: 1px;"></div>
+</x-main-card>

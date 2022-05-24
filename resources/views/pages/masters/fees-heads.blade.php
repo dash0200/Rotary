@@ -1,9 +1,13 @@
-<x-app-layout>
-    <div class="py-12">
-        <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
-            <div class="bg-white overflow-hidden shadow-xl sm:rounded-lg p-5">
-               Fees Heads
+<x-main-card>
+    <div class="">Fees Head</div>
+    <div class="w-full bg-gray-200" style="height: 1px;"></div>
+    <div class="p-10">
+        <form action="">
+            <div class="relative z-0 w-1/4 mb-6 group">
+                <x-label value="Name" for="name"/>
+                <x-input type="text" name="name"/>
             </div>
-        </div>
+            <x-button-primary value="Save"/>
+        </form>
     </div>
-</x-app-layout>
+</x-main-card>

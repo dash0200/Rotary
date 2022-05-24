@@ -19,64 +19,64 @@
                     </x-jet-nav-link>
 
                     <x-drop :name="'Master'" :active="request()->routeIs('master.*')">
-                            <x-dropdown-link href="{{route('master.feesHeads')}}" class="border-b border-b-gray-200" :active="request()->routeIs('master.feesHeads')">
+                            <x-dropdown-link href="{{route('master.feesHeads')}}" class="border-b border-b-indigo-200" :active="request()->routeIs('master.feesHeads')">
                                 Fees Heads
                             </x-dropdown-link>
 
-                            <x-dropdown-link href="{{route('master.feesDetails')}}" class="border-b border-b-gray-200" :active="request()->routeIs('master.feesDetails')">
+                            <x-dropdown-link href="{{route('master.feesDetails')}}" class="border-b border-b-indigo-200" :active="request()->routeIs('master.feesDetails')">
                                 Feees Details
                             </x-dropdown-link>
                             
-                            <x-dropdown-link href="{{route('master.castDetails')}}" class="border-b border-b-gray-200" :active="request()->routeIs('master.castDetails')">
+                            <x-dropdown-link href="{{route('master.castDetails')}}" class="border-b border-b-indigo-200" :active="request()->routeIs('master.castDetails')">
                                 Cast Details
                             </x-dropdown-link>
                     </x-drop>
 
                     <x-drop :name="'Transactions'" :active="request()->routeIs('trans.*')">
-                            <x-dropdown-link href="{{route('trans.newAdmission')}}" class="border-b border-b-gray-200" :active="request()->routeIs('trans.newAdmission')">
+                            <x-dropdown-link href="{{route('trans.newAdmission')}}" class="border-b border-b-indigo-200" :active="request()->routeIs('trans.newAdmission')">
                                 New Admission
                             </x-dropdown-link>
 
-                            <x-dropdown-link href="{{route('trans.creatingClasses')}}" class="border-b border-b-gray-200" :active="request()->routeIs('trans.creatingClasses')">
+                            <x-dropdown-link href="{{route('trans.creatingClasses')}}" class="border-b border-b-indigo-200" :active="request()->routeIs('trans.creatingClasses')">
                                 Creating Classes
                             </x-dropdown-link>
                             
-                            <x-dropdown-link href="{{route('trans.leavingCertificate')}}" class="border-b border-b-gray-200" :active="request()->routeIs('trans.leavingCertificate')">
+                            <x-dropdown-link href="{{route('trans.leavingCertificate')}}" class="border-b border-b-indigo-200" :active="request()->routeIs('trans.leavingCertificate')">
                                 Leaving Certificate
                             </x-dropdown-link>
 
-                            <x-dropdown-link href="{{route('trans.getStudentId')}}" class="border-b border-b-gray-200" :active="request()->routeIs('trans.getStudentId')">
+                            <x-dropdown-link href="{{route('trans.getStudentId')}}" class="border-b border-b-indigo-200" :active="request()->routeIs('trans.getStudentId')">
                                 Get Student ID
                             </x-dropdown-link>
                     </x-drop>
 
-                    <x-drop :name="'Fees Details'" >
-                            <x-dropdown-link href="" class="border-b border-b-gray-200">
+                    <x-drop :name="'Fees Details'" :active="request()->routeIs('fees.*')" >
+                            <x-dropdown-link href="{{route('fees.feesReceipts')}}" class="border-b border-b-indigo-200" :active="request()->routeIs('fees.feesReceipts')">
                                 Fees Receipts
                             </x-dropdown-link>
 
-                            <x-dropdown-link href="" class="border-b border-b-gray-200">
+                             <x-dropdown-link href="{{route('fees.receiptCancellation')}}" class="border-b border-b-indigo-200" :active="request()->routeIs('fees.receiptCancellation')">
                                 Receipts Cancellation
                             </x-dropdown-link>
                             
-                            <x-dropdown-link href="" class="border-b border-b-gray-200">
+                            <x-dropdown-link href="{{route('fees.feesArrears')}}" class="border-b border-b-indigo-200" :active="request()->routeIs('fees.feesArrears')">
                                 Fees Arrears
                             </x-dropdown-link>
 
-                            <x-dropdown-link href="" class="border-b border-b-gray-200">
+                            <x-dropdown-link href="{{route('fees.dayBook')}}" class="border-b border-b-indigo-200" :active="request()->routeIs('fees.dayBook')">
                                 Day Book
                             </x-dropdown-link>
 
-                            <x-dropdown-link href="" class="border-b border-b-gray-200">
+                            <x-dropdown-link href="{{route('fees.feesRegister')}}" class="border-b border-b-indigo-200" :active="request()->routeIs('fees.feesRegister')">
                                 Fees Register
                             </x-dropdown-link>
 
-                            <x-dropdown-link href="" class="border-b border-b-gray-200">
-                               Receipt Datewise
+                            <x-dropdown-link href="{{route('fees.receiptDatewise')}}" class="border-b border-b-indigo-200" :active="request()->routeIs('fees.receiptDatewise')">
+                                 Receipt Datewise
                             </x-dropdown-link>
 
-                            <x-dropdown-link href="" class="border-b border-b-gray-200">
-                               Duplicate Receipt
+                            <x-dropdown-link href="{{route('fees.duplicateReceipt')}}" class="border-b border-b-indigo-200" :active="request()->routeIs('fees.duplicateReceipt')">
+                                Duplicate Receipt
                             </x-dropdown-link>
                     </x-drop>
 

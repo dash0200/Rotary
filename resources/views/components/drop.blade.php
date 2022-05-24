@@ -12,7 +12,7 @@ $classes = "";
 //     $classes = "hidden sm:flex sm:items-center sm:ml-0";
 // }
 
-$classes = ($active) ? "hidden sm:flex sm:items-center sm:ml-0 border-b-2 border-b-blue-500" : "hidden sm:flex sm:items-center sm:ml-0";
+$classes = ($active) ? "hidden sm:flex sm:items-center sm:ml-0 border-b-2 border-b-indigo-400" : "hidden sm:flex sm:items-center sm:ml-0";
 
 @endphp
 
