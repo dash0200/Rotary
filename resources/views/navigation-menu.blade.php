@@ -80,19 +80,70 @@
                             </x-dropdown-link>
                     </x-drop>
 
-                    <x-drop :name="'Reports'" >
+                    <x-drop :name="'Reports'" :active="request()->routeIs('report.*')">
+
+                        <x-dropdown-link href="{{route('report.castDetails')}}" class="border-b border-b-indigo-200" :active="request()->routeIs('report.castDetails')">
+                            Cast Details
+                        </x-dropdown-link>
+
+                        <x-dropdown-link href="{{route('report.feesStructure')}}" class="border-b border-b-indigo-200" :active="request()->routeIs('report.feesStructure')">
+                            Fees Structure
+                        </x-dropdown-link>
+
+                        <x-dropdown-link href="{{route('report.generalRegister')}}" class="border-b border-b-indigo-200" :active="request()->routeIs('report.generalRegister')">
+                            General Register
+                        </x-dropdown-link>
+
+                        <x-dropdown-link href="{{route('report.classDetails')}}" class="border-b border-b-indigo-200" :active="request()->routeIs('report.classDetails')">
+                            Class Details
+                        </x-dropdown-link>
+                    </x-drop>
+
+                    <x-drop :name="'Certificates'" :active="request()->routeIs('certificate.*')">
+
+                        <x-dropdown-link href="{{route('certificate.certificate')}}" class="border-b border-b-indigo-200" :active="request()->routeIs('certificate.certificate')">
+                           Certificate
+                        </x-dropdown-link>
+                        
+                    </x-drop>
+                    
+                    <x-drop :name="'Building Fund'" :active="request()->routeIs('building.*')">
+
+                        <x-dropdown-link href="{{route('building.receipt')}}" class="border-b border-b-indigo-200" :active="request()->routeIs('building.receipt')">
+                           Building Fund Receipt
+                        </x-dropdown-link>
+
+                        <x-dropdown-link href="{{route('building.duplicateReceipt')}}" class="border-b border-b-indigo-200" :active="request()->routeIs('building.duplicateReceipt')">
+                           Building Duplicate Receipt
+                        </x-dropdown-link>
+
+                        <x-dropdown-link href="{{route('building.dailyReport')}}" class="border-b border-b-indigo-200" :active="request()->routeIs('building.dailyReport')">
+                           Daily Report
+                        </x-dropdown-link>
+
+                        <x-dropdown-link href="{{route('building.report')}}" class="border-b border-b-indigo-200" :active="request()->routeIs('building.report')">
+                           Building Fund Report
+                        </x-dropdown-link>
+
+                        <x-dropdown-link href="{{route('building.receiptDeletion')}}" class="border-b border-b-indigo-200" :active="request()->routeIs('building.receiptDeletion')">
+                           Building Fund Receipt Deletion
+                        </x-dropdown-link>
                         
                     </x-drop>
 
-                    <x-drop :name="'Certificates'" >
-                        
-                    </x-drop>
+                    <x-drop :name="'General Receipts'" :active="request()->routeIs('general.*')">
 
-                    <x-drop :name="'Building Fund'" >
-                        
-                    </x-drop>
+                        <x-dropdown-link href="{{route('general.generalReceipts')}}" class="border-b border-b-indigo-200" :active="request()->routeIs('general.generalReceipts')">
+                            Building Fund Receipt Deletion
+                         </x-dropdown-link>
 
-                    <x-drop :name="'General Receipts'" >
+                        <x-dropdown-link href="{{route('general.dayBook')}}" class="border-b border-b-indigo-200" :active="request()->routeIs('general.dayBook')">
+                            Building Fund Receipt
+                         </x-dropdown-link>
+
+                        <x-dropdown-link href="{{route('general.datewise')}}" class="border-b border-b-indigo-200" :active="request()->routeIs('general.datewise')">
+                            Building Fund Receipt Deletion
+                         </x-dropdown-link>
                         
                     </x-drop>
 
