@@ -82,5 +82,4 @@ Route::controller(GeneralReceiptController::class)->prefix('general-receipts')->
     Route::get('general-receipts', 'generalReceipts')->name('generalReceipts');
     Route::get('day-book', 'dayBook')->name('dayBook');
     Route::get('datewise', 'datewise')->name('datewise');
-
 });
