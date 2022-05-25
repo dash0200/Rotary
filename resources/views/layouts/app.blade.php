@@ -50,4 +50,13 @@
 
 </html>
 <script type="text/javascript" src="{{ asset('js/jquery.js')}}"></script>
+<script type="text/javascript" src="{{ asset('js/jquery-validate-1.19.3.js')}}"></script>
 <script type="text/javascript" src="{{asset('js/flowbite.js')}}"></script>
+
+<script>
+     $.ajaxSetup({
+        headers: {
+            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+        }
+    });
+</script>
