@@ -35,8 +35,14 @@ Route::middleware([
 });
 
 Route::controller(MastersController::class)->prefix('master')->name('master.')->group(function(){
+    //Fees Heads
     Route::get('fees-heads', 'feesHeads')->name('feesHeads');
+    Route::get('save-fees-desc', 'saveFeesDesc')->name('saveFeesDesc');
+
+    //Fees Details
     Route::get('fees-details', 'feesDetails')->name('feesDetails');
+
+    //Cast Details
     Route::get('cast-details', 'castDetails')->name('castDetails');
 });
 
