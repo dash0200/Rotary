@@ -16,6 +16,7 @@ return new class extends Migration
         Schema::create('fees_heads', function (Blueprint $table) {
             $table->id();
             $table->string("desc");
+            $table->softDeletes();
             $table->timestamps();
         });
     }

@@ -9,8 +9,8 @@ class AcademicYearModel extends Model
 {
     use HasFactory;
 
-    protected $table = 'states';
+    protected $table = 'academic_year';
     protected $fillable = [
-        'name',
+        'year',
     ];
 }

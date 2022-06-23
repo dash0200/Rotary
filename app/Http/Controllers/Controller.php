@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\AcademicYearModel;
+use App\Models\ClassesModel;
 use App\Models\DistrictModel;
 use App\Models\StatesModel;
 use App\Models\SubdistrictModel;
@@ -9,6 +11,7 @@ use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Illuminate\Foundation\Bus\DispatchesJobs;
 use Illuminate\Foundation\Validation\ValidatesRequests;
 use Illuminate\Routing\Controller as BaseController;
+use Illuminate\Support\Facades\Redirect;
 
 class Controller extends BaseController
 {
@@ -407,13 +410,73 @@ class Controller extends BaseController
 
         }
 
-       
-            
-            
-        
+        return redirect()->back();
+    }
 
+    public function acaYear() {
         
+        $from = 1950;
+        $to = 1951;
 
+        for($i=0; $i<200; $i++) {
+            $tt = str_split($to+$i);
+
+            $aca_year = $from+$i."-".$tt[2].$tt[3];
+            $s = AcademicYearModel::where('year', $aca_year)->first();
+            if ($s == null) {
+                AcademicYearModel::create(['year' => $aca_year]);
+            }
+        }
+        return redirect()->back();
+    }
+
+    public function classes() {
+
+        for($i=0; $i<=12; $i++) {
+            switch($i) {
+                case 0:
+                    $std = "NURSERY";
+                    break;
+                case 1:
+                    $std = "LKG";
+                    break;
+                case 2:
+                    $std = "UKG";
+                    break;
+                case 3:
+                    $std = "1ST";
+                    break;
+                case 4:
+                    $std = "2ND";
+                    break;
+                case 5:
+                    $std = "3RD";
+                    break;
+                case 6:
+                    $std = "4TH";
+                    break;
+                case 7:
+                    $std = "5TH";
+                    break;
+                case 8:
+                    $std = "6TH";
+                    break;
+                case 9:
+                    $std = "7TH";
+                    break;
+                case 10:
+                    $std = "8TH";
+                    break;
+                case 11:
+                    $std = "9TH";
+                    break;
+                case 12:
+                    $std = "10TH";
+                    break;
+            }
+            
+            ClassesModel::create(["name" => $std]);
+        }
         return redirect()->back();
     }
 }

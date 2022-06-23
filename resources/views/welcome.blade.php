@@ -129,14 +129,22 @@
 
                     {{-- <form action="{{route('state')}}">
                         <button type="submit">state</button>
-                    </form> --}}
+                    </form>
 
-                    {{-- <form action="{{route('dist')}}">
+                    <form action="{{route('dist')}}">
                         <button type="submit">dist</button>
-                    </form> --}}
+                    </form>
 
-                    {{-- <form action="{{route('subDist')}}">
+                    <form action="{{route('subDist')}}">
                         <button type="submit">subDist</button>
+                    </form>
+
+                    <form action="{{route('acaYear')}}">
+                        <button type="submit">acaYear</button>
+                    </form>
+                    
+                    <form action="{{route('class')}}">
+                        <button type="submit">class</button>
                     </form> --}}
                 </div>
             </div>

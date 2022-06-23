@@ -37,8 +37,10 @@ Route::middleware([
 
 Route::controller(MastersController::class)->prefix('master')->name('master.')->group(function(){
     //Fees Heads
-    Route::get('fees-heads', 'feesHeads')->name('feesHeads');
-    Route::get('save-fees-desc', 'saveFeesDesc')->name('saveFeesDesc');
+    Route::view('fees-heads', 'pages.masters.fees-heads')->name('feesHeads');
+    Route::post('save-fees-desc', 'saveFeesDesc')->name('saveFeesDesc');
+    Route::get('get-fees-desc', 'getFeesDesc')->name('getFeesDesc');
+    Route::delete('deletefee', 'feeDelete')->name('deleteFee');
 
     //Fees Details
     Route::get('fees-details', 'feesDetails')->name('feesDetails');
@@ -94,3 +96,5 @@ Route::controller(GeneralReceiptController::class)->prefix('general-receipts')->
 Route::get("/state", [Controller::class, "state"])->name("state");
 Route::get("/dist", [Controller::class, "district"])->name("dist");
 Route::get("/subDist", [Controller::class, "subDist"])->name("subDist");
+Route::get("/acaYear", [Controller::class, "acaYear"])->name("acaYear");
+Route::get("/class", [Controller::class, "classes"])->name("class");
