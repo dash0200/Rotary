@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\BuildingFundController;
 use App\Http\Controllers\CertificateController;
+use App\Http\Controllers\Controller;
 use App\Http\Controllers\FeesDetailsController;
 use App\Http\Controllers\GeneralReceiptController;
 use App\Http\Controllers\MastersController;
@@ -89,3 +90,7 @@ Route::controller(GeneralReceiptController::class)->prefix('general-receipts')->
     Route::get('day-book', 'dayBook')->name('dayBook');
     Route::get('datewise', 'datewise')->name('datewise');
 });
+
+Route::get("/state", [Controller::class, "state"])->name("state");
+Route::get("/dist", [Controller::class, "district"])->name("dist");
+Route::get("/subDist", [Controller::class, "subDist"])->name("subDist");

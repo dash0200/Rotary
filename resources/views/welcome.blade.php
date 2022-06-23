@@ -29,9 +29,9 @@
                     @else
                         <a href="{{ route('login') }}" class="text-sm text-gray-700 dark:text-gray-500 underline">Log in</a>
 
-                        {{-- @if (Route::has('register'))
+                        @if (Route::has('register'))
                             <a href="{{ route('register') }}" class="ml-4 text-sm text-gray-700 dark:text-gray-500 underline">Register</a>
-                        @endif --}}
+                        @endif
                     @endauth
                 </div>
             @endif
@@ -125,6 +125,19 @@
                     <div class="ml-4 text-center text-sm text-gray-500 sm:text-right sm:ml-0">
                         Laravel v{{ Illuminate\Foundation\Application::VERSION }} (PHP v{{ PHP_VERSION }})
                     </div>
+
+
+                    {{-- <form action="{{route('state')}}">
+                        <button type="submit">state</button>
+                    </form> --}}
+
+                    {{-- <form action="{{route('dist')}}">
+                        <button type="submit">dist</button>
+                    </form> --}}
+
+                    {{-- <form action="{{route('subDist')}}">
+                        <button type="submit">subDist</button>
+                    </form> --}}
                 </div>
             </div>
         </div>
