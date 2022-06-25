@@ -9,8 +9,12 @@ class FeesDetailsModel extends Model
 {
     use HasFactory;
 
-    protected $table = 'states';
+    protected $table = 'fees_details';
     protected $fillable = [
-        'name',
+        'year','fee_head','class'
     ];
+
+    public function feeHead() {
+        return $this->hasOne(FeesHeadModel::class, 'id', 'fee_head');
+    }
 }

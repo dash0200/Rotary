@@ -7,7 +7,8 @@
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
     <title>{{ config('app.name', 'Laravel') }}</title>
-
+    <link href="{{asset('css/select2.css')}}" rel="stylesheet" />
+    
     <!-- Fonts -->
     {{-- <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700&display=swap"> --}}
     {{-- <link rel="stylesheet" href="{{asset('css/ubuntu.css')}}">  --}}
@@ -59,3 +60,5 @@
                 }
             });
 </script>
+<script src="{{asset('js/sweetalert2.js')}}"></script>
+<script src="{{asset('js/select2.js')}}"></script>

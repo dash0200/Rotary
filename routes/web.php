@@ -44,6 +44,8 @@ Route::controller(MastersController::class)->prefix('master')->name('master.')->
 
     //Fees Details
     Route::get('fees-details', 'feesDetails')->name('feesDetails');
+    Route::post('saveDetails', 'saveDetails')->name('saveDetails');
+    Route::get('getDetails', 'getDetails')->name('getDetails');
 
     //Cast Details
     Route::get('cast-details', 'castDetails')->name('castDetails');
