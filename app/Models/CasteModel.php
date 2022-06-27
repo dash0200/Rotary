@@ -9,8 +9,12 @@ class CasteModel extends Model
 {
     use HasFactory;
 
-    protected $table = 'states';
+    protected $table = 'caste';
     protected $fillable = [
-        'name',
+        'cat','name'
     ];
+
+    public function category() {
+        return $this->hasOne(CategoriesModel::class, 'id', 'cat');
+    }
 }

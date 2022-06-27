@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Models\AcademicYearModel;
+use App\Models\CasteModel;
+use App\Models\CategoriesModel;
 use App\Models\ClassesModel;
 use App\Models\FeesDetailsModel;
 use App\Models\FeesHeadModel;
@@ -12,15 +14,14 @@ use Illuminate\Support\Facades\Log;
 
 class MastersController extends Controller
 {
-    //************** Fee Head** ***************
+//************** Fee Head** ***************
     public function  saveFeesDesc(Request $req) {
-
         $req->validate([
             'description' => ['required', 'unique:fees_heads,desc']
         ]);
 
        try {
-            FeesHeadModel::create(['desc' => $req->desc]);
+            FeesHeadModel::create(['desc' => $req->description]);
             return response()->json(['msg' => 'success']);
        } catch (Exception $e) {
             return response()->json(['msg' => $e->getMessage()]);        
@@ -36,18 +37,27 @@ class MastersController extends Controller
         }
     }
 
-    public function feeDelete(Request $req) {
+    // public function feeDelete(Request $req) {
+    //     try {
+    //         FeesHeadModel::where('id', $req->id)->delete();
+    //         return response()->json(['msg' => "success"]);
+    //     } catch (Exception $e)  {
+    //         return response()->json(['error' => $e->getMessage()]);
+    //     }
+    // }
+    
+    public function  updateFee(Request $req) {
         try {
-            FeesHeadModel::where('id', $req->id)->delete();
+            FeesHeadModel::where(['id' => $req->id])->update(['desc' => $req->val]);
             return response()->json(['msg' => "success"]);
-        } catch (Exception $e)  {
+        } catch (Exception $e) {
             return response()->json(['error' => $e->getMessage()]);
         }
     }
-     //************** Fee Head** ***************
+//************** Fee Head** ***************
 
      
-     //************** Fee Details*****************
+//************** Fee Details*****************
     public function feesDetails() {
         $academicYear = AcademicYearModel::get();
         $classes = ClassesModel::get();
@@ -58,12 +68,12 @@ class MastersController extends Controller
     public function saveDetails(Request $req) {
         try {
             foreach($req->fees as $id) {
-                $isExist = FeesDetailsModel::where([
+                $exist = FeesDetailsModel::where([
                     'year' => $req->year,
                     'fee_head' => $id,
                     'class' => $req->clas
                 ])->first();
-                if($isExist == null ){
+                if($exist == null ){
                     FeesDetailsModel::create([
                         'year' => $req->year,
                         'fee_head' => $id,
@@ -86,10 +96,66 @@ class MastersController extends Controller
  //************** Fee Details** ***************
 
 
- //************** Fee Details** ***************
+ //************** Fee caste** ***************
     public function castDetails() {
        
-        return view("pages.masters.cast-details");
+        return view("pages.masters.cast-details")->with(['cats' => CategoriesModel::get(), 'castes' => CasteModel::get()]);
     }
-//************** Fee Details** ***************
+
+    public function saveCategory(Request $req) {
+        try {
+            CategoriesModel::create(['name' => $req->name]);
+            return response()->json(['msg' => "success"]);
+        } catch (Exception $e) {
+            return response()->json(['error' => $e->getMessage()]);
+        }
+    }
+
+    public function getCategories() {
+        return response()->json(['cats' => CategoriesModel::get()]);
+    }
+
+    public function updateCat(Request $req) {
+        try {
+            CategoriesModel::where(['id' => $req->id])->update(['name' => $req->val]);
+            return response()->json(['msg' => "success"]);
+        } catch (Exception $e) {
+            return response()->json(['error' => $e->getMessage()]);
+        }
+    }
+
+    public function saveCaste(Request $req) {
+        
+        try {
+
+            $exist = CasteModel::where([
+                'cat' => $req->cat,
+                'name' => $req->caste
+            ])->first();
+
+            if($exist == null) {
+                CasteModel::create([
+                    'cat' => $req->cat,
+                    'name' => $req->caste
+                ]);
+            }
+            return response()->json(['msg' => "success"]);
+        } catch (Exception $e) {
+            return response()->json(['error' => $e->getMessage()]);
+        }
+    }
+
+    public function searchCast(Request $req) {
+        $cast = [];
+        if($req->cast == null || $req->cast == "") {
+            $casts = CasteModel::where('cat',$req->cat)->orWhere('name' ,'LIKE', '%'.$req->cast.'%')->limit(10)->get();
+        } else {
+            $casts = CasteModel::where('cat',$req->cat)->orWhere('name' ,'LIKE', '%'.$req->cast.'%')->get();
+        }
+        foreach($casts as $cast) {
+            $cast['cat'] = $cast->category;
+        }
+       return response()->json(['casts' => $casts]);
+    }
+//************** Fee Caste** ***************
 }

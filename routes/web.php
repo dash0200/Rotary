@@ -40,7 +40,7 @@ Route::controller(MastersController::class)->prefix('master')->name('master.')->
     Route::view('fees-heads', 'pages.masters.fees-heads')->name('feesHeads');
     Route::post('save-fees-desc', 'saveFeesDesc')->name('saveFeesDesc');
     Route::get('get-fees-desc', 'getFeesDesc')->name('getFeesDesc');
-    Route::delete('deletefee', 'feeDelete')->name('deleteFee');
+    Route::put('updatefee', 'updateFee')->name('updateFee');
 
     //Fees Details
     Route::get('fees-details', 'feesDetails')->name('feesDetails');
@@ -49,6 +49,11 @@ Route::controller(MastersController::class)->prefix('master')->name('master.')->
 
     //Cast Details
     Route::get('cast-details', 'castDetails')->name('castDetails');
+    Route::post('cast-save', 'saveCategory')->name('saveCategory');
+    Route::get('get-cats', 'getCategories')->name('getCategories');
+    Route::put('update-cats', 'updateCat')->name('updateCat');
+    Route::post('save-caste', 'saveCaste')->name('saveCaste');
+    Route::get('search-caste', 'searchCast')->name('searchCast');
 });
 
 

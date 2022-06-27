@@ -204,12 +204,7 @@
         let year = $("#year").val();
         let clas = $("#class").val();
 
-        if(year == null || year == "") {
-            return;
-        }
-        if(clas == null || clas == "") {
-            return;
-        }
+        if(year == null || year == "" || clas == null || clas == "") return;
 
             $.ajax({
                 type: "get",

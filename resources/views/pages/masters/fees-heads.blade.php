@@ -39,7 +39,7 @@
                                         Fee Description
                                     </th>
                                     <th scope="col" class="text-sm font-medium text-gray-900 px-6 py-4 text-left">
-                                        Delete
+                                        Edit
                                     </th>
                                 </tr>
                             </thead>
@@ -89,12 +89,11 @@
                                 ${fees[i].desc}
                             </td>
                             <td align="center" class="text-sm text-gray-900 font-light px-6 py-4 whitespace-nowrap">
-                                <button class="cursor-pointer" id="dele${fees[i].id}" onclick="deleteFee(${fees[i].id})">
-                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-red-500" viewBox="0 0 20 20" fill="currentColor">
-                                        <path fill-rule="evenodd" d="M9 2a1 1 0 00-.894.553L7.382 4H4a1 1 0 000 2v10a2 2 0 002 2h8a2 2 0 002-2V6a1 1 0 100-2h-3.382l-.724-1.447A1 1 0 0011 2H9zM7 8a1 1 0 012 0v6a1 1 0 11-2 0V8zm5-1a1 1 0 00-1 1v6a1 1 0 102 0V8a1 1 0 00-1-1z" clip-rule="evenodd" />
+                                <button class="cursor-pointer" id="edit${fees[i].id}" onclick="editFee('${fees[i].id}', '${i+1}', '${fees[i].desc}')">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-blue-600" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
                                     </svg>
                                 </button>
-                                
                             </td>
                         </tr>`
                         );
@@ -113,7 +112,61 @@
         });
     }
 
-    function deleteFee(id) {
+    function editFee(id, n, desc) {
+        $("#tr" + id).html("");
+        $("#tr" + id).append(
+            `<td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">${n}</td>
+                            <td class="text-sm text-gray-900 font-light px-6 py-4 whitespace-nowrap">
+                               <x-input type="text" value="${desc}" id="ed${id}"/>
+                            </td>
+                            <td align="center" class="text-sm text-gray-900 font-light px-6 py-4 whitespace-nowrap">
+                                <button class="cursor-pointer" onclick="updateFee('${id}')">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-green-600 border-2 rounded-full" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7" />
+                                    </svg>
+                                </button>
+                                
+                            </td>`
+        );
+    }
+
+    function updateFee(id) {
+        Swal.fire({
+            title: 'Are you sure?',
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Yes, Update it!'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                let val = $("#ed" + id).val();
+
+                if (val == null || val == "" || val == undefined) return;
+
+                $.ajax({
+                    type: "PUT",
+                    url: "{{ route('master.updateFee') }}",
+                    data: {
+                        id: id,
+                        val: val
+                    },
+                    dataType: "json",
+                    success: function(response) {
+                        getFees();
+                    }
+                });
+            }
+        })
+
+
+    }
+
+
+    $("form").submit(function(e) {
+        e.preventDefault();
+        var desc = $("#name").val();
+        if(desc == "" || desc == undefined || desc  == null) return;
         Swal.fire({
             title: 'Are you sure?',
             text: "You won't be able to revert this!",
@@ -124,53 +177,24 @@
             confirmButtonText: 'Yes, delete it!'
         }).then((result) => {
             if (result.isConfirmed) {
+                
                 $.ajax({
-                    type: "DELETE",
-                    url: "{{ route('master.deleteFee') }}",
+                    type: "post",
+                    url: "{{ route('master.saveFeesDesc') }}",
                     data: {
-                        id: id
+                        description: $("#name").val()
                     },
                     dataType: "json",
                     beforeSend: function() {
-                        $("#dele" + id).html("");
-                        $("#dele" + id).append(`
-                    <svg role="status" class="w-4 h-4 mr-2 text-gray-200 animate-spin dark:text-gray-600 fill-red-600" viewBox="0 0 100 101" fill="none" xmlns="http://www.w3.org/2000/svg">
-                        <path d="M100 50.5908C100 78.2051 77.6142 100.591 50 100.591C22.3858 100.591 0 78.2051 0 50.5908C0 22.9766 22.3858 0.59082 50 0.59082C77.6142 0.59082 100 22.9766 100 50.5908ZM9.08144 50.5908C9.08144 73.1895 27.4013 91.5094 50 91.5094C72.5987 91.5094 90.9186 73.1895 90.9186 50.5908C90.9186 27.9921 72.5987 9.67226 50 9.67226C27.4013 9.67226 9.08144 27.9921 9.08144 50.5908Z" fill="currentColor"/>
-                        <path d="M93.9676 39.0409C96.393 38.4038 97.8624 35.9116 97.0079 33.5539C95.2932 28.8227 92.871 24.3692 89.8167 20.348C85.8452 15.1192 80.8826 10.7238 75.2124 7.41289C69.5422 4.10194 63.2754 1.94025 56.7698 1.05124C51.7666 0.367541 46.6976 0.446843 41.7345 1.27873C39.2613 1.69328 37.813 4.19778 38.4501 6.62326C39.0873 9.04874 41.5694 10.4717 44.0505 10.1071C47.8511 9.54855 51.7191 9.52689 55.5402 10.0491C60.8642 10.7766 65.9928 12.5457 70.6331 15.2552C75.2735 17.9648 79.3347 21.5619 82.5849 25.841C84.9175 28.9121 86.7997 32.2913 88.1811 35.8758C89.083 38.2158 91.5421 39.6781 93.9676 39.0409Z" fill="currentFill"/>
-                    </svg>
-                `);
+                        $(".loading").html("")
+                        $(".loading").append(
+                            `<x-loading-button name="Saving" />`
+                        )
                     },
                     success: function(response) {
-                        $("#tr" + id).remove();
-                    }
-
-                });
-            }
-        })
-
-
-    }
-
-    $("form").submit(function(e) {
-        e.preventDefault();
-        let desc = $("#name").val();
-        $.ajax({
-            type: "post",
-            url: "{{ route('master.saveFeesDesc') }}",
-            data: {
-                description: desc
-            },
-            dataType: "json",
-            beforeSend: function() {
-                $(".loading").html("")
-                $(".loading").append(
-                    `<x-loading-button name="Saving" />`
-                )
-            },
-            success: function(response) {
-                $(".loading").html("")
-                $(".loading").append(
-                    `
+                        $(".loading").html("")
+                        $(".loading").append(
+                            `
                     <div class="flex space-x-2 items-center">
                         <x-button-primary value="Save" />
                     <svg xmlns="" class="h-5 w-5 text-green-500" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
@@ -178,21 +202,22 @@
                     </svg>
                     </div>
                     `
-                )
+                        )
+                        
 
-                let row = parseInt($("tbody tr:last td:first").text());
-                $('tbody').append(`<tr class="bg-white border-b transition duration-300 ease-in-out hover:bg-gray-100">
+                        let row = parseInt($("tbody tr:last td:first").text());
+                        $('tbody').append(`<tr class="bg-white border-b transition duration-300 ease-in-out hover:bg-gray-100">
                             <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">${row+1}</td>
                             <td class="text-sm text-gray-900 font-light px-6 py-4 whitespace-nowrap">
                                 ${desc}
                             </td>
                         </tr>`);
-            },
-            error: function(xhr, status, error) {
-                let err = JSON.parse(xhr.responseText);
-                $(".loading").html("")
-                $(".loading").append(
-                    `
+                    },
+                    error: function(xhr, status, error) {
+                        let err = JSON.parse(xhr.responseText);
+                        $(".loading").html("")
+                        $(".loading").append(
+                            `
                     <div class="flex space-x-2 items-center">
                         <x-button-primary value="Save" />
                         <div class="text-red-400 text-sm">
@@ -200,8 +225,11 @@
                         </div>
                     </div>
                     `
-                )
+                        )
+                    }
+                });
             }
-        });
+        })
+
     });
 </script>
