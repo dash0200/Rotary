@@ -59,6 +59,8 @@ Route::controller(MastersController::class)->prefix('master')->name('master.')->
 
 Route::controller(TransactionController::class)->prefix('transaction')->name('trans.')->group(function(){
     Route::get('new-admission', 'newAdmission')->name('newAdmission');
+    Route::get('get-district', 'getDistrict')->name('getDistrict');
+    Route::get('get-taluk', 'getTaluk')->name('getTaluk');
     Route::get('creating-classes', 'creatingClasses')->name('creatingClasses');
     Route::get('leaving-certificate', 'leavingCertificate')->name('leavingCertificate');
     Route::get('get-student-id', 'getStudentId')->name('getStudentId');
