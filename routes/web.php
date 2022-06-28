@@ -54,6 +54,9 @@ Route::controller(MastersController::class)->prefix('master')->name('master.')->
     Route::put('update-cats', 'updateCat')->name('updateCat');
     Route::post('save-caste', 'saveCaste')->name('saveCaste');
     Route::get('search-caste', 'searchCast')->name('searchCast');
+    Route::get('search-cat', 'searchCat')->name('searchCat');
+    Route::post('save-subcat', 'subCast')->name('subCast');
+    Route::get('search-subcat', 'searchSubcast')->name('searchSubcast');
 });
 
 
@@ -61,6 +64,7 @@ Route::controller(TransactionController::class)->prefix('transaction')->name('tr
     Route::get('new-admission', 'newAdmission')->name('newAdmission');
     Route::get('get-district', 'getDistrict')->name('getDistrict');
     Route::get('get-taluk', 'getTaluk')->name('getTaluk');
+    Route::get('get-category', 'getCat')->name('getCat');
     Route::get('creating-classes', 'creatingClasses')->name('creatingClasses');
     Route::get('leaving-certificate', 'leavingCertificate')->name('leavingCertificate');
     Route::get('get-student-id', 'getStudentId')->name('getStudentId');

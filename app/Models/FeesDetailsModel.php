@@ -11,7 +11,7 @@ class FeesDetailsModel extends Model
 
     protected $table = 'fees_details';
     protected $fillable = [
-        'year','fee_head','class'
+        'year','fee_head','class','tuition','amount'
     ];
 
     public function feeHead() {

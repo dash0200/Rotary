@@ -25,6 +25,9 @@ return new class extends Migration
             $table->unsignedBigInteger('class');
             $table->foreign('class')->references('id')->on('classes');
 
+            $table->bigInteger('tuition')->nullable()->default(0);
+            $table->bigInteger('amount')->nullable()->default(0);
+
             $table->timestamps();
         });
     }

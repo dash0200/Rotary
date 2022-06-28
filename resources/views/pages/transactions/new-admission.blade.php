@@ -52,8 +52,8 @@
                     <x-label value="City" />
                     <select name="city" id="city">
                         <option value="">Select Class</option>
-                        @foreach ($classes as $class)
-                            <option value="{{ $class->id }}">{{ $class->name }}</option>
+                        @foreach ($districts as $district)
+                            <option value="{{ $district->id }}">{{ $district->name }}</option>
                         @endforeach
                     </select>
                 </div>
@@ -96,9 +96,29 @@
                     <x-label value="Taluk" />
                     <select name="taluk" id="taluk" class="w-full"> </select>
                 </div>
-
             </div>
-            <div class="flex flex-col"></div>
+
+            <div class="flex flex-col">
+                <div class="m-2">
+                    <x-label value="Caste" />
+                    <select name="caste" id="caste">
+                        <option value="">Select Caste</option>
+                        @foreach ($castes as $caste)
+                            <option value="{{ $caste->id }}">{{ $caste->name }}</option>
+                        @endforeach
+                    </select>
+                </div>
+                <div class="m-2">
+                    <x-label value="Sub Caste" />
+                    <select name="subc" id="subc"></select>
+                </div>
+                <div class="m-2">
+                    <x-label value="cat" />
+                    <select name="cat" id="cat">
+                        <option value="">Select Cat</option>
+                    </select>
+                </div>
+            </div>
             <div class="flex flex-col ll">
 
             </div>
@@ -113,6 +133,14 @@
     $('#states').select2();
     $('#district').select2();
     $('#taluk').select2();
+    $('#caste').select2();
+    $('#subc').select2();
+    $('#cat').select2();
+
+    $('#caste').on("select2:select", function(e) {
+        let data = e.params.data;
+        cat(data.text)
+    });
 
     $('#states').on("select2:select", function(e) {
         let data = e.params.data;
@@ -134,7 +162,6 @@
             success: function(data) {
                 // dists = [{"id":1, "text":"sdfdsf"}];
                 $("#district").html("")
-                alert('dist')
                 for (let i = 0; i < data.length; i++) {
                     $("#district").append(
                         `<option value=" ${data[i].id}"> ${data[i].text} </option>`
@@ -156,6 +183,24 @@
                 for (let i = 0; i < data.length; i++) {
                     $("#taluk").append(
                         `<option value=" ${data[i].id}"> ${data[i].text} </option>`
+                    )
+                }
+            },
+        });
+    }
+
+    function cat(cast) {
+        $.ajax({
+            url: "{{ route('trans.getCat') }}",
+            dataType: 'json',
+            data: {
+                cast: cast
+            },
+            success: function(data) {
+                $("#cat").html("")
+                for (let i = 0; i < data.length; i++) {
+                    $("#cat").append(
+                        `<option value=" ${data[i].cat}"> ${data[i].text} </option>`
                     )
                 }
             },

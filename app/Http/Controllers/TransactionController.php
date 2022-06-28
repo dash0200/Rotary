@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\CasteModel;
+use App\Models\CategoriesModel;
 use App\Models\ClassesModel;
 use App\Models\DistrictModel;
 use App\Models\StatesModel;
@@ -17,6 +19,8 @@ class TransactionController extends Controller
         return view('pages.transactions.new-admission')->with([
             'classes' => ClassesModel::get(),
             'states' => StatesModel::get(),
+            'districts' => DistrictModel::select('id','name')->get(),
+            'castes' => CasteModel::get()
         ]);
     }
     public function getDistrict(Request $req)
@@ -42,6 +46,16 @@ class TransactionController extends Controller
         }
 
         return response()->json($taluk);
+    }
+
+    public function getCat(Request $req)
+    {
+        $cats = CasteModel::select('cat')->where('name', $req->cast)->get();
+
+        foreach ($cats as $d) {
+            $d['text'] = $d->category->name;
+        }
+        return response()->json($cats);
     }
     // *************New Admission***************
 
