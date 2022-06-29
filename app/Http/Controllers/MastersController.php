@@ -122,7 +122,7 @@ class MastersController extends Controller
     public function castDetails()
     {
 
-        return view("pages.masters.cast-details")->with(['cats' => CategoriesModel::get(), 'castes' => CasteModel::get()]);
+        return view("pages.masters.cast-details")->with(['cats' => CategoriesModel::get(), 'castes' => CasteModel::select('id', 'name')->get()]);
     }
 
     public function saveCategory(Request $req)

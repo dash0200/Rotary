@@ -127,7 +127,7 @@
                     </div>
 
 
-                    {{-- <form action="{{route('state')}}">
+                    <form action="{{route('state')}}">
                         <button type="submit">state</button>
                     </form>
 
@@ -145,7 +145,7 @@
                     
                     <form action="{{route('class')}}">
                         <button type="submit">class</button>
-                    </form> --}}
+                    </form>
                 </div>
             </div>
         </div>

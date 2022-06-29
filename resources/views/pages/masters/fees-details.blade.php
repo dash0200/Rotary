@@ -21,10 +21,10 @@
         </div>
 
     </div>
-    
+
     <div class="w-full flex justify-center">
         <div class="flex flex-col border w-1/4 rounded">
-            
+
             <table>
                 <thead class="bg-white border-b">
                     <tr>
@@ -45,45 +45,67 @@
                             <td align="center">{{ $loop->iteration }}</td>
                             <td align="center">{{ $fee->desc }}</td>
                             <td align="center" id="btn{{ $fee->id }}">
-                                <x-input type="text" name="desc_{{$loop->iteration}}" id="{{$fee->id}}"/>
+                                <x-input type="text" name="desc_{{ $loop->iteration }}" value="0" id="{{ $fee->id }}" />
                             </td>
                         </tr>
                     @endforeach
                 </tbody>
-                <tfoot>
-                    <tr class="border-t">
-                        <td colspan="2" align="center">
-                            Tuition Fee
-                        </td>
-                        <td>
-                            <x-input type="text" name="tuition" id="tuition"/>
-                        </td>
-                    </tr>
-                </tfoot>
+            </table>
+
+            <table class="w-full h-full">
+                <tr class="border-t">
+                    <td colspan="2" align="center" class="border-r">
+                        Tuition Fee
+                        <x-input type="text" name="tuition" id="tuition" />
+                    </td>
+                    <td class="h-full">
+                        <div class="space-y-10">
+                            <div>
+                                Total Fees
+                                <x-input type="text" name="total" id="total" />
+                            </div>
+
+                            <div>
+                                Total Months
+                                <x-input type="text" name="moths" value="12" id="months" />
+                            </div>
+
+                            <div>
+                                Fees Per Annum
+                                <x-input type="text" name="feePerAnnum" id="feePerAnnum" />
+                            </div>
+                        </div>
+                    </td>
+                </tr>
             </table>
             <div class="p-2 flex justify-center loading">
-                <button value="Save" onclick="saveDetails()" class="inline-block px-6 py-2.5 bg-indigo-600 text-white font-medium text-xs leading-tight my-2
+                <button value="Save" onclick="saveDetails()"
+                    class="inline-block px-6 py-2.5 bg-indigo-600 text-white font-medium text-xs leading-tight my-2
                 uppercase rounded shadow-md hover:bg-indigo-700 hover:shadow-lg focus:bg-indigo-700 focus:shadow-lg focus:outline-none 
-               focus:ring-0 active:bg-indigo-800 active:shadow-lg transition duration-150 ease-in-out">Save </button>
+               focus:ring-0 active:bg-indigo-800 active:shadow-lg transition duration-150 ease-in-out">Save
+                </button>
             </div>
         </div>
-        
+
     </div>
 </x-main-card>
 
 <script>
     var descTable;
-    $(document).ready(function () {
+    $(document).ready(function() {
         descTable = $("#desc").html();
+        setTimeout(() => {
+            calculate()
+        }, 4000);
     });
     $("#year").select2();
     $("#class").select2();
 
-    $("#year").on("select2:select", function(e){
+    $("#year").on("select2:select", function(e) {
         let data = e.params.data;
         getFeeDetails()
     });
-    $("#class").on("select2:select", function(e){
+    $("#class").on("select2:select", function(e) {
         let data = e.params.data;
         getFeeDetails()
     });
@@ -91,28 +113,34 @@
     function getFeeDetails() {
         let year = $("#year").val();
         let clas = $("#class").val();
-        if(year == "" || year == null || clas == '' || clas == null) return;
+        if (year == "" || year == null || clas == '' || clas == null) return;
         $.ajax({
             type: "get",
-            url: "{{route('master.getDetails')}}",
+            url: "{{ route('master.getDetails') }}",
             data: {
                 year: year,
-                clas:clas
+                clas: clas
             },
             dataType: "json",
-            
-            success: function (res) {
-               let amt = res.feeDetails;
-                
-                if(amt.length == 0) {
-                    for(let i=01; i <= {{count($fees)}}; i++){
-                        $(`input[name=desc_${i}]`).val("")
+
+            success: function(res) {
+                let amt = res.feeDetails;
+
+                if (amt.length == 0) {
+                    for (let i = 1; i <= {{ count($fees) }}; i++) {
+                        $(`input[name=desc_${i}]`).val("0")
                     }
-                    $("#tuition").val("")
+                    $("#tuition").val("0")
                 } else {
                     $("#tuition").val(amt[0].tuition)
-                    for(let i=0; i<amt.length; i++){
-                      $(`#${amt[i].fee_head}`).val(amt[i].amount);
+                    for (let i = 0; i < amt.length; i++) {
+                        console.log(amt[i].amount);
+                        if(amt[i].amount == "" || amt[i].amount == null){
+                            $(`#${amt[i].fee_head}`).val("0");
+                        } else {
+                            $(`#${amt[i].fee_head}`).val(amt[i].amount);
+                        }
+                        
                     }
                 }
             }
@@ -125,31 +153,34 @@
         let clas = $("#class").val();
         let tut = $("#tuition").val();
 
-        if(year == "" || year == null || clas == '' || clas == null) return;
-        
+        if (year == "" || year == null || clas == '' || clas == null) return;
+
         let amounts = [];
 
-        for(let i=1; i <= {{count($fees)}}; i++ ) {
-            amounts.push({id:$(`input[name='desc_${i}']`).attr("id"), amt: $(`input[name='desc_${i}']`).val()})
+        for (let i = 1; i <= {{ count($fees) }}; i++) {
+            amounts.push({
+                id: $(`input[name='desc_${i}']`).attr("id"),
+                amt: $(`input[name='desc_${i}']`).val()
+            })
         }
-        
+
         $.ajax({
             type: "post",
-            url: "{{route('master.saveDetails')}}",
+            url: "{{ route('master.saveDetails') }}",
             data: {
                 year: year,
                 clas: clas,
                 tut: tut,
-                amounts: amounts 
+                amounts: amounts
             },
             dataType: "json",
-            beforeSend: function (){
+            beforeSend: function() {
                 $(".loading").html("")
                 $(".loading").append(
                     `<x-loading-button name="Saving" />`
                 )
             },
-            success: function (response) {
+            success: function(response) {
                 $(".loading").html("")
                 $(".loading").append(
                     `<div class="flex space-x-2 items-center">
@@ -167,5 +198,16 @@
             }
         });
 
+    }
+
+    function calculate() {
+        let totalDesc = 0;
+        for (let i = 1; i <= {{ count($fees) }}; i++) {
+            totalDesc = $(`input[name='desc_${i}']`).val() + totalDesc;
+        }
+
+        $("#total").val(totalDesc);
+        let total = 12*$("#tuition").val();
+        $("#feePerAnnum").val(totalDesc + total);
     }
 </script>

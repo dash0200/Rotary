@@ -22,29 +22,35 @@ return new class extends Migration
 
             $table->unsignedBigInteger('caste');
             $table->foreign('caste')->references('id')->on('caste');
+            $table->unsignedBigInteger('sub_caste')->nullable()->default(null);
+            $table->foreign('sub_caste')->references('id')->on('sub_caste');
+            $table->unsignedBigInteger('category');
+            $table->foreign('category')->references('id')->on('categories');
 
             $table->unsignedBigInteger('class');
             $table->foreign('class')->references('id')->on('classes');
 
-            $table->bigInteger("sts");
+            $table->string("sts")->nullable()->default(null);
             $table->string("name", 50);
-            $table->string("fname", 50);
-            $table->string("mname", 50);
-            $table->string("lname", 50);
+            $table->string("fname", 50)->nullable()->default(null);
+            $table->string("mname", 50)->nullable()->default(null);
+            $table->string("lname", 50)->nullable()->default(null);
             $table->string("address", 255);
             $table->string("city");
-            $table->string("phone");
-            $table->string("mobile");
+            $table->string("phone")->nullable()->default(null);
+            $table->string("mobile")->nullable()->default(null);
             $table->date("dob");
             $table->string("birth_place");
             
             $table->unsignedBigInteger('sub_district');
             $table->foreign('sub_district')->references('id')->on('sub_district');
 
-            $table->string("religion");
+            $table->string("religion")->nullable()->default(null);
             $table->string("nationality");
             $table->integer("gender");
             $table->boolean("handicap");
+            $table->softDeletes();
+            $table->string("prev_school")->nullable()->default(null);
 
             $table->timestamps();
         });
