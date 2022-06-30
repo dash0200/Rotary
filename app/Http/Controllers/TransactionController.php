@@ -7,11 +7,13 @@ use App\Models\AdmissionModel;
 use App\Models\CasteModel;
 use App\Models\CategoriesModel;
 use App\Models\ClassesModel;
+use App\Models\CreateClass;
 use App\Models\DistrictModel;
 use App\Models\StatesModel;
 use App\Models\SubcastModel;
 use App\Models\SubdistrictModel;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
 
 class TransactionController extends Controller
 {
@@ -113,7 +115,14 @@ class TransactionController extends Controller
     }
 
     public function getCurrentClass(Request $req) {
+        $year = $req->year;
+        $crStudents = CreateClass::where(["year" => $year, "standard" => $req->clas]);
 
+        $newAdmission = AdmissionModel::get();
+        return response()->json([
+            "new" => $newAdmission,
+            "old" => $crStudents
+        ]);
         
     }
     //*********************Creating Class*******************

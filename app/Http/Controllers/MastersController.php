@@ -86,7 +86,8 @@ class MastersController extends Controller
                     'class' => $class,
                     'fee_head' => $req->amounts[$i]['id'],
                     'tuition' => $tut,
-                    'amount' => $req->amounts[$i]['amt']
+                    'amount' => $req->amounts[$i]['amt'],
+                    'amt_per_annum' => $req->feePerAnnum
                 ];
 
                 FeesDetailsModel::create($data);
@@ -96,7 +97,8 @@ class MastersController extends Controller
 
                 $data = [
                     'tuition' => $tut,
-                    'amount' => $req->amounts[$i]['amt']
+                    'amount' => $req->amounts[$i]['amt'],
+                    'amt_per_annum' => $req->feePerAnnum
                 ];
                 
                 FeesDetailsModel::where(['year' => $year, 'class' => $class, 'fee_head' => $req->amounts[$i]['id']])->update($data);

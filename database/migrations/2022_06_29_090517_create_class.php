@@ -18,7 +18,16 @@ return new class extends Migration
 
             $table->unsignedBigInteger('year');
             $table->foreign('year')->references('id')->on('academic_year');
+
+            $table->unsignedBigInteger('standard');
+            $table->foreign('standard')->references('id')->on('classes');
+
+            $table->unsignedBigInteger('student');
+            $table->foreign('student')->references('id')->on('admission');
             
+            $table->double("total");
+            $table->double("paid");
+            $table->double("balance");
 
             $table->timestamps();
         });

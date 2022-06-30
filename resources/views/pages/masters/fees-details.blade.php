@@ -94,9 +94,6 @@
     var descTable;
     $(document).ready(function() {
         descTable = $("#desc").html();
-        setTimeout(() => {
-            calculate()
-        }, 4000);
     });
     $("#year").select2();
     $("#class").select2();
@@ -134,7 +131,6 @@
                 } else {
                     $("#tuition").val(amt[0].tuition)
                     for (let i = 0; i < amt.length; i++) {
-                        console.log(amt[i].amount);
                         if(amt[i].amount == "" || amt[i].amount == null){
                             $(`#${amt[i].fee_head}`).val("0");
                         } else {
@@ -142,7 +138,9 @@
                         }
                         
                     }
+                    
                 }
+                calculate();
             }
         });
     }
@@ -152,6 +150,7 @@
         let year = $("#year").val();
         let clas = $("#class").val();
         let tut = $("#tuition").val();
+        let feePerAnnum = $("#feePerAnnum").val()
 
         if (year == "" || year == null || clas == '' || clas == null) return;
 
@@ -171,7 +170,8 @@
                 year: year,
                 clas: clas,
                 tut: tut,
-                amounts: amounts
+                amounts: amounts,
+                feePerAnnum:feePerAnnum
             },
             dataType: "json",
             beforeSend: function() {
@@ -201,13 +201,11 @@
     }
 
     function calculate() {
-        let totalDesc = 0;
+        var totalDesc = 0;
         for (let i = 1; i <= {{ count($fees) }}; i++) {
-            totalDesc = $(`input[name='desc_${i}']`).val() + totalDesc;
+            totalDesc = totalDesc + parseInt($(`input[name='desc_${i}']`).val());
         }
-
         $("#total").val(totalDesc);
-        let total = 12*$("#tuition").val();
-        $("#feePerAnnum").val(totalDesc + total);
+        $("#feePerAnnum").val((totalDesc + (12*$("#tuition").val())).toFixed(2));
     }
 </script>
