@@ -45,7 +45,7 @@
                             <td align="center">{{ $loop->iteration }}</td>
                             <td align="center">{{ $fee->desc }}</td>
                             <td align="center" id="btn{{ $fee->id }}">
-                                <x-input type="text" name="desc_{{ $loop->iteration }}" value="0" id="{{ $fee->id }}" />
+                                <x-input type="text" name="desc_{{ $loop->iteration }}" oninput="calculate()" value="0" id="{{ $fee->id }}" />
                             </td>
                         </tr>
                     @endforeach
@@ -56,13 +56,13 @@
                 <tr class="border-t">
                     <td colspan="2" align="center" class="border-r">
                         Tuition Fee
-                        <x-input type="text" name="tuition" id="tuition" />
+                        <x-input type="text" oninput="calculate()" name="tuition" id="tuition" />
                     </td>
                     <td class="h-full">
                         <div class="space-y-10">
                             <div>
                                 Total Fees
-                                <x-input type="text" name="total" id="total" />
+                                <x-input type="text" name="total" disabled id="total" />
                             </div>
 
                             <div>
@@ -72,7 +72,7 @@
 
                             <div>
                                 Fees Per Annum
-                                <x-input type="text" name="feePerAnnum" id="feePerAnnum" />
+                                <x-input type="text" disabled name="feePerAnnum" id="feePerAnnum" />
                             </div>
                         </div>
                     </td>

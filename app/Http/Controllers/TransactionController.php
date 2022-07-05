@@ -9,6 +9,7 @@ use App\Models\CategoriesModel;
 use App\Models\ClassesModel;
 use App\Models\CreateClass;
 use App\Models\DistrictModel;
+use App\Models\FeesDetailsModel;
 use App\Models\StatesModel;
 use App\Models\SubcastModel;
 use App\Models\SubdistrictModel;
@@ -116,14 +117,54 @@ class TransactionController extends Controller
 
     public function getCurrentClass(Request $req) {
         $year = $req->year;
-        $crStudents = CreateClass::where(["year" => $year, "standard" => $req->clas]);
+        $crStudents = CreateClass::where(["year" => $year-1, "standard" => $req->clas])->get();
+        
+        foreach($crStudents as $crr){
+            $crr->getStudent;
+            $crr->acaYear;
+            $crr->standardClass;
+        }
 
-        $newAdmission = AdmissionModel::get();
+        $tuition = FeesDetailsModel::select("amt_per_annum")->where(["year" => $year, "class" => $req->clas])->first()->amt_per_annum;
+        $y = date("Y");
+        $yr = str_split($y);
+        $y1 = $yr[2].$yr[3];
+        $year = $y."-".(integer)$y1+1;
+
+        $added = CreateClass::where(["year" => $req->year, "standard" => $req->clas])->get();
+        foreach($added as $std){
+            $std->getStudent;
+        }
+
+        $year_id = AcademicYearModel::where("year",  $year)->first()->id;
+
+        $newAdmission = AdmissionModel::whereNotIn(["year"=>$year_id])->get();
+        
         return response()->json([
             "new" => $newAdmission,
-            "old" => $crStudents
+            "old" => $crStudents,
+            "totalAmt" => $tuition,
+            "addedStd" => $added
         ]);
         
+    }
+
+    public function createClass(Request $req) {
+       
+        foreach($req->stds as $std){
+            $data = [
+                "year" => $req->year,
+                "standard" => $req->clas,
+                "student" => $std["id"],
+                "total" => $req->amt
+            ];
+            $exist = CreateClass::
+                    where($data)->first();
+            
+          if( $exist == null) {
+              CreateClass::create($data);
+          }
+        }
     }
     //*********************Creating Class*******************
 

@@ -26,8 +26,8 @@ return new class extends Migration
             $table->foreign('student')->references('id')->on('admission');
             
             $table->double("total");
-            $table->double("paid");
-            $table->double("balance");
+            $table->double("paid")->nullable()->default(0);
+            $table->double("balance")->nullable()->default(0);
 
             $table->timestamps();
         });

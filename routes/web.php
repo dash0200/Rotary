@@ -68,6 +68,7 @@ Route::controller(TransactionController::class)->prefix('transaction')->name('tr
     
     Route::get('creating-classes', 'creatingClasses')->name('creatingClasses');
     Route::get('get-curyear', 'getCurrentClass')->name('getCurrentClass');
+    Route::post('get-creat-class', 'createClass')->name('createClass');
     
 
 

@@ -18,4 +18,16 @@ class CreateClass extends Model
             "paid",
             "balance",
     ];
+
+    public function getStudent() {
+        return $this->hasOne(AdmissionModel::class, 'id', 'student');
+    }
+
+    public function acaYear() {
+        return $this->hasOne(AcademicYearModel::class, 'id', 'year');
+    }
+
+    public function standardClass() {
+        return $this->hasOne(ClassesModel::class, 'id', 'standard');
+    }
 }
