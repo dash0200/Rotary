@@ -37,4 +37,8 @@ class AdmissionModel extends Model
         "handicap",
         "prev_school"
     ];
+
+    public function acaYear() {
+        return $this->hasOne(AcademicYearModel::class, 'id', 'year');
+    }
 }

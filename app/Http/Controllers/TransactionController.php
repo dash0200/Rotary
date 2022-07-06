@@ -14,6 +14,8 @@ use App\Models\StatesModel;
 use App\Models\SubcastModel;
 use App\Models\SubdistrictModel;
 use Illuminate\Http\Request;
+use Illuminate\Support\Arr;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 
 class TransactionController extends Controller
@@ -110,16 +112,17 @@ class TransactionController extends Controller
     public function creatingClasses()
     {
         return view('pages.transactions.creating-classes')->with([
-            'years' => AcademicYearModel::get(), 
+            'years' => AcademicYearModel::get(),
             'classes' => ClassesModel::get()
         ]);
     }
 
-    public function getCurrentClass(Request $req) {
+    public function getCurrentClass(Request $req)
+    {
         $year = $req->year;
-        $crStudents = CreateClass::where(["year" => $year-1, "standard" => $req->clas])->get();
-        
-        foreach($crStudents as $crr){
+        $crStudents = CreateClass::where(["year" => $year - 1, "standard" => $req->clas - 1])->get();
+
+        foreach ($crStudents as $crr) {
             $crr->getStudent;
             $crr->acaYear;
             $crr->standardClass;
@@ -128,42 +131,51 @@ class TransactionController extends Controller
         $tuition = FeesDetailsModel::select("amt_per_annum")->where(["year" => $year, "class" => $req->clas])->first()->amt_per_annum;
         $y = date("Y");
         $yr = str_split($y);
-        $y1 = $yr[2].$yr[3];
-        $year = $y."-".(integer)$y1+1;
+        $y1 = $yr[2] . $yr[3];
+        $year = $y . "-" . (int)$y1 + 1;
 
         $added = CreateClass::where(["year" => $req->year, "standard" => $req->clas])->get();
-        foreach($added as $std){
+        foreach ($added as $std) {
             $std->getStudent;
+            $std->acaYear->year;
         }
 
         $year_id = AcademicYearModel::where("year",  $year)->first()->id;
+        $createClass = CreateClass::get();
+        $newAdmission = AdmissionModel::where("year", $year_id)->get();
 
-        $newAdmission = AdmissionModel::whereNotIn(["year"=>$year_id])->get();
-        
+        foreach ($createClass as $cr) {
+            foreach ($newAdmission as $new) {
+                $new->acaYear;
+                if ($cr->student == $new->id) {
+                    $new['id'] = null;
+                }
+            }
+        }
+
         return response()->json([
             "new" => $newAdmission,
             "old" => $crStudents,
             "totalAmt" => $tuition,
             "addedStd" => $added
         ]);
-        
     }
 
-    public function createClass(Request $req) {
-       
-        foreach($req->stds as $std){
+    public function createClass(Request $req)
+    {
+
+        foreach ($req->stds as $std) {
             $data = [
                 "year" => $req->year,
                 "standard" => $req->clas,
                 "student" => $std["id"],
                 "total" => $req->amt
             ];
-            $exist = CreateClass::
-                    where($data)->first();
-            
-          if( $exist == null) {
-              CreateClass::create($data);
-          }
+            $exist = CreateClass::where($data)->first();
+
+            if ($exist == null) {
+                CreateClass::create($data);
+            }
         }
     }
     //*********************Creating Class*******************
