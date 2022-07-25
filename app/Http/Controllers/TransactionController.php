@@ -105,6 +105,13 @@ class TransactionController extends Controller
 
         return redirect()->back()->with(["message" => "success"]);
     }
+
+    public function getStdforEdit(Request $req) {
+        $stds = AdmissionModel::where('id', 'LIKE', '%'.$req->term.'%')->get();
+        return response()->json([
+            'stds' => $stds
+        ]);
+    }
     // *************New Admission***************
 
 
@@ -140,9 +147,9 @@ class TransactionController extends Controller
             $std->acaYear->year;
         }
 
-        $year_id = AcademicYearModel::where("year",  $year)->first()->id;
+        // $year_id = AcademicYearModel::where("year",  $year)->first()->id;
         $createClass = CreateClass::get();
-        $newAdmission = AdmissionModel::where("year", $year_id)->get();
+        $newAdmission = AdmissionModel::where("year", $req->year)->get();
 
         foreach ($createClass as $cr) {
             foreach ($newAdmission as $new) {
@@ -151,6 +158,10 @@ class TransactionController extends Controller
                     $new['id'] = null;
                 }
             }
+        }
+
+        foreach($newAdmission as $new) {
+            $new['aca_year'] = $new->acaYear;
         }
 
         return response()->json([
@@ -177,6 +188,8 @@ class TransactionController extends Controller
                 CreateClass::create($data);
             }
         }
+
+        return response()->json(['msg' => 'success']);
     }
     //*********************Creating Class*******************
 

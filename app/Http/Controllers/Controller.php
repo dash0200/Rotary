@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\AcademicYearModel;
+use App\Models\AdmissionModel;
 use App\Models\ClassesModel;
 use App\Models\DistrictModel;
 use App\Models\StatesModel;
@@ -10,12 +11,44 @@ use App\Models\SubdistrictModel;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Illuminate\Foundation\Bus\DispatchesJobs;
 use Illuminate\Foundation\Validation\ValidatesRequests;
+use Illuminate\Http\Request;
 use Illuminate\Routing\Controller as BaseController;
-use Illuminate\Support\Facades\Redirect;
+use LDAP\Result;
 
 class Controller extends BaseController
 {
     use AuthorizesRequests, DispatchesJobs, ValidatesRequests;
+
+    public function getStuddent(Request $req) {
+        
+        $student = AdmissionModel::where('id', $req->id)->first();
+        $student['doy'] = $student->date_of_adm->format("Y");
+        return response()->json($student);
+    }
+
+    public function getStdId(Request $req) {
+        if(!isset($req->term)) {
+            return response()->json();
+        }
+        $q = $req->term;
+
+        $students = AdmissionModel::select('id','date_of_adm','sts','name', 'fname','mname','lname')->where("name", "LIKE", "%".$q."%")
+        ->orWhere("id", "LIKE", "%".$q."%")
+        ->orWhere("date_of_adm", "LIKE", "%".$q."%")
+        ->orWhere("sts", "LIKE", "%".$q."%")
+        ->orWhere("fname", "LIKE", "%".$q."%")
+        ->orWhere("mname", "LIKE", "%".$q."%")
+        ->orWhere("lname", "LIKE", "%".$q."%")
+        ->limit(10)->get();
+
+        $student = array();
+
+        foreach($students as $std) {
+            $student[] = array('id' => $std->id,
+            'text' => $std->id."-".$std->sts.", ".$std->name." ".$std->fname." ".$std->lname.", (".$std->date_of_adm->format("d-m-Y").")");
+        }
+        return response()->json($student);
+    }
 
     public function state()
     {

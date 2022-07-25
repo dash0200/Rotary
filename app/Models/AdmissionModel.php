@@ -10,7 +10,7 @@ class AdmissionModel extends Model
 {
     use HasFactory; use SoftDeletes;
     
-    protected $dates = ['deleted_at'];
+    protected $dates = ['deleted_at','date_of_adm'];
     protected $table = 'admission';
     protected $fillable = [
         "date_of_adm",

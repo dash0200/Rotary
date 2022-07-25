@@ -1,14 +1,19 @@
 <x-main-card>
+    <div class="d-flex justify-content-end" style="width:100%">
+        <select name="editStd" id="editStd" style="width:40%">
+
+        </select>
+    </div>
     New Admission
     @if (session()->has('message'))
-                <div class="alert alert-success alert-dismissible fade show text-md font-bold position-absolute mt-2 ml-48 w-2/3  text-center"
-                    role="alert" id="alert">
-                    {{ session()->get('message') }}
-                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-            @endif
+        <div class="alert alert-success alert-dismissible fade show text-md font-bold position-absolute mt-2 ml-48 w-2/3  text-center"
+            role="alert" id="alert">
+            {{ session()->get('message') }}
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+    @endif
     <div class="w-full bg-gray-200" style="height: 1px;"></div>
     <form action="{{ route('trans.saveAdmission') }}">
         <div class="flex flex-col">
@@ -20,12 +25,14 @@
                     </div>
                     <div class="m-2">
                         <x-label value="Admission Date" />
-                        <x-input type="date" name="admDate" class="{{ $errors->has('admDate') ? 'is-invalid' : '' }}" required value="{{ date('Y-m-d') }}"
-                            placeholder="Pick Date" />
+                        <x-input type="date" name="admDate"
+                            class="{{ $errors->has('admDate') ? 'is-invalid' : '' }}" required
+                            value="{{ date('Y-m-d') }}" placeholder="Pick Date" />
                     </div>
                     <div class="m-2">
                         <x-label value="Classes" />
-                        <select name="class" id="class" required class="{{ $errors->has('class') ? 'is-invalid' : '' }}">
+                        <select name="class" id="class" required
+                            class="{{ $errors->has('class') ? 'is-invalid' : '' }}">
                             <option value="">Select Class</option>
                             @foreach ($classes as $class)
                                 <option value="{{ $class->id }}">{{ $class->name }}</option>
@@ -37,19 +44,21 @@
                 <div class="flex flex-col">
                     <div class="m-2">
                         <x-label value="Student Name" />
-                        <x-input type="text" placeholder="First Name" class="{{ $errors->has('fname') ? 'is-invalid' : '' }}" name="fname" required class="alphaonly" />
+                        <x-input type="text" placeholder="First Name"
+                            class="{{ $errors->has('fname') ? 'is-invalid' : '' }}" name="fname" required
+                            class="alphaonly" />
                     </div>
                     <div class="m-2">
                         <x-label value="Father Name" />
-                        <x-input type="text" placeholder="Father Name" name="father" class="alphaonly"/>
+                        <x-input type="text" placeholder="Father Name" name="father" class="alphaonly" />
                     </div>
                     <div class="m-2">
                         <x-label value="Mother Name" />
-                        <x-input type="text" placeholder="Mother Name" name="mname" class="alphaonly"/>
+                        <x-input type="text" placeholder="Mother Name" name="mname" class="alphaonly" />
                     </div>
                     <div class="m-2">
                         <x-label value="Sur Name" />
-                        <x-input type="text" placeholder="Sur Name" name="surname" class="alphaonly"/>
+                        <x-input type="text" placeholder="Sur Name" name="surname" class="alphaonly" />
                     </div>
                     <div class="m-2">
                         <x-label value="Address" />
@@ -69,15 +78,16 @@
                     </div>
                     <div class="m-2">
                         <x-label value="Phone Number" />
-                        <x-input type="text" placeholder="Phone" name="phone" class="numOnly"/>
+                        <x-input type="text" placeholder="Phone" name="phone" class="numOnly" />
                     </div>
                     <div class="m-2">
                         <x-label value="Mobile Number" />
-                        <x-input type="text" placeholder="Mobile" name="mobile" class="numOnly"/>
+                        <x-input type="text" placeholder="Mobile" name="mobile" class="numOnly" />
                     </div>
                     <div class="m-2">
                         <x-label value="Date of Birth" />
-                        <x-input type="date" placeholder="DOB" name="dob" required max="{{ date('Y-m-d') }}" />
+                        <x-input type="date" placeholder="DOB" name="dob" required
+                            max="{{ date('Y-m-d') }}" />
                     </div>
                 </div>
             </div>
@@ -86,7 +96,7 @@
                 <div class="flex flex-col">
                     <div class="m-2">
                         <x-label value="Birth Place" />
-                        <x-input type="text" placeholder="Birth Place" name="birthPlace" class="alphaonly"/>
+                        <x-input type="text" placeholder="Birth Place" name="birthPlace" class="alphaonly" />
                     </div>
                     <div class="m-2">
                         <x-label value="State" />
@@ -199,10 +209,10 @@
                         </div>
                     </div>
                 </div>
-                
+
             </div>
             <x-label value="Previous School" />
-            <x-input type="text" name="prevSchool"/>
+            <x-input type="text" name="prevSchool" />
             <x-button-primary value="Save" />
         </div>
 
@@ -210,6 +220,7 @@
 </x-main-card>
 
 <script>
+    $("#editStd").select2();
     $("#class").select2();
     $("#city").select2();
     $('#states').select2();
@@ -219,6 +230,24 @@
     $('#subc').select2();
     $('#cat').select2();
     $('#year').select2();
+
+    $("#editStd").select2({
+        placeholder: "Search for a student",
+        minimumInputLength: 2,
+        ajax: {
+            url: "{{route('trans.getStdforEdit')}}",
+            dataType: 'json',
+            quietMillis: 100,
+            data: function(q) {
+                return {
+                    option: q
+                };
+            },
+           success: function(res) {
+            console.log(res);
+           }
+        },
+    });
 
     $('#caste').on("select2:select", function(e) {
         let data = e.params.data;

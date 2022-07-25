@@ -65,6 +65,7 @@ Route::controller(TransactionController::class)->prefix('transaction')->name('tr
     Route::get('get-district', 'getDistrict')->name('getDistrict');
     Route::get('get-taluk', 'getTaluk')->name('getTaluk');
     Route::get('get-category', 'getCat')->name('getCat');
+    Route::get('get-stuent-for-edit', 'getStdforEdit')->name('getStdforEdit');
     
     Route::get('creating-classes', 'creatingClasses')->name('creatingClasses');
     Route::get('get-curyear', 'getCurrentClass')->name('getCurrentClass');
@@ -118,3 +119,6 @@ Route::get("/dist", [Controller::class, "district"])->name("dist");
 Route::get("/subDist", [Controller::class, "subDist"])->name("subDist");
 Route::get("/acaYear", [Controller::class, "acaYear"])->name("acaYear");
 Route::get("/class", [Controller::class, "classes"])->name("class");
+
+Route::get("/get-student-id", [Controller::class, "getStdId"])->name("getStdId");
+Route::get("/get-student", [Controller::class, "getStuddent"])->name("getstudent");
