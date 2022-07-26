@@ -5,7 +5,9 @@ namespace App\Http\Controllers;
 use App\Models\AcademicYearModel;
 use App\Models\AdmissionModel;
 use App\Models\ClassesModel;
+use App\Models\CreateClass;
 use App\Models\DistrictModel;
+use App\Models\FeesDetailsModel;
 use App\Models\StatesModel;
 use App\Models\SubdistrictModel;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
@@ -23,7 +25,22 @@ class Controller extends BaseController
         
         $student = AdmissionModel::where('id', $req->id)->first();
         $student['doy'] = $student->date_of_adm->format("Y");
-        return response()->json($student);
+
+        $standard = CreateClass::where("student", $req->id)->orderBy("id", "DESC")->first();
+        $fees = FeesDetailsModel::select("fee_head","amount")->where(["year" => $standard->year, "class"=>$standard->standard])->get();
+        foreach($fees as $fee) {
+            $fee["name"] = $fee->feeHead->desc;
+        }
+        $standard["std"] = $standard->standardClass;
+        $standard['yr'] = $standard->acaYear;
+
+        $stds = CreateClass::where("student", $req->id)->orderBy("id", "DESC")->get();
+        foreach($stds as $std) {
+            $std["std"] = $std->standardClass;
+            $std["yr"] = $std->acaYear;
+        }
+
+        return response()->json([$student, $standard, $fees, "prev" => $stds]);
     }
 
     public function getStdId(Request $req) {

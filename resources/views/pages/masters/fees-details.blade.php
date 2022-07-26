@@ -45,7 +45,7 @@
                             <td align="center">{{ $loop->iteration }}</td>
                             <td align="center">{{ $fee->desc }}</td>
                             <td align="center" id="btn{{ $fee->id }}">
-                                <x-input type="text" name="desc_{{ $loop->iteration }}" oninput="calculate()" value="0" id="{{ $fee->id }}" />
+                                <x-input type="number" name="desc_{{ $loop->iteration }}" oninput="calculate()" value="0" id="{{ $fee->id }}" />
                             </td>
                         </tr>
                     @endforeach
@@ -56,23 +56,23 @@
                 <tr class="border-t">
                     <td colspan="2" align="center" class="border-r">
                         Tuition Fee
-                        <x-input type="text" oninput="calculate()" name="tuition" id="tuition" />
+                        <x-input type="number" oninput="calculate()" name="tuition" id="tuition" />
                     </td>
                     <td class="h-full">
                         <div class="space-y-10">
                             <div>
                                 Total Fees
-                                <x-input type="text" name="total" disabled id="total" />
+                                <x-input type="number" name="total" disabled id="total" />
                             </div>
 
                             <div>
                                 Total Months
-                                <x-input type="text" name="moths" value="12" id="months" />
+                                <x-input type="number" name="moths" value="12" id="months" />
                             </div>
 
                             <div>
                                 Fees Per Annum
-                                <x-input type="text" disabled name="feePerAnnum" id="feePerAnnum" />
+                                <x-input type="number" disabled name="feePerAnnum" id="feePerAnnum" />
                             </div>
                         </div>
                     </td>
@@ -206,6 +206,14 @@
             totalDesc = totalDesc + parseInt($(`input[name='desc_${i}']`).val());
         }
         $("#total").val(totalDesc);
-        $("#feePerAnnum").val((totalDesc + (12*$("#tuition").val())).toFixed(2));
+        $("#feePerAnnum").val((totalDesc + (12*$("#tuition").val())).toFixed(2)-$("#tuition").val());
     }
+
+    $("#tuition").keyup(function(){
+        $("#3").val($("#tuition").val());
+    })
+
+    $("#3").keyup(function(){
+        $("#tuition").val($("#3").val());
+    })
 </script>

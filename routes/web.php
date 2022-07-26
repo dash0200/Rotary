@@ -65,7 +65,7 @@ Route::controller(TransactionController::class)->prefix('transaction')->name('tr
     Route::get('get-district', 'getDistrict')->name('getDistrict');
     Route::get('get-taluk', 'getTaluk')->name('getTaluk');
     Route::get('get-category', 'getCat')->name('getCat');
-    Route::get('get-stuent-for-edit', 'getStdforEdit')->name('getStdforEdit');
+    Route::get('get-student-for-edit', 'getStdforEdit')->name('getStdforEdit');
     
     Route::get('creating-classes', 'creatingClasses')->name('creatingClasses');
     Route::get('get-curyear', 'getCurrentClass')->name('getCurrentClass');
@@ -81,6 +81,8 @@ Route::controller(TransactionController::class)->prefix('transaction')->name('tr
 
 Route::controller(FeesDetailsController::class)->prefix('fees-details')->name('fees.')->group(function(){
     Route::get('fees-receipts', 'feesReceipts')->name('feesReceipts');
+    Route::post('fees-paying', 'feePaying')->name("savePaidFees");
+
     Route::get('receipt-cancellation', 'receiptCancellation')->name('receiptCancellation');
     Route::get('fees-arrears', 'feesArrears')->name('feesArrears');
     Route::get('day-book', 'dayBook')->name('dayBook');

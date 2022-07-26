@@ -180,7 +180,8 @@ class TransactionController extends Controller
                 "year" => $req->year,
                 "standard" => $req->clas,
                 "student" => $std["id"],
-                "total" => $req->amt
+                "total" => $req->amt,
+                "balance" => $req->amt,
             ];
             $exist = CreateClass::where($data)->first();
 
