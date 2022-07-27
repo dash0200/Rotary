@@ -10,7 +10,7 @@ class AdmissionModel extends Model
 {
     use HasFactory; use SoftDeletes;
     
-    protected $dates = ['deleted_at','date_of_adm'];
+    protected $dates = ['deleted_at','date_of_adm', 'dob'];
     protected $table = 'admission';
     protected $fillable = [
         "date_of_adm",
@@ -40,5 +40,8 @@ class AdmissionModel extends Model
 
     public function acaYear() {
         return $this->hasOne(AcademicYearModel::class, 'id', 'year');
+    }
+    public function district() {
+        return $this->hasOne(SubdistrictModel::class, 'id', 'sub_district');
     }
 }

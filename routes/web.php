@@ -124,3 +124,4 @@ Route::get("/class", [Controller::class, "classes"])->name("class");
 
 Route::get("/get-student-id", [Controller::class, "getStdId"])->name("getStdId");
 Route::get("/get-student", [Controller::class, "getStuddent"])->name("getstudent");
+Route::get("/get-admstudent", [Controller::class, "getAdmStd"])->name("getAdmStd");

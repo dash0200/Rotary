@@ -1,19 +1,10 @@
 <x-main-card>
     <div class="d-flex justify-content-end" style="width:100%">
-        <select name="editStd" id="editStd" style="width:40%">
-
+        <select name="editStd" id="stdsearh" style="width:40%">
+            <option value="">Search Student</option>
         </select>
     </div>
     New Admission
-    @if (session()->has('message'))
-        <div class="alert alert-success alert-dismissible fade show text-md font-bold position-absolute mt-2 ml-48 w-2/3  text-center"
-            role="alert" id="alert">
-            {{ session()->get('message') }}
-            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                <span aria-hidden="true">&times;</span>
-            </button>
-        </div>
-    @endif
     <div class="w-full bg-gray-200" style="height: 1px;"></div>
     <form action="{{ route('trans.saveAdmission') }}">
         <div class="flex flex-col">
@@ -62,7 +53,7 @@
                     </div>
                     <div class="m-2">
                         <x-label value="Address" />
-                        <textarea class="resize rounded-md" name="address" required></textarea>
+                        <textarea class="resize rounded-md" id="address" name="address" required></textarea>
                     </div>
                 </div>
 
@@ -70,9 +61,9 @@
                     <div class="m-2">
                         <x-label value="City" />
                         <select name="city" id="city" required>
-                            <option value="">Select Class</option>
+                            <option value="">Select City</option>
                             @foreach ($districts as $district)
-                                <option value="{{ $district->name }}">{{ $district->name }}</option>
+                                <option value="{{ $district->id }}">{{ $district->name }}</option>
                             @endforeach
                         </select>
                     </div>
@@ -103,7 +94,7 @@
                         <select name="states" id="states" class="w-full">
                             <option value="">Select State</option>
                             @foreach ($states as $state)
-                                <option value="{{ $state->id }}" @if ($state->name == 'Karnataka') selected @endif>
+                                <option value="{{$state->id}}">
                                     {{ $state->name }}</option>
                             @endforeach
                         </select>
@@ -182,7 +173,7 @@
                                 <div class="form-check">
                                     <input
                                         class="form-check-input appearance-none rounded-full h-4 w-4 border border-gray-300 bg-white checked:bg-blue-600 checked:border-blue-600 focus:outline-none transition duration-200 mt-1 align-top bg-no-repeat bg-center bg-contain float-left mr-2 cursor-pointer"
-                                        value="1" type="radio" checked name="handicap" id="no">
+                                        value="0" type="radio" checked name="handicap" id="no">
                                     <label class="form-check-label inline-block text-gray-800" for="no">
                                         No
                                     </label>
@@ -190,7 +181,7 @@
                                 <div class="form-check">
                                     <input
                                         class="form-check-input appearance-none rounded-full h-4 w-4 border border-gray-300 bg-white checked:bg-blue-600 checked:border-blue-600 focus:outline-none transition duration-200 mt-1 align-top bg-no-repeat bg-center bg-contain float-left mr-2 cursor-pointer"
-                                        value="0" type="radio" name="handicap" id="yes">
+                                        value="1" type="radio" name="handicap" id="yes">
                                     <label class="form-check-label inline-block text-gray-800" for="yes">
                                         Yes
                                     </label>
@@ -203,7 +194,7 @@
                             <select name="ac_year" id="year" class="w-full" required>
                                 <option value="">Academic Year</option>
                                 @foreach ($years as $year)
-                                    <option value="{{ $year->id }}">{{ $year->year }}</option>
+                                    <option value="{{$year->id}}">{{ $year->year }}</option>
                                 @endforeach
                             </select>
                         </div>
@@ -213,6 +204,8 @@
             </div>
             <x-label value="Previous School" />
             <x-input type="text" name="prevSchool" />
+
+            <input type="text" name="id" id="id" hidden>
             <x-button-primary value="Save" />
         </div>
 
@@ -231,23 +224,76 @@
     $('#cat').select2();
     $('#year').select2();
 
-    $("#editStd").select2({
-        placeholder: "Search for a student",
-        minimumInputLength: 2,
-        ajax: {
-            url: "{{route('trans.getStdforEdit')}}",
-            dataType: 'json',
-            quietMillis: 100,
-            data: function(q) {
-                return {
-                    option: q
-                };
-            },
-           success: function(res) {
-            console.log(res);
-           }
+    $("#stdsearh").select2({
+        ajax: { 
+        url: "{{route('getStdId')}}",
+        type: "get",
+        dataType: 'json',
+        data: function (params) {
+            return {
+            term: params.term // search term
+            };
         },
+        processResults: function (response) {
+            return {
+                results: response
+            };
+        },
+        cache: true
+        }
     });
+    $("#stdsearh").on("select2:select", function(e){
+        let id = e.params.data.id;
+
+        $.ajax({
+            type: "get",
+            url: "{{route('getAdmStd')}}",
+            data: {
+                id: id
+            },
+            dataType: "json",
+            success: function (res) {
+                console.log(res);
+                $("input[name=sts]").val(res.sts)
+                $("input[name=admDate]").val(res.doy)
+                $("#class").select2("val", `${res.class}`);
+                $("input[name=fname]").val(res.name)
+                $("input[name=father]").val(res.fname)
+                $("input[name=mname]").val(res.mname)
+                $("input[name=surname]").val(res.lname)
+                $("textarea#address").val(res.address)
+                $("#city").select2("val", `${res.city}`);
+                $("input[name=phone]").val(res.phone)
+                $("input[name=mobile]").val(res.mobile)
+                $("input[name=dob]").val(res.dobf)
+                $("input[name=birthPlace]").val(res.birth_place)
+                $("#states").select2("val", `${res.district.state.state}`);
+                dist(res.district.district)
+                $("#district").select2("val", `${res.district.district}`);
+                taluk(res.district.district)
+                $("#taluk").select2("val", `${res.sub_district}`);
+                $("#caste").select2("val", `${res.caste}`);
+                $("#religion").val(`${res.religion}`);
+                cat(res.caste)
+                $("#subc").select2("val", `${res.sub_caste}`);
+                $("#cat").select2("val", `${res.category}`);
+                if(res.gender == 1) {
+                    $("#male").prop("checked", true)
+                } else {
+                    $("#female").prop("checked", true)
+                }
+                if(res.handicap == 0) {
+                    $("#no").prop("checked", true)
+                } else {
+                    $("#yes").prop("checked", true)
+                }
+                
+                $("#year").select2("val", `${res.year}`);
+                $("input[name=prevSchool]").val(res.prev_school)
+                $("#id").val(res.id)
+            }  
+        });
+    }); 
 
     $('#caste').on("select2:select", function(e) {
         let data = e.params.data;
@@ -281,7 +327,7 @@
                 $("#district").html("")
                 for (let i = 0; i < data.length; i++) {
                     $("#district").append(
-                        `<option value=" ${data[i].id}"> ${data[i].text} </option>`
+                        `<option value="${data[i].id}"> ${data[i].text} </option>`
                     )
                 }
             },
@@ -299,7 +345,7 @@
                 $("#taluk").html("")
                 for (let i = 0; i < data.length; i++) {
                     $("#taluk").append(
-                        `<option value=" ${data[i].id}"> ${data[i].text} </option>`
+                        `<option value="${data[i].id}"> ${data[i].text} </option>`
                     )
                 }
             },
@@ -318,7 +364,7 @@
                 $("#cat").html("")
                 for (let i = 0; i < data.length; i++) {
                     $("#cat").append(
-                        `<option value=" ${data[i].cat}"> ${data[i].category.name} </option>`
+                        `<option value="${data[i].cat}"> ${data[i].category.name} </option>`
                     )
                 }
 
@@ -327,7 +373,7 @@
                 $("#subc").html("")
                 for (let i = 0; i < subs.length; i++) {
                     $("#subc").append(
-                        `<option value=" ${subs[i].id}"> ${subs[i].name} </option>`
+                        `<option value="${subs[i].id}"> ${subs[i].name} </option>`
                     )
                 }
             },

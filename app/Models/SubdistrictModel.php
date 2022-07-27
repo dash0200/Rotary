@@ -13,4 +13,8 @@ class SubdistrictModel extends Model
     protected $fillable = [
         'name', 'district'
     ];
+
+    public function state() {
+        return $this->hasOne(DistrictModel::class, 'id', 'district');
+    }
 }

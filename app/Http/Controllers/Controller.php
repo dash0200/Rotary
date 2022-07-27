@@ -67,6 +67,17 @@ class Controller extends BaseController
         return response()->json($student);
     }
 
+    public function getAdmStd(Request $req) {
+        $student = AdmissionModel::where("id", $req->id)->first();
+        $student["doy"] = $student->date_of_adm->format("Y-m-d");
+        $student["dobf"] = $student->dob->format("Y-m-d");
+
+        $student['state'] = $student->district->state->state;
+        $student['dist'] = $student->district->district;
+
+        return response()->json($student);
+    }
+
     public function state()
     {
         $states = [

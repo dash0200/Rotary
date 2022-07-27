@@ -23,7 +23,6 @@ class TransactionController extends Controller
     // *************New Admission************************************************************************************************************************************************************************************
     public function newAdmission()
     {
-
         return view('pages.transactions.new-admission')->with([
             'classes' => ClassesModel::get(),
             'states' => StatesModel::get(),
@@ -101,7 +100,12 @@ class TransactionController extends Controller
             "handicap" => $req->handicap,
             "prev_school" => $req->prevSchool,
         ];
-        AdmissionModel::create($data);
+
+        if(isset($req->id)) {
+            AdmissionModel::where("id", $req->id)->update($data);
+        } else {
+            AdmissionModel::create($data);
+        }
 
         return redirect()->back()->with(["message" => "success"]);
     }
