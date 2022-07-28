@@ -1,9 +1,4 @@
 <x-main-card>
-    <div class="d-flex justify-content-end" style="width:100%">
-        <select name="editStd" id="stdsearh" style="width:40%">
-            <option value="">Search Student</option>
-        </select>
-    </div>
     New Admission
     <div class="w-full bg-gray-200" style="height: 1px;"></div>
     <form action="{{ route('trans.saveAdmission') }}">
@@ -95,8 +90,16 @@
                             <option value="">Select State</option>
                             @foreach ($states as $state)
                                 <option value="{{$state->id}}">
-                                    {{ $state->name }}</option>
+                                    {{ $state->name }}
+                                </option>
                             @endforeach
+                            
+                            <select name="class" id="class" required >
+                                <option value="">Select Class</option>
+                                @foreach ($classes as $class)
+                                    <option value="{{ $class->id }}">{{ $class->name }}</option>
+                                @endforeach
+                            </select>
                         </select>
                         <input id="slectedState" type="text" hidden />
                     </div>
@@ -223,77 +226,6 @@
     $('#subc').select2();
     $('#cat').select2();
     $('#year').select2();
-
-    $("#stdsearh").select2({
-        ajax: { 
-        url: "{{route('getStdId')}}",
-        type: "get",
-        dataType: 'json',
-        data: function (params) {
-            return {
-            term: params.term // search term
-            };
-        },
-        processResults: function (response) {
-            return {
-                results: response
-            };
-        },
-        cache: true
-        }
-    });
-    $("#stdsearh").on("select2:select", function(e){
-        let id = e.params.data.id;
-
-        $.ajax({
-            type: "get",
-            url: "{{route('getAdmStd')}}",
-            data: {
-                id: id
-            },
-            dataType: "json",
-            success: function (res) {
-                console.log(res);
-                $("input[name=sts]").val(res.sts)
-                $("input[name=admDate]").val(res.doy)
-                $("#class").select2("val", `${res.class}`);
-                $("input[name=fname]").val(res.name)
-                $("input[name=father]").val(res.fname)
-                $("input[name=mname]").val(res.mname)
-                $("input[name=surname]").val(res.lname)
-                $("textarea#address").val(res.address)
-                $("#city").select2("val", `${res.city}`);
-                $("input[name=phone]").val(res.phone)
-                $("input[name=mobile]").val(res.mobile)
-                $("input[name=dob]").val(res.dobf)
-                $("input[name=birthPlace]").val(res.birth_place)
-                $("#states").select2("val", `${res.district.state.state}`);
-                dist(res.district.district)
-                $("#district").select2("val", `${res.district.district}`);
-                taluk(res.district.district)
-                $("#taluk").select2("val", `${res.sub_district}`);
-                $("#caste").select2("val", `${res.caste}`);
-                $("#religion").val(`${res.religion}`);
-                cat(res.caste)
-                $("#subc").select2("val", `${res.sub_caste}`);
-                $("#cat").select2("val", `${res.category}`);
-                if(res.gender == 1) {
-                    $("#male").prop("checked", true)
-                } else {
-                    $("#female").prop("checked", true)
-                }
-                if(res.handicap == 0) {
-                    $("#no").prop("checked", true)
-                } else {
-                    $("#yes").prop("checked", true)
-                }
-                
-                $("#year").select2("val", `${res.year}`);
-                $("input[name=prevSchool]").val(res.prev_school)
-                $("#id").val(res.id)
-            }  
-        });
-    }); 
 
     $('#caste').on("select2:select", function(e) {
         let data = e.params.data;
