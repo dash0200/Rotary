@@ -28,10 +28,15 @@
                  <x-input type="text" name="fname" placeholder="Father Name" readonly />
              </div>
            </div>
-            <div class="flex justify-between border-2 p-1">
+            <div class="flex justify-between space-x-2 border-2 p-1">
                 <div>
                     <x-label value="Receipt Date" />
                     <x-input type="date" value="{{ date('Y-m-d') }}" name="rdate" placeholder="Receipt Date" />
+                </div>
+                <div>
+                    <x-label value="Receipt No" />
+                    <x-input type="text" name="receipt_no" id="receipt_no" placeholder="Receipt No" />
+                    <span id="receiptError" class="text-red-600"></span>
                 </div>
                 <div>
                     <x-label value="Financial Year" />
@@ -44,6 +49,7 @@
                 <div>
                     <x-label value="Annual Fee" />
                     <x-input type="text" name="annualFee" placeholder="Annual Fee" readonly/>
+                    
                 </div>
                 <div>
                     <x-label value="Fees Paid" />
@@ -84,11 +90,14 @@
             </x-table>
 
             <div id="success">
-                <x-label value="Amount Paying" />
-                <x-input type="number" name="paying" placeholder="Amount Paying" class="onlyNum" />
+                <div>
+                    <x-label value="Amount Paying" />
+                    <x-input type="number" name="paying" placeholder="Amount Paying" class="onlyNum" />
+                    <span id="payingError" class="text-red-600"></span>
+                </div>
 
                 <input type="text" id="id" hidden placeholder="id"/>
-                <x-button-primary value="Submit" onclick="saveAmount()"/>
+                <span id="btn"></span>
             </div>
 
         </div>
@@ -97,12 +106,30 @@
 
 <script>
 
-    function saveAmount() {
-        
-        if($("input[name='paying']").val() == "" || $("input[name='paying']").val() == null || $("input[name='paying']").val() == undefined) return;
-        if($("input[name='annualFee']").val() == "" || $("input[name='annualFee']").val() == null || $("input[name='annualFee']").val() == undefined) return;
+    function saveAmount(student, year, standard) {
+
+        Swal.fire({
+            title: 'Are you sure?',
+            text: "You won't be able to revert this!",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Yes, save it!'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                if($("input[name='paying']").val() == "" || $("input[name='paying']").val() == null || $("input[name='paying']").val() == undefined) {
+            $("#payingError").text("Amount Paying Cannot be Empty");
+            return;
+        }
+
         if($("input[name='feesPaid']").val() == "" || $("input[name='feesPaid']").val() == null || $("input[name='feesPaid']").val() == undefined) return;
         if($("input[name='balanceFee']").val() == "" || $("input[name='balanceFee']").val() == null || $("input[name='balanceFee']").val() == undefined) return;
+
+        if($("#receipt_no").val() == "" || $("#receipt_no").val() == null || $("#receipt_no").val() == undefined){
+            $("#receiptError").text("Receipt Number required");
+            return;
+        }
 
         $.ajax({
             type: "post",
@@ -113,6 +140,10 @@
                 feesPaid:$("input[name='feesPaid']").val(),
                 balance:$("input[name='balanceFee']").val(),
                 paying:$("input[name='paying']").val(),
+                student: student,
+                year: year,
+                class: standard,
+                receipt_no: $("#receipt_no").val()
             },
             dataType: "json",
             success: function (res) {
@@ -125,27 +156,52 @@
                 }, 1500);
             }
         });
+            }
+        })
+        
+        
     }
 
-    function savePrevAmount(annualFee, feesPaid, balance, id) {
-        if( $("#paying"+id).val() == null ||  $("#paying"+id).val() == undefined ||  $("#paying"+id).val() == "") return;
-        $.ajax({
-            type: "post",
-            url: "{{route('fees.savePaidFees')}}",
-            data: {
-                id: id,
-                annualFee: annualFee,
-                feesPaid: feesPaid,
-                balance: balance,
-                paying: $("#paying"+id).val(),
-            },
-            dataType: "json",
-            success: function (res) {
-                $("#success"+id).append(
-                    `<span class="text-green-500">success</span>`
-                );
+    function savePrevAmount(annualFee, feesPaid, balance, id, year, student, standard) {
+        Swal.fire({
+            title: 'Are you sure?',
+            text: "You won't be able to revert this!",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Yes, save it!'
+        }).then((result) => {
+            if (result.isConfirmed){
+                        if( $("#paying"+id).val() == null ||  $("#paying"+id).val() == undefined ||  $("#paying"+id).val() == "") return;
+                if( $("#receipt"+id).val() == null ||  $("#receipt"+id).val() == undefined ||  $("#receipt"+id).val() == "") {
+                    $("#rerror"+id).text("Receipt number required");
+                    return;
+                }
+                $.ajax({
+                    type: "post",
+                    url: "{{route('fees.savePaidFees')}}",
+                    data: {
+                        id: id,
+                        annualFee: annualFee,
+                        feesPaid: feesPaid,
+                        balance: balance,
+                        paying: $("#paying"+id).val(),
+                        student: student,
+                        year: year,
+                        class: standard,
+                        receipt_no: $("#receipt"+id).val()
+                    },
+                    dataType: "json",
+                    success: function (res) {
+                        $("#success"+id).append(
+                            `<span class="text-green-500">success</span>`
+                        );
+                    }
+                });
             }
-        });
+        })
+        
     }
    
     $("#stdsearh").select2({
@@ -178,6 +234,7 @@
             },
             dataType: "json",
             success: function (res) {
+                console.log(res);
                 if(parseInt(res.doy) == new Date().getFullYear()) {
                     $("#admType").val("NEW")
                 } else {
@@ -192,6 +249,7 @@
                 $("input[name='annualFee']").val(res[1].total)
                 $("input[name='feesPaid']").val(res[1].paid)
                 $("input[name='balanceFee']").val(res[1].balance)
+                $("#btn").append(`<x-button-primary value="Submit" onclick="saveAmount('${res[0].id}', '${res[1].year}', '${res[1].standard}')"/>`)
 
                 $("tbody").html("");
                 for(let i=0; i < res[2].length; i++) {
@@ -211,7 +269,6 @@
                     `
                     );
                 }
-
 
                 $("#prev").html("");
                 for(let i=1; i < res.prev.length; i++){
@@ -261,10 +318,13 @@
                         </x-table>
                     </div>
                     <div class="pb-2">
+                        <x-label value="Receipt No" />
+                        <x-input class="w-1/2" type="text" placeholder="Receipt No" id="receipt${res.prev[i].id}"/>
+                        <span id="rerror${res.prev[i].id}" class="text-red-600"></span>
                         <x-label value="Amount Paying" />
                         <x-input type="number" placeholder="Amount Paying" id="paying${res.prev[i].id}" class="onlyNum" />
                         <div class="flex justify-center items-center">
-                            <x-button-primary value="Submit" onclick="savePrevAmount(${res.prev[i].total},${res.prev[i].paid},${res.prev[i].balance},'${res.prev[i].id}')"/>
+                            <x-button-primary value="Submit" onclick="savePrevAmount(${res.prev[i].total},${res.prev[i].paid},${res.prev[i].balance},'${res.prev[i].id}', '${res.prev[i].year}', '${res.prev[i].student}', '${res.prev[i].standard}' )"/>
                             <div id="success${res.prev[i].id}"></div>
                         </div>
                     </div>

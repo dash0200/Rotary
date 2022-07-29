@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\CreateClass;
+use App\Models\FeeReceiptModel;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 
@@ -24,16 +25,31 @@ class FeesDetailsController extends Controller
 
         $paying = $req->paying + $req->feesPaid;
         $balance = $req->annualFee - $paying;
-        
-        if(CreateClass::where("id", $req->id)->update([
-            "paid" =>$paying,
-            "balance" => $balance
-           ]) > 0) {
-            return response()->json(["msg" => "success"]);
+
+
+        $data = [
+            "student" => $req->student,
+            "year" => $req->year,
+            "class" => $req->class,
+            "amt_paid" => $req->paying,
+            "receipt_no" => $req->receipt_no
+        ];
+
+        $receipt = FeeReceiptModel::create($data);
+
+        if(isset($receipt->id)) {
+            if(CreateClass::where("id", $req->id)->update([
+                "paid" =>$paying,
+                "balance" => $balance
+               ]) > 0) {
+                return response()->json(["msg" => "success"]);
+            } else {
+                return response()->json(["msg" => "failed"]);
+            }
         } else {
             return response()->json(["msg" => "failed"]);
         }
-
+        
     }
 
     public function receiptCancellation() {
