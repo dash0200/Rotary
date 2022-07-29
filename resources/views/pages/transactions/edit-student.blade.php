@@ -1,6 +1,6 @@
 <x-main-card>
     <h1>
-      Get Student ID
+        Edit Student Info
     </h1>
     <div class="w-full bg-gray-200" style="height: 1px;"></div>
 

@@ -28,14 +28,24 @@ class Controller extends BaseController
 
         $standard = CreateClass::where("student", $req->id)->orderBy("id", "DESC")->first();
         $fees = FeesDetailsModel::select("fee_head","amount")->where(["year" => $standard->year, "class"=>$standard->standard])->get();
+
         foreach($fees as $fee) {
             $fee["name"] = $fee->feeHead->desc;
         }
+
         $standard["std"] = $standard->standardClass;
         $standard['yr'] = $standard->acaYear;
 
         $stds = CreateClass::where("student", $req->id)->orderBy("id", "DESC")->get();
+        
         foreach($stds as $std) {
+
+            $std['fees'] = FeesDetailsModel::select("fee_head","amount")->where(["year" => $std->year, "class"=>$std->standard])->get();
+
+            foreach( $std['fees'] as $fee) {
+                $fee["name"] = $fee->feeHead->desc;
+            }
+
             $std["std"] = $std->standardClass;
             $std["yr"] = $std->acaYear;
         }

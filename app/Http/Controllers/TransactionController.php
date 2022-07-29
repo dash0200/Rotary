@@ -82,23 +82,23 @@ class TransactionController extends Controller
             "sub_caste" => $req->subc,
             "category" => $req->cat,
             "class" => $req->class,
-            "sts" => $req->sts,
-            "name" => $req->fname,
-            "fname" => $req->father,
-            "mname" => $req->mname,
-            "lname" => $req->surname,
-            "address" => $req->address,
-            "city" => $req->city,
+            "sts" => strtolower($req->sts),
+            "name" => strtolower($req->fname),
+            "fname" => strtolower($req->father),
+            "mname" => strtolower($req->mname),
+            "lname" => strtolower($req->surname),
+            "address" => strtolower($req->address),
+            "city" => strtolower($req->city),
             "phone" => $req->phone,
             "mobile" => $req->mobile,
             "dob" => $req->dob,
-            "birth_place" => $req->birthPlace,
+            "birth_place" => strtolower($req->birthPlace),
             "sub_district" => $req->taluk,
-            "religion" => $req->religion,
+            "religion" => strtolower($req->religion),
             "nationality" => $req->nationaluty,
             "gender" => $req->gender,
             "handicap" => $req->handicap,
-            "prev_school" => $req->prevSchool,
+            "prev_school" => strtolower($req->prevSchool),
         ];
 
         if(isset($req->id)) {
@@ -107,7 +107,66 @@ class TransactionController extends Controller
             AdmissionModel::create($data);
         }
 
-        return redirect()->back()->with(["message" => "success"]);
+        return redirect()->route("trans.newAdmission");
+    }
+
+    public function editPage() {
+
+        return view("pages.transactions.edit-student")->with([
+            'classes' => ClassesModel::get(),
+            'years' => AcademicYearModel::get()
+        ]);
+    }
+
+    public function getByID(Request $req) {
+        $id = $req->id;
+
+        $std = AdmissionModel::where("id", $id)->first();
+        $std['dob1'] = $std["dob"]->format("d-m-Y");
+        return response()->json($std);
+    } 
+
+    public function getBysts(Request $req) {
+        $id = $req->id;
+
+        $std = AdmissionModel::where("sts", $id)->first();
+        $std['dob1'] = $std["dob"]->format("d-m-Y");
+        return response()->json($std);
+    } 
+
+    public function getByName(Request $req) {
+
+        $stds = AdmissionModel::where(["name"=> strtolower($req->name), "year"=>$req->year])->get();
+        foreach($stds as $std) {
+            $std['dob1'] = $std["dob"]->format("d-m-Y");
+        }
+        return response()->json($stds);
+    } 
+
+
+    public function editStudent( Request $req) {
+
+        $std = AdmissionModel::where("id", $req->id)->first();
+
+        $std['state'] = $std->district->state->state;
+        $std['dist'] = $std->district->district;
+
+        $std['doa'] = $std->date_of_adm->format("Y-m-d");
+        $std['dob1'] = $std->dob->format("Y-m-d");
+        $std['districts'] = DistrictModel::where("state", $std['state'])->get();
+        $std['sub_districts'] = SubdistrictModel::where("district", $std['dist'])->get();
+
+        $std["sub_castes"] = SubcastModel::where("caste", $std->caste)->get();
+
+        return view("pages.transactions.edit-admission")->with([
+            'classes' => ClassesModel::get(),
+            'categories'  => CategoriesModel::get(),
+            'states' => StatesModel::get(),
+            'districts' => DistrictModel::select('id', 'name')->get(),
+            'castes' => CasteModel::get(),
+            'years' => AcademicYearModel::get(),
+            "std" => $std
+        ]);
     }
 
     public function getStdforEdit(Request $req) {
@@ -209,6 +268,9 @@ class TransactionController extends Controller
     //*********************Get Student ID*************************************************************************************************************************************
     public function getStudentId()
     {
-        return view('pages.transactions.get-student-id');
+        return view('pages.transactions.get-student-id')->with([
+            'classes' => ClassesModel::get(),
+            'years' => AcademicYearModel::get()
+        ]);
     }
 }

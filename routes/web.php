@@ -65,6 +65,8 @@ Route::controller(TransactionController::class)->prefix('transaction')->name('tr
     Route::get('get-district', 'getDistrict')->name('getDistrict');
     Route::get('get-taluk', 'getTaluk')->name('getTaluk');
     Route::get('get-category', 'getCat')->name('getCat');
+
+
     Route::get('get-student-for-edit', 'getStdforEdit')->name('getStdforEdit');
     
     Route::get('creating-classes', 'creatingClasses')->name('creatingClasses');
@@ -75,7 +77,12 @@ Route::controller(TransactionController::class)->prefix('transaction')->name('tr
 
     Route::get('leaving-certificate', 'leavingCertificate')->name('leavingCertificate');
     Route::get('get-student-id', 'getStudentId')->name('getStudentId');
-    Route::get('save-student-adm', 'saveAdmission')->name('saveAdmission');
+    Route::post('save-student-adm', 'saveAdmission')->name('saveAdmission');
+    Route::get('edit-page', 'editPage')->name('editPage');
+    Route::get('get-by-id', 'getByID')->name('getByID');
+    Route::get('get-by-sts', 'getBysts')->name('getBysts');
+    Route::get('get-by-name', 'getByName')->name('getByName');
+    Route::post('edit-student', 'editStudent')->name('editStudent');
 });
 
 

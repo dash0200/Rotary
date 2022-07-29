@@ -1,25 +1,24 @@
 <x-main-card>
-    <div>
-       <a href="{{route('trans.editPage')}}">
-         <x-button-primary value="Edit Student Information" />
-       </a>
-    </div>
-    New Admission
+    Update Student Admission Information
     <div class="w-full bg-gray-200" style="height: 1px;"></div>
     <form action="{{ route('trans.saveAdmission') }}" method="post">
         @csrf
+        <input type="text" value="{{$std->id}}" name="id" hidden>
         <div class="flex flex-col">
             <div class="flex space-x-3 w-full justify-around">
                 <div class="flex flex-col">
                     <div class="m-2">
                         <x-label value="STS" />
-                        <x-input type="text" name="sts" placeholder="SST" />
+                        <x-input type="text" name="sts"
+                            value="{{ $std->sts }}"
+                         placeholder="SST" />
                     </div>
                     <div class="m-2">
                         <x-label value="Admission Date" />
                         <x-input type="date" name="admDate"
+                            value="{{ $std->doa }}"
                             class="{{ $errors->has('admDate') ? 'is-invalid' : '' }}" required
-                            value="{{ date('Y-m-d') }}" placeholder="Pick Date" />
+                            placeholder="Date of Admission" />
                     </div>
                     <div class="m-2">
                         <x-label value="Classes" />
@@ -27,7 +26,9 @@
                             class="{{ $errors->has('class') ? 'is-invalid' : '' }}">
                             <option value="">Select Class</option>
                             @foreach ($classes as $class)
-                                <option value="{{ $class->id }}">{{ $class->name }}</option>
+                                <option value="{{ $class->id }}" @if($std->class == $class->id) selected @endif>
+                                    {{ $class->name }}
+                                </option>
                             @endforeach
                         </select>
                     </div>
@@ -37,24 +38,31 @@
                     <div class="m-2">
                         <x-label value="Student Name" />
                         <x-input type="text" placeholder="First Name"
+                        value="{{ $std->name }}"
                             class="{{ $errors->has('fname') ? 'is-invalid' : '' }}" name="fname" required
                             class="alphaonly" />
                     </div>
                     <div class="m-2">
                         <x-label value="Father Name" />
-                        <x-input type="text" placeholder="Father Name" name="father" class="alphaonly" />
+                        <x-input type="text" placeholder="Father Name"
+                        value="{{ $std->fname }}"
+                         name="father" class="alphaonly" />
                     </div>
                     <div class="m-2">
                         <x-label value="Mother Name" />
-                        <x-input type="text" placeholder="Mother Name" name="mname" class="alphaonly" />
+                        <x-input type="text" placeholder="Mother Name"
+                        value="{{ $std->mname }}"  
+                        name="mname" class="alphaonly" />
                     </div>
                     <div class="m-2">
                         <x-label value="Sur Name" />
-                        <x-input type="text" placeholder="Sur Name" name="surname" class="alphaonly" />
+                        <x-input type="text" placeholder="Sur Name"
+                        value="{{ $std->lname }}"  
+                         name="surname" class="alphaonly" />
                     </div>
                     <div class="m-2">
                         <x-label value="Address" />
-                        <textarea class="resize rounded-md" id="address" name="address" required></textarea>
+                        <textarea class="resize rounded-md" id="address" name="address" required>@if(old('address') == null){{ $std->address }}@else{{old('address')}}@endif</textarea>
                     </div>
                 </div>
 
@@ -64,21 +72,28 @@
                         <select name="city" id="city" required>
                             <option value="">Select City</option>
                             @foreach ($districts as $district)
-                                <option value="{{ $district->id }}">{{ $district->name }}</option>
+                                <option value="{{ $district->id }}" @if($std->city == $district->id) selected @endif>
+                                    {{ $district->name }}</option>
                             @endforeach
                         </select>
                     </div>
                     <div class="m-2">
                         <x-label value="Phone Number" />
-                        <x-input type="text" placeholder="Phone" name="phone" class="numOnly" />
+                        <x-input type="text" placeholder="Phone"
+                        value="{{ $std->phone }}" 
+                        name="phone" class="numOnly" />
                     </div>
                     <div class="m-2">
                         <x-label value="Mobile Number" />
-                        <x-input type="text" placeholder="Mobile" name="mobile" class="numOnly" />
+                        <x-input type="text" placeholder="Mobile"
+                        value="{{ $std->mobile }}" 
+                        name="mobile" class="numOnly" />
                     </div>
                     <div class="m-2">
                         <x-label value="Date of Birth" />
-                        <x-input type="date" placeholder="DOB" name="dob" required 
+                        <x-input type="date"
+                        value="{{ $std->dob1 }}" 
+                        placeholder="DOB" name="dob" required
                             max="{{ date('Y-m-d') }}" />
                     </div>
                 </div>
@@ -88,14 +103,16 @@
                 <div class="flex flex-col">
                     <div class="m-2">
                         <x-label value="Birth Place" />
-                        <x-input type="text" placeholder="Birth Place" name="birthPlace" class="alphaonly" />
+                        <x-input type="text" placeholder="Birth Place"
+                        value="{{ $std->birth_place }}" 
+                        name="birthPlace" class="alphaonly" />
                     </div>
                     <div class="m-2">
                         <x-label value="State" />
                         <select name="states" id="states" class="w-full">
                             <option value="">Select State</option>
                             @foreach ($states as $state)
-                                <option value="{{$state->id}}">
+                                <option value="{{$state->id}}" @if($std->state == $state->id) selected @endif>
                                     {{ $state->name }}
                                 </option>
                             @endforeach
@@ -104,11 +121,22 @@
                     </div>
                     <div class="m-2">
                         <x-label value="District" />
-                        <select name="district" id="district" class="w-full"> </select>
+                        <select name="district" id="district" class="w-full">
+                            @foreach($districts as $district)
+                             <option value="{{$district->id}}" @if($std->dist == $district->id) selected @endif>
+                                {{$district->name}}
+                            </option>
+                            @endforeach
+                        </select>
                     </div>
                     <div class="m-2">
                         <x-label value="Taluk" />
-                        <select name="taluk" id="taluk" class="w-full"> </select>
+                        <select name="taluk" id="taluk" class="w-full">
+                            @foreach($std->sub_districts as $sub_district)
+                            <option value="{{$sub_district->id}}" @if($std->sub_district == $sub_district->id) selected @endif>
+                                {{$sub_district->name}} </option>
+                           @endforeach
+                        </select>
                     </div>
                 </div>
 
@@ -118,23 +146,34 @@
                         <select name="caste" id="caste" class="w-full" required>
                             <option value="">Select Caste</option>
                             @foreach ($castes as $caste)
-                                <option value="{{ $caste->id }}">{{ $caste->name }}</option>
+                                <option value="{{ $caste->id }}" @if($std->caste == $caste->id) selected @endif>
+                                    {{ $caste->name }}</option>
                             @endforeach
                         </select>
                     </div>
                     <div class="m-2 ">
                         <x-label value="Sub Caste" />
-                        <select name="subc" id="subc" class="w-full"></select>
+                        <select name="subc" id="subc" class="w-full">
+                            @foreach ($std->sub_castes as $sub_caste)
+                                <option value="{{ $sub_caste->id }}" @if($std->sub_caste == $sub_caste->id) selected @endif>
+                                    {{ $sub_caste->name }}</option>
+                            @endforeach
+                        </select>
                     </div>
                     <div class="m-2">
                         <x-label value="cat" />
                         <select name="cat" id="cat" class="w-full">
-                            <option value="">Select Cat</option>
+                            @foreach ($categories as $cat)
+                                <option value="{{ $cat->id }}" @if($std->category == $cat->id) selected @endif>
+                                    {{ $cat->name }}</option>
+                            @endforeach
                         </select>
                     </div>
                     <div class="m-2">
                         <x-label value="Religion" />
-                        <x-input type="text" name="religion" id="religion" />
+                        <x-input type="text"
+                        value="{{ $std->religion }}" 
+                        name="religion" id="religion" />
                     </div>
                     <div class="m-2">
                         <x-label value="nationaluty" />
@@ -151,7 +190,7 @@
                                 <div class="form-check">
                                     <input
                                         class="form-check-input appearance-none rounded-full h-4 w-4 border border-gray-300 bg-white checked:bg-blue-600 checked:border-blue-600 focus:outline-none transition duration-200 mt-1 align-top bg-no-repeat bg-center bg-contain float-left mr-2 cursor-pointer"
-                                        value="1" type="radio" checked name="gender" id="male">
+                                        value="1" type="radio" name="gender" id="male" @if($std->gender == 1) checked @endif>
                                     <label class="form-check-label inline-block text-gray-800" for="male">
                                         Male
                                     </label>
@@ -159,7 +198,7 @@
                                 <div class="form-check">
                                     <input
                                         class="form-check-input appearance-none rounded-full h-4 w-4 border border-gray-300 bg-white checked:bg-blue-600 checked:border-blue-600 focus:outline-none transition duration-200 mt-1 align-top bg-no-repeat bg-center bg-contain float-left mr-2 cursor-pointer"
-                                        value="0" type="radio" name="gender" id="female">
+                                        value="0" type="radio" name="gender" id="female" @if($std->gender == 0) checked @endif>
                                     <label class="form-check-label inline-block text-gray-800" for="female">
                                         Female
                                     </label>
@@ -175,7 +214,7 @@
                                 <div class="form-check">
                                     <input
                                         class="form-check-input appearance-none rounded-full h-4 w-4 border border-gray-300 bg-white checked:bg-blue-600 checked:border-blue-600 focus:outline-none transition duration-200 mt-1 align-top bg-no-repeat bg-center bg-contain float-left mr-2 cursor-pointer"
-                                        value="0" type="radio" checked name="handicap" id="no">
+                                        value="0" type="radio" checked name="handicap" id="no" @if($std->handicap == 0) checked @endif>
                                     <label class="form-check-label inline-block text-gray-800" for="no">
                                         No
                                     </label>
@@ -183,7 +222,7 @@
                                 <div class="form-check">
                                     <input
                                         class="form-check-input appearance-none rounded-full h-4 w-4 border border-gray-300 bg-white checked:bg-blue-600 checked:border-blue-600 focus:outline-none transition duration-200 mt-1 align-top bg-no-repeat bg-center bg-contain float-left mr-2 cursor-pointer"
-                                        value="1" type="radio" name="handicap" id="yes">
+                                        value="1" type="radio" name="handicap" id="yes" @if($std->handicap == 1) checked @endif>
                                     <label class="form-check-label inline-block text-gray-800" for="yes">
                                         Yes
                                     </label>
@@ -196,7 +235,8 @@
                             <select name="ac_year" id="year" class="w-full" required>
                                 <option value="">Academic Year</option>
                                 @foreach ($years as $year)
-                                    <option value="{{$year->id}}">{{ $year->year }}</option>
+                                    <option value="{{$year->id}}" @if($std->year == $year->id) selected @endif>
+                                        {{ $year->year }}</option>
                                 @endforeach
                             </select>
                         </div>
@@ -205,9 +245,9 @@
 
             </div>
             <x-label value="Previous School" />
-            <x-input type="text" name="prevSchool" />
-
-            <input type="text" name="id" id="id" hidden>
+            <x-input type="text"
+            value="{{ $std->prev_school }}" 
+            name="prevSchool" />
             <x-button-primary value="Save" />
         </div>
 
@@ -228,23 +268,18 @@
 
     $('#caste').on("select2:select", function(e) {
         let data = e.params.data;
-        cat(data.id)
+
     });
 
     $('#states').on("select2:select", function(e) {
         let data = e.params.data;
-        dist(data.id)
+
     });
 
     $('#district').on("select2:select", function(e) {
         let data = e.params.data;
-        taluk(data.id)
+  
     })
-
-    $(document).ready(function() {
-        dist(11)
-        taluk(1)
-    });
 
     function dist(id) {
         $.ajax({

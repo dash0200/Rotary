@@ -128,6 +128,7 @@
     }
 
     function savePrevAmount(annualFee, feesPaid, balance, id) {
+        if( $("#paying"+id).val() == null ||  $("#paying"+id).val() == undefined ||  $("#paying"+id).val() == "") return;
         $.ajax({
             type: "post",
             url: "{{route('fees.savePaidFees')}}",
@@ -241,6 +242,24 @@
                             <x-input type="text" value="${res.prev[i].balance}" readonly/>
                         </div>
                     </div>
+                    <div>
+                        <x-table>
+                            <x-thead>
+                                <x-th>
+                                    #
+                                </x-th>
+                                <x-th>
+                                    Description
+                                </x-th>
+                                <x-th>
+                                    Amount
+                                </x-th>
+                            </x-thead>
+                            <tbody id="feeBody${res.prev[i].id}">
+                               
+                            </tbody>
+                        </x-table>
+                    </div>
                     <div class="pb-2">
                         <x-label value="Amount Paying" />
                         <x-input type="number" placeholder="Amount Paying" id="paying${res.prev[i].id}" class="onlyNum" />
@@ -252,7 +271,33 @@
                     </div>
                         `
                     )   
-                }           
+                }       
+                
+                for(let i=1; i < res.prev.length; i++){
+                    
+                    if(parseInt(res.prev[i].balance) == 0) {
+                        continue;
+                    }
+
+                    for(let j=0; j < res.prev[i].fees.length; j++) {
+                        $(`#feeBody${res.prev[i].id}`).append(
+                            `
+                        <x-body-tr>
+                            <x-td class="py-0 cursor-pointer">
+                                ${j+1}
+                            </x-td>
+                            <x-td class="py-0 cursor-pointer">
+                                ${res.prev[i].fees[j].name}
+                            </x-td>
+                            <x-td class="py-0 cursor-pointer">
+                                ${res.prev[i].fees[j].amount}
+                            </x-td>
+                        </x-body-tr>
+                            `
+                        )
+                    }
+
+                }
             }
         });
     })
