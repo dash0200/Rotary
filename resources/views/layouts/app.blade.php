@@ -21,7 +21,7 @@
 
     <title>{{ config('app.name', 'Laravel') }}</title>
     <link href="{{ asset('css/select2.css') }}" rel="stylesheet" />
-
+    <link rel="icon" href="{{asset('logo.png')}}">
     <!-- Fonts -->
     {{-- <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700&display=swap"> --}}
     {{-- <link rel="stylesheet" href="{{asset('css/ubuntu.css')}}"> --}}
@@ -39,7 +39,8 @@
 <body>
     <x-jet-banner />
 
-    <div class="min-h-screen bg-gray-100">
+    <div class="min-h-screen bg-gray-100 ">
+       
         @livewire('navigation-menu')
 
         <!-- Page Heading -->
@@ -56,6 +57,7 @@
             {{ $slot }}
         </main>
     </div>
+
 
     @stack('modals')
 
