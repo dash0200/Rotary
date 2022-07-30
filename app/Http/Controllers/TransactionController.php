@@ -217,6 +217,7 @@ class TransactionController extends Controller
         foreach ($createClass as $cr) {
             foreach ($newAdmission as $new) {
                 $new->acaYear;
+                
                 if ($cr->student == $new->id) {
                     $new['id'] = null;
                 }
@@ -225,6 +226,7 @@ class TransactionController extends Controller
 
         foreach($newAdmission as $new) {
             $new['aca_year'] = $new->acaYear;
+            $new['standard'] = $new->classes;
         }
 
         return response()->json([

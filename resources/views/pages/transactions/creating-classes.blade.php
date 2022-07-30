@@ -31,7 +31,11 @@
                         </div>
                         <div class="m-2">
                             <x-label value="Total Amount" />
-                            <input type="text" disabled id="amt">
+                            <div class="flex flex-col justify-center">
+                                <x-input type="text" disabled id="amt" />
+                                <div id="amtError" class="text-red-500"></div>
+                                <div id="amtError2" class="text-red-500"></div>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -121,6 +125,9 @@
                         Current Class
                     </x-th>
                     <x-th>
+                        Took Admission for
+                    </x-th>
+                    <x-th>
                         Academic Year
                     </x-th>
                     <x-th>
@@ -193,8 +200,8 @@
     });
 
     function getStudents() {
-        let year = $('#year').val();
-        let clas = $('#class').val();
+        var year = $('#year').val();
+        var clas = $('#class').val();
         if (year == "" || year == null || clas == '' || clas == null) return;
 
         $.ajax({
@@ -223,6 +230,7 @@
                             </div>`);
            },
             success: function(res) {
+                console.log(res);
                 $("#pageLoad").html("");
                 let added = res.addedStd;
                 $("#amt").val(res.totalAmt.toFixed(2))
@@ -248,6 +256,9 @@
                         </x-td>
                         <x-td>
                             new
+                        </x-td>
+                        <x-td>
+                            ${news[i].classes.name}
                         </x-td>
                         <x-td>
                             ${news[i].aca_year.year}
@@ -326,6 +337,8 @@
                      removeAdmit(`#trPre_${added[i].get_student.id}`)
                 }
             }, error: function(){
+                $("#amtError").text("You have not added fees details for the selected academic year & class");
+                $("#amtError2").text("You need to add them before creating class");
                 $("#amt").val("")
                 $("#pageLoad").html("");
             },

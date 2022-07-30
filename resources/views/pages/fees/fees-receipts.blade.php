@@ -64,8 +64,8 @@
 
             <div class="mt-10">
             <h2 class="mb-5">Preveious Balances</h2>
-                <div class="flex flex-col" id="prev">
-                    
+                <div class="flex flex-wrap justify-evenly" id="prev">
+
                 </div>
             </div>
         </div>

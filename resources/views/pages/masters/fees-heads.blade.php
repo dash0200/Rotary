@@ -204,8 +204,9 @@
                     `
                         )
                         
+                        
+                        var row = isNaN(parseInt($("tbody tr:last td:first").text())) ? 0 : parseInt($("tbody tr:last td:first").text());
 
-                        let row = parseInt($("tbody tr:last td:first").text());
                         $('tbody').append(`<tr class="bg-white border-b transition duration-300 ease-in-out hover:bg-gray-100">
                             <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">${row+1}</td>
                             <td class="text-sm text-gray-900 font-light px-6 py-4 whitespace-nowrap">

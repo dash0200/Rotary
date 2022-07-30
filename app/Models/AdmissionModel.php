@@ -44,4 +44,8 @@ class AdmissionModel extends Model
     public function district() {
         return $this->hasOne(SubdistrictModel::class, 'id', 'sub_district');
     }
+
+    public function classes() {
+        return $this->hasOne(ClassesModel::class, 'id', 'class');
+    }
 }
