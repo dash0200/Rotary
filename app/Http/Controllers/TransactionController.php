@@ -270,12 +270,14 @@ class TransactionController extends Controller
 
         $standard = CreateClass::where("student", $req->id)->orderBy("id", "DESC")->first();
 
+        $qualify = ClassesModel::where('id', $standard->standard + 1)->first();
+
         $standard["std"] = $standard->standardClass;
         $standard['yr'] = $standard->acaYear;
 
 
 
-        return response()->json([$student, $standard]);
+        return response()->json([$student, $standard, $qualify]);
     }
 
     public function leavingCertificate()

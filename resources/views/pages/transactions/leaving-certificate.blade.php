@@ -1,5 +1,11 @@
 <x-main-card>
     <div>
+        <x-label value="Register Number" />
+        <select name="student" id="stdsearh" class="w-full">
+            <option value="">Start Typing [ STS - Register_No, Name Father_Name Last_Name, (date_of_admission) ]</option>
+        </select>
+    </div>
+    <div>
         <x-table>
             <x-thead>
                 <x-th>
@@ -50,16 +56,10 @@
     Leaving Certificate
     <div class="w-full bg-gray-200" style="height: 1px;"></div>
     <div class="flex flex-col space-y-4">
-        <div class="flex space-x-2 mt-5 items-center justify-between">
-            <div>
-                <x-label value="Register Number" />
-                <select name="student" id="stdsearh" class="w-full">
-                    <option value="">Start Typing [ STS - Register_No, Name Father_Name Last_Name, (date_of_admission) ]</option>
-                </select>
-            </div>
+        <div class="flex space-x-2 mt-5 items-center justify-around">
             <div>
                 <x-label value="Studied Till Class" />
-                <select name="class" id="class" >
+                <select name="class" id="class" required>
                     <option value="">Select Class</option>
                     @foreach ($classes as $class)
                         <option value="{{ $class->id }}">{{ $class->name }}</option>
@@ -68,7 +68,7 @@
             </div>
             <div>
                 <x-label value="Till Academic Year" />
-                <select name="year" id="year">
+                <select name="year" id="year" required>
                     <option value="">Select Year</option>
                     @foreach ($years as $year)
                         <option value="{{ $year->id }}">{{ $year->year }}</option>
@@ -84,7 +84,7 @@
             </div>
             <div class="w-full">
                 <x-label value="WHETHER QUALIFIED FOR PROMOTION" />
-                <x-input name="wasStd" placeholder="WHETHER QUALIFIED FOR PROMOTION" />
+                <x-input name="qualif" placeholder="WHETHER QUALIFIED FOR PROMOTION" />
             </div>
         </div>
         
@@ -260,6 +260,11 @@
                     <x-button-primary class="w-1/4" value="SUBMIT" onclick="submitLC(${res[0].id})" />
                     `
                 )
+
+                $("#class").select2("val", `${res[1].std.id}`)
+
+                $("input[name='wasStd']").val(`WAS STUDYING IN ${res[1].std.name} CLASS`)
+                $("input[name='qualif']").val(`YES QUALIFIED FOR  ${res[2].name} CLASS`)
             }
         });
     })
