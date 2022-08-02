@@ -25,6 +25,7 @@ class Controller extends BaseController
         
         $student = AdmissionModel::where('id', $req->id)->first();
         $student['doy'] = $student->date_of_adm->format("Y");
+        $student['dob1'] = $student->dob->format("d-m-Y");
 
         $standard = CreateClass::where("student", $req->id)->orderBy("id", "DESC")->first();
         $fees = FeesDetailsModel::select("fee_head","amount")->where(["year" => $standard->year, "class"=>$standard->standard])->get();

@@ -21,6 +21,7 @@
 
     <title>{{ config('app.name', 'Laravel') }}</title>
     <link href="{{ asset('css/select2.css') }}" rel="stylesheet" />
+
     <link rel="icon" href="{{asset('logo.png')}}">
     <!-- Fonts -->
     {{-- <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700&display=swap"> --}}

@@ -261,10 +261,31 @@ class TransactionController extends Controller
 
 
     //*********************Leaving Certificate***************************************************************************************************************************************************************************
+
+    public function getStuddent(Request $req) {
+        
+        $student = AdmissionModel::where('id', $req->id)->first();
+        $student['doy'] = $student->date_of_adm->format("Y");
+        $student['dob1'] = $student->dob->format("d-m-Y");
+
+        $standard = CreateClass::where("student", $req->id)->orderBy("id", "DESC")->first();
+
+        $standard["std"] = $standard->standardClass;
+        $standard['yr'] = $standard->acaYear;
+
+
+
+        return response()->json([$student, $standard]);
+    }
+
     public function leavingCertificate()
     {
-        return view('pages.transactions.leaving-certificate');
+        return view('pages.transactions.leaving-certificate')->with([
+            'years' => AcademicYearModel::get(),
+            'classes' => ClassesModel::get()
+        ]);
     }
+
     //*********************Leaving Certificate*******************
 
     //*********************Get Student ID*************************************************************************************************************************************

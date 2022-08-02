@@ -76,6 +76,9 @@ Route::controller(TransactionController::class)->prefix('transaction')->name('tr
 
 
     Route::get('leaving-certificate', 'leavingCertificate')->name('leavingCertificate');
+    Route::get('get-studdent', 'getStuddent')->name('getStuddent');
+
+
     Route::get('get-student-id', 'getStudentId')->name('getStudentId');
     Route::post('save-student-adm', 'saveAdmission')->name('saveAdmission');
     Route::get('edit-page', 'editPage')->name('editPage');
