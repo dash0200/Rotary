@@ -1,5 +1,10 @@
 <x-main-card>
     <div>
+        <a href="{{route('trans.searchLC')}}">
+            <x-button-primary value="GENERATE LC" />
+        </a>
+    </div>
+    <div>
         <x-label value="Register Number" />
         <select name="student" id="stdsearh" class="w-full">
             <option value="">Start Typing [ STS - Register_No, Name Father_Name Last_Name, (date_of_admission) ]</option>
@@ -65,6 +70,7 @@
                         <option value="{{ $class->id }}">{{ $class->name }}</option>
                     @endforeach
                 </select>
+                <span id="tillClassError" class="text-red-500"></span>
             </div>
             <div>
                 <x-label value="Till Academic Year" />
@@ -74,6 +80,7 @@
                         <option value="{{ $year->id }}">{{ $year->year }}</option>
                     @endforeach
                 </select>
+                <span id="tillYearError" class="text-red-500"></span>
             </div>
         </div>
 
@@ -92,18 +99,19 @@
             <div class="w-full">
                 <x-label value="LAST ATTENDANCE" />
                 <x-input type="date" name="la" />
+                <span id="laError" class="text-red-500"></span>
             </div>
             <div class="w-full">
                 <x-label value="DATE OF APPLICATION" />
-                <x-input type="date" name="dop" />
+                <x-input type="date" name="dop" value="{{date('Y-m-d')}}" />
             </div>
             <div class="w-full">
                 <x-label value="DATE OF ISSUING L.C" />
-                <x-input type="date" name="doi" />
+                <x-input type="date" name="doi" value="{{date('Y-m-d')}}" />
             </div>
             <div class="w-full">
                 <x-label value="REASONING for Leaving the School" />
-                <x-input type="text" name="reason" />
+                <x-input type="text" name="reason" value="PARENTS REQUEST" />
             </div>
         </div>
 
@@ -130,7 +138,7 @@
 
             <div>
                 <x-label value="CURRENT YEAR" />
-                <x-input type="text" name="cy" />
+                <x-input type="text" name="cy" value="{{date('Y')}}" />
             </div>
         </div>
 
@@ -170,7 +178,60 @@
     $("#year").select2()
 
     function submitLC(id) {
+
+        if($("#class").val() == null || $("#class").val() == "" || $("#class").val() == undefined) {
+            $("#tillClassError").text("Select Class")
+            return 
+        } else {
+            $("#tillClassError").text("");
+        }
+
+        if($("#year").val() == null || $("#year").val() == "" || $("#year").val() == undefined) {
+            $("#tillYearError").text("Select Year")
+            return 
+        } else {
+            $("#tillYearError").text("");
+        }
+
+        if($("input[name='la']").val() == null || $("input[name='la']").val() == "" || $("input[name='la']").val() == undefined) {
+            $("#laError").text("Enter Last Attendance")
+            return 
+        } else {
+            $("#laError").text("");
+        }
         
+        $.ajax({
+            type: "post",
+            url: "{{route('trans.saveLc')}}",
+            data: {
+                id:id,
+                stdTill: $("#class").val(),
+                tillYear: $("#year").val(),
+                wasStd: $("input[name='wasStd']").val(),
+                qualified: $("input[name='qualif']").val(),
+                la: $("input[name='la']").val(),
+                doa: $("input[name='doa']").val(),
+                doi: $("input[name='doi']").val(),
+                reason: $("input[name='reason']").val(),
+            },
+            dataType: "json",
+            beforeSend: function(){
+                $("#save").html('')
+                $("#save").append(
+                    `
+                    <x-loading-button />
+                    `
+                );
+            },
+            success: function (res) {
+                $("#save").html('')
+                $("#save").append(
+                    `
+                    <x-button-primary class="w-1/4" value="SUBMIT" id="svBtn" onclick="submitLC('${id}', )" />
+                    `
+                );
+            }
+        });
     }
     
     $("#stdsearh").select2({
@@ -257,14 +318,21 @@
 
                 $("#save").append(
                     `
-                    <x-button-primary class="w-1/4" value="SUBMIT" onclick="submitLC(${res[0].id})" />
+                    <x-button-primary class="w-1/4" value="SUBMIT" id="svBtn" onclick="submitLC('${res[0].id}', )" />
                     `
                 )
 
-                $("#class").select2("val", `${res[1].std.id}`)
-
                 $("input[name='wasStd']").val(`WAS STUDYING IN ${res[1].std.name} CLASS`)
                 $("input[name='qualif']").val(`YES QUALIFIED FOR  ${res[2].name} CLASS`)
+                $("input[name='atc']").val(`${res[0].classes.name}`)
+                $("input[name='ay']").val(`${res[0].aca_year.year}`)
+                $("input[name='doa']").val(`${res[0].doy}`)
+                $("input[name='stdin']").val(`${res[1].std.name}`)
+
+                $("#name").val(`${res[0].name}`)
+                $("#fname").val(`${res[0].fname}`)
+                $("#mname").val(`${res[0].mname}`)
+                $("#sur").val(`${res[0].lname}`)
             }
         });
     })

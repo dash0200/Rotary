@@ -66,16 +66,16 @@ Route::controller(TransactionController::class)->prefix('transaction')->name('tr
     Route::get('get-taluk', 'getTaluk')->name('getTaluk');
     Route::get('get-category', 'getCat')->name('getCat');
 
-
     Route::get('get-student-for-edit', 'getStdforEdit')->name('getStdforEdit');
     
     Route::get('creating-classes', 'creatingClasses')->name('creatingClasses');
     Route::get('get-curyear', 'getCurrentClass')->name('getCurrentClass');
     Route::post('get-creat-class', 'createClass')->name('createClass');
-    
-
 
     Route::get('leaving-certificate', 'leavingCertificate')->name('leavingCertificate');
+    Route::post('save-lc', 'saveLc')->name('saveLc');
+    Route::get('search-lc', 'searchLC')->name('searchLC');
+    Route::get('print-lc', 'printLC')->name('printLC');
     Route::get('get-studdent', 'getStuddent')->name('getStuddent');
 
 

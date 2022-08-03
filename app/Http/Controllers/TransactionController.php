@@ -10,13 +10,13 @@ use App\Models\ClassesModel;
 use App\Models\CreateClass;
 use App\Models\DistrictModel;
 use App\Models\FeesDetailsModel;
+use App\Models\LCModel;
 use App\Models\StatesModel;
 use App\Models\SubcastModel;
 use App\Models\SubdistrictModel;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
-use Illuminate\Support\Arr;
-use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Log;
+use PDF;
 
 class TransactionController extends Controller
 {
@@ -265,7 +265,9 @@ class TransactionController extends Controller
     public function getStuddent(Request $req) {
         
         $student = AdmissionModel::where('id', $req->id)->first();
-        $student['doy'] = $student->date_of_adm->format("Y");
+        $student['c'] = $student->classes;
+        $student['year'] = $student->acaYear;
+        $student['doy'] = $student->date_of_adm->format("d-m-Y");
         $student['dob1'] = $student->dob->format("d-m-Y");
 
         $standard = CreateClass::where("student", $req->id)->orderBy("id", "DESC")->first();
@@ -286,6 +288,45 @@ class TransactionController extends Controller
             'years' => AcademicYearModel::get(),
             'classes' => ClassesModel::get()
         ]);
+    }
+
+    public function saveLc(Request $req) {
+        
+        $data = [
+            "student" => $req->id,
+            "studied_till" => $req->stdTill,
+            "till_aca_year" => $req->tillYear,
+            "was_studying" => $req->wasStd,
+            "whether_qualified" => $req->qualified,
+            "lt" => $req->la,
+            "doa" => Carbon::parse($req->doa)->format("Y-m-d"),
+            "doil" => $req->doi,
+            "reason" => $req->reason,
+        ];
+
+        if( LCModel::where("student", $req->id)->first() == null ) {
+            LCModel::create($data);
+        } else {
+            LCModel::where("student", $req->id)->update($data);
+        }
+
+        return response()->json(["msg" => "success"]);
+        
+    }
+
+    public function searchLC() {
+        return view("pages.transactions.search-lc")->with([
+            'classes' => ClassesModel::get(),
+            'years' => AcademicYearModel::get()
+        ]);
+    }
+
+    public function printLC(Request $req) {
+
+        $lc = LCModel::where("student", $req->id)->first();
+
+        $pdf = PDF::loadView('pdfs.LC');
+        return $pdf->stream($lc->student.'.pdf');
     }
 
     //*********************Leaving Certificate*******************
