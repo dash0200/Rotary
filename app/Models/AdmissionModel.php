@@ -13,6 +13,7 @@ class AdmissionModel extends Model
     protected $dates = ['deleted_at','date_of_adm', 'dob'];
     protected $table = 'admission';
     protected $fillable = [
+        'id',
         "date_of_adm",
         "year",
         "caste",
@@ -48,4 +49,17 @@ class AdmissionModel extends Model
     public function classes() {
         return $this->hasOne(ClassesModel::class, 'id', 'class');
     }
+
+    public function stdCast() {
+        return $this->hasOne(CasteModel::class, 'id', 'caste');
+    }
+
+    public function subCaste() {
+        return $this->hasOne(SubcastModel::class, 'id', 'sub_caste');
+    }
+
+    public function subDistrict() {
+        return $this->hasOne(SubdistrictModel::class, 'id', 'sub_district');
+    }
+
 }

@@ -35,6 +35,7 @@
                                 <x-input type="text" disabled id="amt" />
                                 <div id="amtError" class="text-red-500"></div>
                                 <div id="amtError2" class="text-red-500"></div>
+                                <div id="amtLink" class="text-blue-500"></div>
                             </div>
                         </div>
                     </div>
@@ -44,7 +45,7 @@
 
                     <x-thead>
                         <x-th>
-                            #
+                            Register Number
                         </x-th>
                         <x-th>
                             Student Name
@@ -75,7 +76,7 @@
                     <h2 class="flex justify-center border-t text-blue-400">Already Added Students</h2>
                     <x-thead>
                         <x-th>
-                            #
+                            Register Number
                         </x-th>
                         <x-th>
                             Student Name
@@ -113,7 +114,7 @@
 
                 <x-thead>
                     <x-th>
-                        #
+                        Register Number
                     </x-th>
                     <x-th>
                         Student Name
@@ -158,7 +159,7 @@
 
                 <x-thead>
                     <x-th>
-                        #
+                        Register Number
                     </x-th>
                     <x-th>
                         Student Name
@@ -336,9 +337,18 @@
                     )
                      removeAdmit(`#trPre_${added[i].get_student.id}`)
                 }
+
+                $("#amtError").text("");
+                $("#amtError2").text("");
+                $("#amtLink").html("")
             }, error: function(){
                 $("#amtError").text("You have not added fees details for the selected academic year & class");
                 $("#amtError2").text("You need to add them before creating class");
+                $("#amtLink").append(
+                    `
+                    <a href="{{route('master.feesDetails')}}"><x-button-success value="Add Fees Details" /></a>
+                    `
+                );
                 $("#amt").val("")
                 $("#pageLoad").html("");
             },
@@ -359,8 +369,6 @@
             <path stroke-linecap="round" stroke-linejoin="round" d="M19 14l-7 7m0 0l-7-7m7 7V3" />
             </svg>
         </button>`)
-
-
     }
 
     function movePrevRow(id) {
@@ -376,8 +384,6 @@
             <path stroke-linecap="round" stroke-linejoin="round" d="M19 14l-7 7m0 0l-7-7m7 7V3" />
             </svg>
         </button>`)
-
-
     }
 
     function movePrevBack(id) {

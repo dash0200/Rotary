@@ -21,16 +21,52 @@ class Controller extends BaseController
 {
     use AuthorizesRequests, DispatchesJobs, ValidatesRequests;
 
-    public function getStuddent(Request $req) {
-        
+    function getWord(float $number)
+    {
+        $decimal = round($number - ($no = floor($number)), 2) * 100;
+        $hundred = null;
+        $digits_length = strlen($no);
+        $i = 0;
+        $str = array();
+        $words = array(
+            0 => '', 1 => 'one', 2 => 'two',
+            3 => 'three', 4 => 'four', 5 => 'five', 6 => 'six',
+            7 => 'seven', 8 => 'eight', 9 => 'nine',
+            10 => 'ten', 11 => 'eleven', 12 => 'twelve',
+            13 => 'thirteen', 14 => 'fourteen', 15 => 'fifteen',
+            16 => 'sixteen', 17 => 'seventeen', 18 => 'eighteen',
+            19 => 'nineteen', 20 => 'twenty', 30 => 'thirty',
+            40 => 'forty', 50 => 'fifty', 60 => 'sixty',
+            70 => 'seventy', 80 => 'eighty', 90 => 'ninety'
+        );
+        $digits = array('', 'hundred', 'thousand', 'lakh', 'crore');
+        while ($i < $digits_length) {
+            $divider = ($i == 2) ? 10 : 100;
+            $number = floor($no % $divider);
+            $no = floor($no / $divider);
+            $i += $divider == 10 ? 1 : 2;
+            if ($number) {
+                $plural = (($counter = count($str)) && $number > 9) ? 's' : null;
+                $hundred = ($counter == 1 && $str[0]) ? ' and ' : null;
+                $str[] = ($number < 21) ? $words[$number] . ' ' . $digits[$counter] . $plural . ' ' . $hundred : $words[floor($number / 10) * 10] . ' ' . $words[$number % 10] . ' ' . $digits[$counter] . $plural . ' ' . $hundred;
+            } else $str[] = null;
+        }
+        $Rupees = implode('', array_reverse($str));
+        $paise = ($decimal > 0) ? "." . ($words[$decimal / 10] . " " . $words[$decimal % 10]) . ' Paise' : '';
+        return ($Rupees ? $Rupees : '') . $paise;
+    }
+
+    public function getStuddent(Request $req)
+    {
+
         $student = AdmissionModel::where('id', $req->id)->first();
         $student['doy'] = $student->date_of_adm->format("Y");
         $student['dob1'] = $student->dob->format("d-m-Y");
 
         $standard = CreateClass::where("student", $req->id)->orderBy("id", "DESC")->first();
-        $fees = FeesDetailsModel::select("fee_head","amount")->where(["year" => $standard->year, "class"=>$standard->standard])->get();
+        $fees = FeesDetailsModel::select("fee_head", "amount")->where(["year" => $standard->year, "class" => $standard->standard])->get();
 
-        foreach($fees as $fee) {
+        foreach ($fees as $fee) {
             $fee["name"] = $fee->feeHead->desc;
         }
 
@@ -38,12 +74,12 @@ class Controller extends BaseController
         $standard['yr'] = $standard->acaYear;
 
         $stds = CreateClass::where("student", $req->id)->orderBy("id", "DESC")->get();
-        
-        foreach($stds as $std) {
 
-            $std['fees'] = FeesDetailsModel::select("fee_head","amount")->where(["year" => $std->year, "class"=>$std->standard])->get();
+        foreach ($stds as $std) {
 
-            foreach( $std['fees'] as $fee) {
+            $std['fees'] = FeesDetailsModel::select("fee_head", "amount")->where(["year" => $std->year, "class" => $std->standard])->get();
+
+            foreach ($std['fees'] as $fee) {
                 $fee["name"] = $fee->feeHead->desc;
             }
 
@@ -54,31 +90,35 @@ class Controller extends BaseController
         return response()->json([$student, $standard, $fees, "prev" => $stds]);
     }
 
-    public function getStdId(Request $req) {
-        if(!isset($req->term)) {
+    public function getStdId(Request $req)
+    {
+        if (!isset($req->term)) {
             return response()->json();
         }
         $q = $req->term;
 
-        $students = AdmissionModel::select('id','date_of_adm','sts','name', 'fname','mname','lname')->where("name", "LIKE", "%".$q."%")
-        ->orWhere("id", "LIKE", "%".$q."%")
-        ->orWhere("date_of_adm", "LIKE", "%".$q."%")
-        ->orWhere("sts", "LIKE", "%".$q."%")
-        ->orWhere("fname", "LIKE", "%".$q."%")
-        ->orWhere("mname", "LIKE", "%".$q."%")
-        ->orWhere("lname", "LIKE", "%".$q."%")
-        ->limit(10)->get();
+        $students = AdmissionModel::select('id', 'date_of_adm', 'sts', 'name', 'fname', 'mname', 'lname')->where("name", "LIKE", "%" . $q . "%")
+            ->orWhere("id", "LIKE", "%" . $q . "%")
+            ->orWhere("date_of_adm", "LIKE", "%" . $q . "%")
+            ->orWhere("sts", "LIKE", "%" . $q . "%")
+            ->orWhere("fname", "LIKE", "%" . $q . "%")
+            ->orWhere("mname", "LIKE", "%" . $q . "%")
+            ->orWhere("lname", "LIKE", "%" . $q . "%")
+            ->limit(10)->get();
 
         $student = array();
 
-        foreach($students as $std) {
-            $student[] = array('id' => $std->id,
-            'text' => $std->id."-".$std->sts.", ".$std->name." ".$std->fname." ".$std->lname.", (".$std->date_of_adm->format("d-m-Y").")");
+        foreach ($students as $std) {
+            $student[] = array(
+                'id' => $std->id,
+                'text' => $std->id . "-" . $std->sts . ", " . $std->name . " " . $std->fname . " " . $std->lname . ", (" . $std->date_of_adm->format("d-m-Y") . ")"
+            );
         }
         return response()->json($student);
     }
 
-    public function getAdmStd(Request $req) {
+    public function getAdmStd(Request $req)
+    {
         $student = AdmissionModel::where("id", $req->id)->first();
         $student["doy"] = $student->date_of_adm->format("Y-m-d");
         $student["dobf"] = $student->dob->format("Y-m-d");
@@ -182,7 +222,7 @@ class Controller extends BaseController
 
     public function subDist()
     {
-             
+
         $subDist = [
             "district_1" => [
                 "Jamkhandi",
@@ -202,7 +242,7 @@ class Controller extends BaseController
                 "Sandur",
                 "Kudligi",
             ],
-    
+
             "district_3" => [
                 "Athani",
                 "Bailhongal",
@@ -220,14 +260,14 @@ class Controller extends BaseController
                 "Mudalagi",
                 "Yaragatii",
             ],
-    
+
             "district_4" => [
                 "Dod Ballapur",
                 "Hosakote ",
                 "Nelamangala ",
                 "Devanahalli ",
             ],
-    
+
             "district_6" => [
                 "Aurad",
                 "Basavakalyan",
@@ -235,14 +275,14 @@ class Controller extends BaseController
                 "Bidar",
                 "Humnabad",
             ],
-    
+
             "district_7" => [
                 "Kollegal",
                 "Chamarajanagar",
                 "Gundlupet",
                 "Yelandur",
             ],
-    
+
             "district_19" => [
                 "Kolar",
                 "Bangarpet",
@@ -340,7 +380,7 @@ class Controller extends BaseController
                 "Bagepalli",
                 "Gudibanda",
             ],
-    
+
             "district_30" => [
                 "Shorapur",
                 "Shahpur",
@@ -462,38 +502,36 @@ class Controller extends BaseController
             ],
         ];
 
-        foreach($subDist as $sub) {
+        foreach ($subDist as $sub) {
 
-            for($j=0; $j<count(array_keys($subDist)); $j++) {
+            for ($j = 0; $j < count(array_keys($subDist)); $j++) {
                 $key = array_keys($subDist)[$j];
                 // dd($key);
 
                 for ($i = 0; $i < count($subDist[$key]); $i++) {
                     $id = explode("_", $key)[1];
                     $s = SubdistrictModel::where('name', $subDist[$key][$i])->first();
-    
+
                     if ($s == null) {
                         SubdistrictModel::create(['name' => $subDist[$key][$i], 'district' => $id]);
                     }
                 }
             }
-
-            
-
         }
 
         return redirect()->back();
     }
 
-    public function acaYear() {
-        
+    public function acaYear()
+    {
+
         $from = 1950;
         $to = 1951;
 
-        for($i=0; $i<200; $i++) {
-            $tt = str_split($to+$i);
+        for ($i = 0; $i < 200; $i++) {
+            $tt = str_split($to + $i);
 
-            $aca_year = $from+$i."-".$tt[2].$tt[3];
+            $aca_year = $from + $i . "-" . $tt[2] . $tt[3];
             $s = AcademicYearModel::where('year', $aca_year)->first();
             if ($s == null) {
                 AcademicYearModel::create(['year' => $aca_year]);
@@ -502,10 +540,11 @@ class Controller extends BaseController
         return redirect()->back();
     }
 
-    public function classes() {
+    public function classes()
+    {
 
-        for($i=0; $i<=12; $i++) {
-            switch($i) {
+        for ($i = 0; $i <= 12; $i++) {
+            switch ($i) {
                 case 0:
                     $std = "NURSERY";
                     break;
@@ -546,7 +585,7 @@ class Controller extends BaseController
                     $std = "10TH";
                     break;
             }
-            
+
             ClassesModel::create(["name" => $std]);
         }
         return redirect()->back();

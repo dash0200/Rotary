@@ -121,7 +121,7 @@ class TransactionController extends Controller
     public function getByID(Request $req) {
         $id = $req->id;
 
-        $std = AdmissionModel::where("id", $id)->first();
+        $std = AdmissionModel::where("id", 'LIKE', '%'.$id.'%')->first();
         $std['dob1'] = $std["dob"]->format("d-m-Y");
         return response()->json($std);
     } 
@@ -129,18 +129,28 @@ class TransactionController extends Controller
     public function getBysts(Request $req) {
         $id = $req->id;
 
-        $std = AdmissionModel::where("sts", $id)->first();
+        $std = AdmissionModel::where("sts", 'LIKE', '%'.$id.'%')->first();
         $std['dob1'] = $std["dob"]->format("d-m-Y");
         return response()->json($std);
     } 
 
     public function getByName(Request $req) {
 
-        $stds = AdmissionModel::where(["name"=> strtolower($req->name), "year"=>$req->year])->get();
-        foreach($stds as $std) {
-            $std['dob1'] = $std["dob"]->format("d-m-Y");
+        if($req->year == null ) {
+            $stds = AdmissionModel::where("name", 'LIKE', '%'.strtolower($req->name).'%')->limit(10)->get();
+            foreach($stds as $std) {
+                $std['dob1'] = $std["dob"]->format("d-m-Y");
+            }
+            return response()->json($stds);
+        } else {
+            $stds = AdmissionModel::where(["name"=> strtolower($req->name), "year"=>$req->year])->get();
+            foreach($stds as $std) {
+                $std['dob1'] = $std["dob"]->format("d-m-Y");
+            }
+            return response()->json($stds);
         }
-        return response()->json($stds);
+
+        
     } 
 
 
@@ -325,7 +335,16 @@ class TransactionController extends Controller
 
         $lc = LCModel::where("student", $req->id)->first();
 
-        $pdf = PDF::loadView('pdfs.LC');
+        $lc['student'] = $lc->studentDetails;
+        $lc['studied_till'] = $lc->studiedTill;
+        $lc['till_aca_year'] = $lc->tillYear;
+        $lc['caste'] = $lc->studentDetails->stdCast;
+        $lc['subCaste'] = $lc->studentDetails->subCaste;
+        $lc['subDistrict'] = $lc->studentDetails->subDistrict;
+        $lc['classes'] = $lc->studentDetails->classes;
+        $lc['dobWord'] = Controller::getWord($lc->student->dob->format("d")) ."- ".$lc->student->dob->format("F")." - ".Controller::getWord($lc->student->dob->format("Y"));
+
+        $pdf = PDF::loadView('pdfs.LC', ["lc" => $lc]);
         return $pdf->stream($lc->student.'.pdf');
     }
 

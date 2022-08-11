@@ -1,7 +1,7 @@
 <x-main-card>
     <div>
         <a href="{{route('trans.searchLC')}}">
-            <x-button-primary value="GENERATE LC" />
+            <x-button-primary value="PRINT LC" />
         </a>
     </div>
     <div>

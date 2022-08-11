@@ -126,11 +126,6 @@
         if($("input[name='feesPaid']").val() == "" || $("input[name='feesPaid']").val() == null || $("input[name='feesPaid']").val() == undefined) return;
         if($("input[name='balanceFee']").val() == "" || $("input[name='balanceFee']").val() == null || $("input[name='balanceFee']").val() == undefined) return;
 
-        if($("#receipt_no").val() == "" || $("#receipt_no").val() == null || $("#receipt_no").val() == undefined){
-            $("#receiptError").text("Receipt Number required");
-            return;
-        }
-
         $.ajax({
             type: "post",
             url: "{{route('fees.savePaidFees')}}",
@@ -173,11 +168,8 @@
             confirmButtonText: 'Yes, save it!'
         }).then((result) => {
             if (result.isConfirmed){
-                        if( $("#paying"+id).val() == null ||  $("#paying"+id).val() == undefined ||  $("#paying"+id).val() == "") return;
-                if( $("#receipt"+id).val() == null ||  $("#receipt"+id).val() == undefined ||  $("#receipt"+id).val() == "") {
-                    $("#rerror"+id).text("Receipt number required");
-                    return;
-                }
+                if( $("#paying"+id).val() == null ||  $("#paying"+id).val() == undefined ||  $("#paying"+id).val() == "") return;
+               
                 $.ajax({
                     type: "post",
                     url: "{{route('fees.savePaidFees')}}",

@@ -8,7 +8,7 @@
 
     <style>
         body {
-            border: 1px solid black;
+            border: 1px solid black;            
         }
 
         .fb {
@@ -17,6 +17,11 @@
 
         .bb {
             border-bottom: 1px solid black;
+        }
+
+        td {
+            padding-bottom: 0.1rem;
+            padding-top: 0.1rem;
         }
     </style>
 
@@ -40,14 +45,15 @@
                 <div style="font-size: 22px; font-weight: bold;">LEAVING CERTIFICATE</div>
 
                 <div style="font-size: 13px;">
-                    (No change whatsoever may be made in the Certificate except by the issuing authority. Any default against this rule is liable to be punished.)
+                    <div>No changes whatsoever may be made in the Certificate except by the issuing authority.</div>
+                    <div>Any default against this rule is liable to be punished.</div>
                 </div>
             </td>
         </tr>
 
         <tr>
             <td align="center" style="font-size: 13px;">
-                
+
             </td>
         </tr>
     </table>
@@ -63,8 +69,8 @@
             <td align="left" style="width: 100%;">
                 <table style="width: 100%;">
                     <tr>
-                        <td class="bb">654987</td>
-                        <td align="center"><span class="fb" style="margin-right: 2rem;">2. Date of Admission:</span> <span class="bb"> 22-01-2022 </span> </td>
+                        <td class="bb">{{$lc->id}}</td>
+                        <td align="center"><span class="fb" style="margin-right: 2rem;">2. Date of Admission:</span> <span class="bb">{{date ( 'd-m-Y' , strtotime ( $lc->student->date_of_adm ) )}}</span> </td>
                     </tr>
                 </table>
             </td>
@@ -80,7 +86,7 @@
             <td class="fb">:</td>
 
             <td align="left" style="width: 100%;" class="bb">
-               
+              {{strtoupper($lc->student->name)}}
             </td>
         </tr>
     </table>
@@ -94,7 +100,7 @@
             <td class="fb">:</td>
 
             <td align="left" style="width: 100%;" class="bb">
-               
+                {{strtoupper($lc->student->fname)}}
             </td>
         </tr>
     </table>
@@ -108,7 +114,7 @@
             <td class="fb">:</td>
 
             <td align="left" style="width: 100%;" class="bb">
-               
+                {{strtoupper($lc->student->mname)}}
             </td>
         </tr>
     </table>
@@ -122,7 +128,7 @@
             <td class="fb">:</td>
 
             <td align="left" style="width: 100%;" class="bb">
-               
+                {{strtoupper($lc->student->lname)}}
             </td>
         </tr>
     </table>
@@ -138,8 +144,14 @@
             <td align="left" style="width: 100%;">
                 <table style="width: 100%;">
                     <tr>
-                        <td class="bb"> Male </td>
-                        <td align="center"><span class="fb" style="margin-right: 2rem;">8. Nationality: </span> <span class="bb"> 22-01-2022 </span> </td>
+                        <td class="bb">
+                            @if($lc->student->gender == 1) 
+                                MALE
+                            @else
+                                FEMALE
+                            @endif
+                        </td>
+                        <td align="center"><span class="fb" style="margin-right: 2rem;">8. Nationality: </span> <span class="bb"> {{$lc->student->nationality}} </span> </td>
                     </tr>
                 </table>
             </td>
@@ -156,7 +168,7 @@
             <td class="fb">:</td>
 
             <td align="left" style="width: 100%;" class="bb">
-               
+                {{strtoupper($lc->student->religion)}}
             </td>
         </tr>
     </table>
@@ -171,7 +183,7 @@
             <td class="fb">:</td>
 
             <td align="left" style="width: 100%;" class="bb">
-               
+                {{strtoupper($lc->caste->name)}}
             </td>
         </tr>
     </table>
@@ -186,7 +198,11 @@
             <td class="fb">:</td>
 
             <td align="left" style="width: 100%;" class="bb">
-               
+                @if($lc->subCaste !== null)
+                   {{strtoupper($lc->subCaste->name)}}
+                @else
+                    -
+                @endif
             </td>
         </tr>
     </table>
@@ -201,7 +217,7 @@
             <td class="fb">:</td>
 
             <td align="left" style="width: 100%;">
-               <u>  </u>
+               <u> {{$lc->student->dob->format("d-m-Y")}} </u>
             </td>
         </tr>
     </table>
@@ -215,7 +231,9 @@
             <td class="fb">:</td>
 
             <td align="left" style="width: 100%;">
-               <u>  </u>
+               <u>
+                {{strtoupper($lc->dobWord)}}
+               </u>
             </td>
         </tr>
     </table>
@@ -232,8 +250,11 @@
             <td align="left" style="width: 100%;">
                 <table style="width: 100%;">
                     <tr>
-                        <td class="bb"> Male </td>
-                        <td align="center"><span class="fb" style="margin-right: 2rem;">15. District: </span> <span class="bb"> Belagavi</span> </td>
+                        <td class="bb"> {{strtoupper($lc->student->birth_place)}} </td>
+                        <td align="center">
+                            <span class="fb" style="margin-right: 2rem;">15. District: </span>
+                            <span class="bb"> {{strtoupper($lc->student->subDistrict->name)}}</span> 
+                        </td>
                     </tr>
                 </table>
             </td>
@@ -243,13 +264,13 @@
     <table style="width: 100%; padding-left: 0.5rem; margin-top: 0.5rem;">
         <tr>
             <td align="left" style="width: 65%;">
-                <span class="fb"> 16. Standard in which puuil was studying while leaving the School </span>
+                <span class="fb"> 16. Standard in which pupil was studying while leaving the School </span>
             </td>
 
             <td class="fb">:</td>
 
             <td align="left" style="width: 100%;" class="bb">
-        
+                {{$lc->student->classes->name." STANDARD SINCE ".strtoupper($lc->student->date_of_adm->format("F ")).$lc->student->date_of_adm->format("Y")}}
             </td>
         </tr>
     </table>
@@ -263,7 +284,7 @@
             <td class="fb">:</td>
 
             <td align="left" style="width: 100%;">
-               <u>  </u>
+               <u> ENGLISH </u>
             </td>
         </tr>
     </table>
@@ -277,7 +298,7 @@
             <td class="fb">:</td>
 
             <td align="left" style="width: 100%;" class="bb">
-            
+                {{$lc->whether_qualified}}
             </td>
         </tr>
     </table>
@@ -291,7 +312,7 @@
             <td class="fb">:</td>
 
             <td align="left" style="width: 50%;">
-               <u>  </u>
+               <u> {{date ( 'd-m-Y' , strtotime ( $lc->lt ) )}} </u>
             </td>
         </tr>
     </table>
@@ -305,7 +326,7 @@
             <td class="fb">:</td>
 
             <td align="left" style="width: 50%">
-               <u>asdsad asdasd  </u>
+               <u> {{date ( 'd-m-Y' , strtotime ( $lc->doa ) )}} </u>
             </td>
         </tr>
     </table>
@@ -332,13 +353,13 @@
 
             <td class="fb">:</td>
 
-            <td align="left" style="width: 100%;">
-              
+            <td align="left" style="width: 100%;" class="bb">
+              {{$lc->reason}}
             </td>
         </tr>
     </table>
 
-    <table style="width: 100%; padding-left: 0.5rem; margin-top: 0.5rem;" class="bb">
+    <table style="width: 100%; padding: 0.2rem;" class="bb">
         <tr>
             <td align="center" style="font-weight: bold; font-size: 15px;">
                 Certified that the person above Information is in accordance with the School General Register.
@@ -355,7 +376,7 @@
             <td class="fb">:</td>
 
             <td align="left" style="width: 100%;">
-              
+              {{strtoupper($lc->student->sts)}}
             </td>
         </tr>
         <tr>
@@ -366,7 +387,7 @@
             <td class="fb">:</td>
 
             <td align="left" style="width: 100%;">
-              <u>29090210106</u>
+              29090210106
             </td>
         </tr>
         <tr>
@@ -377,7 +398,7 @@
             <td class="fb">:</td>
 
             <td align="left" style="width: 100%;">
-              
+              {{date("d/m/Y H:i:s")}}
             </td>
         </tr>
         <tr>
@@ -388,7 +409,7 @@
             <td class="fb">:</td>
 
             <td align="left" style="width: 100%;">
-              
+              NAVANAGAR, HUBBALLI, KARNATAKA
             </td>
         </tr>
     </table>

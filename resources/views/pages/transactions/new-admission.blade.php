@@ -139,7 +139,7 @@
                     <div class="m-2">
                         <x-label value="nationaluty" />
                         <select name="nationaluty" id="nationaluty" class="w-full">
-                            <option value="IN">Indian</option>
+                            <option value="INDIAN">Indian</option>
                         </select>
                     </div>
                 </div>

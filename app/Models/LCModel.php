@@ -22,4 +22,18 @@ class LCModel extends Model
         "doil",
         "reason",
     ];
+
+
+    public function studentDetails() {
+        return $this->hasOne(AdmissionModel::class, 'id', 'student');
+    }
+
+    public function studiedTill() {
+        return $this->hasOne(AcademicYearModel::class, 'id', 'studied_till');
+    }
+
+    public function tillYear() {
+        return $this->hasOne(AcademicYearModel::class, 'id', 'till_aca_year');
+    }
+
 }

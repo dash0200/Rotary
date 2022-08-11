@@ -75,7 +75,7 @@ Route::controller(TransactionController::class)->prefix('transaction')->name('tr
     Route::get('leaving-certificate', 'leavingCertificate')->name('leavingCertificate');
     Route::post('save-lc', 'saveLc')->name('saveLc');
     Route::get('search-lc', 'searchLC')->name('searchLC');
-    Route::get('print-lc', 'printLC')->name('printLC');
+    Route::post('print-lc', 'printLC')->name('printLC');
     Route::get('get-studdent', 'getStuddent')->name('getStuddent');
 
 
@@ -86,6 +86,7 @@ Route::controller(TransactionController::class)->prefix('transaction')->name('tr
     Route::get('get-by-sts', 'getBysts')->name('getBysts');
     Route::get('get-by-name', 'getByName')->name('getByName');
     Route::post('edit-student', 'editStudent')->name('editStudent');
+
 });
 
 
