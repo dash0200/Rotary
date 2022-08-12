@@ -111,6 +111,15 @@ Route::controller(ReportsController::class)->prefix('report')->name('report.')->
 
 Route::controller(CertificateController::class)->prefix('certificate')->name('certificate.')->group(function(){
     Route::get('certificate', 'certificate')->name('certificate');
+
+    Route::post('study-certificate', 'studyCertificate')->name('study');
+    Route::post('save-study-certificate', 'saveStudyCertificate')->name('saveStudy');
+    Route::get('pdf-study-certificate', 'pdfStudyCertificate')->name('studyPDF');
+
+    Route::post('bonafied-certificate', 'bonafiedCertificate')->name('bonafied');
+    Route::post('caste-certificate', 'casteCertificate')->name('caste');
+    Route::post('character-certificate', 'characterCertificate')->name('character');
+    Route::post('certificate-certificate', 'certificateCertificate')->name('certify');
 });
 
 Route::controller(BuildingFundController::class)->prefix('building-fund')->name('building.')->group(function(){
