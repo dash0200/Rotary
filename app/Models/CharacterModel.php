@@ -5,21 +5,19 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class StudyCertificate extends Model
+class CharacterModel extends Model
 {
     use HasFactory;
 
-    protected $table = "cstudy";
+    protected $table = "ccharacter";
 
     protected $fillable = [
-            "student",
-            "from_stdy",
-            "to_stdy",
-            "from_year",
-            "to_year",
-            "mother_lang",
+        "student",
+        "studied_from",
+        "studied_to",
+        "year_from",
+        "year_to",
     ];
-
     public function studentDetails() {
         return $this->hasOne(AdmissionModel::class, 'id', 'student');
     }

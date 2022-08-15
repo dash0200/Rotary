@@ -115,11 +115,23 @@ Route::controller(CertificateController::class)->prefix('certificate')->name('ce
     Route::post('study-certificate', 'studyCertificate')->name('study');
     Route::post('save-study-certificate', 'saveStudyCertificate')->name('saveStudy');
     Route::get('pdf-study-certificate', 'pdfStudyCertificate')->name('studyPDF');
+    Route::get('pdf-study-certificate2', 'pdfStudyCertificate2')->name('studyPDF2');
 
     Route::post('bonafied-certificate', 'bonafiedCertificate')->name('bonafied');
+    Route::post('save-bonafied-certificate', 'saveBonafied')->name('saveBonafied');
+    Route::get('pdf-bonafied-certificate', 'pdfBonafied')->name('pdfBonafied');
+
     Route::post('caste-certificate', 'casteCertificate')->name('caste');
+    Route::post('save-caste', 'saveCaste')->name('saveCaste');
+
+    
     Route::post('character-certificate', 'characterCertificate')->name('character');
+    Route::post('save-character-certificate', 'saveCharacterCertificate')->name('saveCharacterCertificate');
+    Route::get('pdf-character-certificate', 'pdfCHaracter')->name('pdfCHaracter');
+
     Route::post('certificate-certificate', 'certificateCertificate')->name('certify');
+    Route::post('save-certificate', 'saveCertificate')->name('saveCertify');
+    Route::get('pdf-certificate', 'pdfCertify')->name('pdfCertify');
 });
 
 Route::controller(BuildingFundController::class)->prefix('building-fund')->name('building.')->group(function(){

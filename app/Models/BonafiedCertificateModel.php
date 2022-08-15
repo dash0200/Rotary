@@ -5,19 +5,16 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class StudyCertificate extends Model
+class BonafiedCertificateModel extends Model
 {
     use HasFactory;
 
-    protected $table = "cstudy";
+    protected $table = "cbonafied";
 
     protected $fillable = [
             "student",
-            "from_stdy",
-            "to_stdy",
-            "from_year",
-            "to_year",
-            "mother_lang",
+            "studying_in",
+            "year",
     ];
 
     public function studentDetails() {

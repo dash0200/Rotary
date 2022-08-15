@@ -28,9 +28,14 @@
 
       <div id="pdf">
         @if($print == true)
-            <a href="{{route('certificate.studyPDF', ['id' => $student->id])}}">
-                <x-button-success value="GET PDF" />
+            <a href="{{route('certificate.studyPDF', ['id' => $student->id])}}" target="_blank">
+                <x-button-success value="GET PDF with COUNTER SIGN" />
             </a>
+            <a href="{{route('certificate.studyPDF2', ['id' => $student->id])}}" target="_blank">
+                <x-button-success value="GET PDF 2" />
+            </a>
+        @else
+            Save below information to Get PDF
         @endif
       </div>
 
@@ -129,6 +134,18 @@
       <div class="flex justify-center w-full" id="save">
         <x-button-primary value="SAVE" onclick="saveStd('{{$student->id}}')" />
       </div>
+    </div>
+
+    <div class="mt-11">
+        Details as per Record
+
+        <div>
+            Studied from standard : <b>{{$Rstd_from}}</b> to <b>{{$Rstd_to}}</b>
+        </div>
+
+        <div>
+            From Acadmic Year : <b>{{$Rfrom_year}}</b> to <b>{{$Rto_year}}</b>
+        </div>
     </div>
 
 </x-main-card>
