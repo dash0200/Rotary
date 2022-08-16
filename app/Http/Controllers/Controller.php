@@ -129,6 +129,62 @@ class Controller extends BaseController
         return response()->json($student);
     }
 
+    public function dashboard() {
+
+        $totalStudents = AdmissionModel::get()->count();
+
+        $nurseryStudents = CreateClass::where("standard", 1)->get()->count();
+        
+        $year = '';
+
+        if((int)date("m") >= 6) {
+            $crr = date("Y");
+            $nxt = date("Y")[2].date("Y")[3];
+            $year = $crr."-".(int)$nxt+1;
+        } else {
+            $crr = date("Y")-1;
+            $nxt = date("Y")[2].date("Y")[3];
+            $year = $crr."-".(int)$nxt;
+        }
+
+        $year = AcademicYearModel::where('year', $year)->first();
+        
+        $nurseryStudents = CreateClass::where(["standard" => 1, 'year' => $year->id])->get()->count();
+        $lkgStudents = CreateClass::where(["standard" => 2, 'year' => $year->id])->get()->count();
+        $ukgStudents = CreateClass::where(["standard" => 3, 'year' => $year->id])->get()->count();
+        $firstStudents = CreateClass::where(["standard" => 4, 'year' => $year->id])->get()->count();
+        $secondStudents = CreateClass::where(["standard" => 5, 'year' => $year->id])->get()->count();
+        $thirdStudents = CreateClass::where(["standard" => 6, 'year' => $year->id])->get()->count();
+        $fourthStudents = CreateClass::where(["standard" => 7, 'year' => $year->id])->get()->count();
+        $fifthStudents = CreateClass::where(["standard" => 8, 'year' => $year->id])->get()->count();
+        $sixthStudents = CreateClass::where(["standard" => 9, 'year' => $year->id])->get()->count();
+        $seventhStudents = CreateClass::where(["standard" => 10, 'year' => $year->id])->get()->count();
+        $eighthStudents = CreateClass::where(["standard" => 11, 'year' => $year->id])->get()->count();
+        $ninethStudents = CreateClass::where(["standard" => 12, 'year' => $year->id])->get()->count();
+        $tenthStudents = CreateClass::where(["standard" => 12, 'year' => $year->id])->get()->count();
+        
+
+        return view('dashboard')->with([
+            "students" => $totalStudents,
+
+            'nursery' => $nurseryStudents,
+            "lkg" => $lkgStudents,
+            "ukg" => $ukgStudents,
+            "first" => $firstStudents,
+            "second" => $secondStudents,
+            "third" => $thirdStudents,
+            "fourth" => $fourthStudents,
+            "fifth" => $fifthStudents,
+            "sixth" => $sixthStudents,
+            "seventh" => $seventhStudents,
+            "eighth" => $eighthStudents,
+            "nineth" => $ninethStudents,
+            "tenth" => $tenthStudents,
+
+            "year" => $year->year
+        ]);
+    }
+
     public function state()
     {
         $states = [

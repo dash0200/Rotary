@@ -30,9 +30,7 @@ Route::middleware([
     config('jetstream.auth_session'),
     'verified'
 ])->group(function () {
-    Route::get('/dashboard', function () {
-        return view('dashboard');
-    })->name('dashboard');
+    Route::get('/dashboard',[Controller::class, 'dashboard'])->name('dashboard');
 });
 
 Route::controller(MastersController::class)->prefix('master')->name('master.')->group(function(){
@@ -85,6 +83,7 @@ Route::controller(TransactionController::class)->prefix('transaction')->name('tr
     Route::get('get-by-id', 'getByID')->name('getByID');
     Route::get('get-by-sts', 'getBysts')->name('getBysts');
     Route::get('get-by-name', 'getByName')->name('getByName');
+    Route::get('get-by-info', 'getByInfo')->name('getByInfo');
     Route::post('edit-student', 'editStudent')->name('editStudent');
 
 });

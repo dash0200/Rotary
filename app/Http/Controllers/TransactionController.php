@@ -358,4 +358,31 @@ class TransactionController extends Controller
             'years' => AcademicYearModel::get()
         ]);
     }
+
+    public function getByInfo(Request $req) {
+      
+        if($req->dob == null) {
+
+            $stds = AdmissionModel::where("name", 'LIKE', '%'.strtolower($req->name).'%',)
+            ->orWhere("fname", 'LIKE', '%'.strtolower($req->fname).'%',)
+            ->orWhere("lname",'LIKE', '%'.strtolower($req->lname).'%',)
+            ->limit(10)->get();
+                foreach($stds as $std) {
+                    $std['dob1'] = $std["dob"]->format("d-m-Y");
+                }
+                return response()->json($stds);
+        } else {
+
+            $stds = AdmissionModel::where("name", 'LIKE', '%'.strtolower($req->name).'%',)
+            ->orWhere("fname", 'LIKE', '%'.strtolower($req->fname).'%',)
+            ->orWhere("lname",'LIKE', '%'.strtolower($req->lname).'%',)
+            ->orWhere("dob",'LIKE', '%'.strtolower($req->dob).'%',)
+            ->limit(10)->get();
+                foreach($stds as $std) {
+                    $std['dob1'] = $std["dob"]->format("d-m-Y");
+                }
+                return response()->json($stds);
+        }
+     
+    }
 }

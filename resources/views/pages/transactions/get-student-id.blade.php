@@ -26,19 +26,44 @@
        <x-button-primary value="GET" onclick="getByNameYear()" />
         
     </div>
-    <div class="mt-10 flex justify-center">OR</div>
-    <div class="flex flex-col space-y-4">
-        <div>
+    <div class="mt-10 flex justify-center pb-10">OR</div>
+
+    <div class="flex space-x-16">
+
+        <div class="w-1/4">
             <x-label value="STS" />
             <x-input type="text" id="sts" placeholder="STS" />
             <x-button-primary value="GET" onclick="getBysts()" />
         </div>
-        <div class="mt-10 flex justify-center">OR</div>
         <div>
+            OR
+        </div>
+        <div class="w-13">
             <x-label value="Registration ID" />
             <x-input type="text" id="id" placeholder="Register ID" />
             <x-button-primary value="GET" onclick="getById()" />
         </div>
+        
+    </div>
+
+    <div class="pt-8 flex justify-around">
+        <div>
+             <x-label value="First Name" />
+            <x-input type="text" placeholder="First Name" name="name" />
+        </div>
+        <div>
+             <x-label value="Father Name" />
+            <x-input type="text" placeholder="Father Name" name="fname" />
+        </div>
+        <div>
+             <x-label value="Last Name" />
+            <x-input type="text" placeholder="Last Name" name="lname" />
+        </div>
+        <div>
+             <x-label value="DOB" />
+            <x-input type="date" placeholder="DOB" name="dob" />
+        </div>
+        <x-button-primary value="GET" onclick="getByInfo()" />
     </div>
 
     <div>
@@ -174,6 +199,57 @@
             data: {
                 name: $("#name").val(),
                 year: $("#year").val()
+            },
+            dataType: "json",
+            success: function (res) {
+                $("#byId").html('')
+                console.log(res);
+                for(let i=0; i<res.length; i++) {
+                    $("#byId").append(
+                    `
+                    <tr>
+                    <x-td>
+                        ${res[i].id}
+                    </x-td>
+                    <x-td>
+                        ${res[i].sts}
+                    </x-td>
+                    <x-td>
+                        ${res[i].name}
+                    </x-td>
+                    <x-td>
+                        ${res[i].fname}
+                    </x-td>
+                    <x-td>
+                        ${res[i].lname}
+                    </x-td>
+                    <x-td>
+                        ${res[i].dob1}
+                    </x-td>
+                    <x-td>
+                        <form action="{{route('trans.editStudent')}}" method="post">
+                            @csrf
+                            <input type="text" name="id" value="${res[i].id}" hidden>
+                            <x-button-primary value="edit" />
+                        </form>
+                    </x-td></tr>
+                        `
+                )
+                }
+            }
+        });
+    }
+    
+    function getByInfo() {
+
+        $.ajax({
+            type: "get",
+            url: "{{route('trans.getByInfo')}}",
+            data: {
+                name : $("input[name='name']").val(),
+                fname : $("input[name='fname']").val(),
+                lname : $("input[name='lname']").val(),
+                dob : $("input[name='dob']").val(),
             },
             dataType: "json",
             success: function (res) {
