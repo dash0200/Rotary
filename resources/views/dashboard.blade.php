@@ -79,6 +79,14 @@
             <h5 class="mb-1 text-xl font-medium text-gray-900 dark:text-white">{{$tenth}}</h5>
         </div>
     </div>
+
+    <div class="flex flex-col items-center">
+        <div>Total Students for the Academic Year : <b>{{$year}}</b></div>
+
+        <div class="flex justify-center font-bold">
+            {{$totalStudentThisYear}}   
+        </div>
+    </div>
 </div>
 
 </x-main-card>

@@ -15,7 +15,7 @@
         </div>
         <div id="pdf">
             @if($print == true)
-                <a href="{{route('certificate.pdfCertify', ['id' => $id])}}" target="_blank">
+                <a href="{{route('certificate.castePDF', ['id' => $id])}}" target="_blank">
                     <x-button-success value="GET PDF" />
                 </a>
             @else

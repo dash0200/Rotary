@@ -11,11 +11,22 @@ class FeeReceiptModel extends Model
 
     protected $table = "fee_receipt";
 
+    protected $dates = ['created_at'];
+
     protected $fillable = [
             "student",
             "amt_paid",
             "receipt_no",
             "year",
             "class",
+            "created_at"
     ];
+
+    public function studentDetail() {
+        return $this->hasOne(AdmissionModel::class, 'id', 'student');
+    }
+
+    public function classes() {
+        return $this->hasOne(ClassesModel::class, 'id', 'class');
+    }
 }

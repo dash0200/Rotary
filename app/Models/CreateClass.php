@@ -30,4 +30,5 @@ class CreateClass extends Model
     public function standardClass() {
         return $this->hasOne(ClassesModel::class, 'id', 'standard');
     }
+
 }

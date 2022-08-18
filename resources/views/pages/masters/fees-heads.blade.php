@@ -213,6 +213,8 @@
                                 ${desc}
                             </td>
                         </tr>`);
+
+                        $("#name").val('')
                     },
                     error: function(xhr, status, error) {
                         let err = JSON.parse(xhr.responseText);

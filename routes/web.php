@@ -94,10 +94,22 @@ Route::controller(FeesDetailsController::class)->prefix('fees-details')->name('f
     Route::post('fees-paying', 'feePaying')->name("savePaidFees");
 
     Route::get('receipt-cancellation', 'receiptCancellation')->name('receiptCancellation');
+
     Route::get('fees-arrears', 'feesArrears')->name('feesArrears');
+    Route::post('fees-submit', 'submitFeesArrears')->name('submitFeesArrears');
+
     Route::get('day-book', 'dayBook')->name('dayBook');
+    Route::get('day-book-submit', 'daybookSubmit')->name('daybookSubmit');
+
+
     Route::get('fees-register', 'feesRegister')->name('feesRegister');
+    Route::post('fees-register-pdf', 'pdfFeesRegister')->name('pdfFeesRegister');
+
+
     Route::get('receipt-datewise', 'receiptDatewise')->name('receiptDatewise');
+    Route::post('receipt-datewise-today', 'receiptToday')->name('receiptToday');
+    Route::post('receipt-between-dates', 'receiptBetweenDates')->name('receiptBetweenDates');
+
     Route::get('duplicate-receipt', 'duplicateReceipt')->name('duplicateReceipt');
 });
 
@@ -122,7 +134,7 @@ Route::controller(CertificateController::class)->prefix('certificate')->name('ce
 
     Route::post('caste-certificate', 'casteCertificate')->name('caste');
     Route::post('save-caste', 'saveCaste')->name('saveCaste');
-
+    Route::get('pdf-caste', 'castePDF')->name('castePDF');
     
     Route::post('character-certificate', 'characterCertificate')->name('character');
     Route::post('save-character-certificate', 'saveCharacterCertificate')->name('saveCharacterCertificate');

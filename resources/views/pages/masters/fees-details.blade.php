@@ -78,12 +78,16 @@
                     </td>
                 </tr>
             </table>
-            <div class="p-2 flex justify-center loading">
+            <div class="p-2 flex justify-between items-center loading">
                 <button value="Save" onclick="saveDetails()"
                     class="inline-block px-6 py-2.5 bg-indigo-600 text-white font-medium text-xs leading-tight my-2
                 uppercase rounded shadow-md hover:bg-indigo-700 hover:shadow-lg focus:bg-indigo-700 focus:shadow-lg focus:outline-none 
                focus:ring-0 active:bg-indigo-800 active:shadow-lg transition duration-150 ease-in-out">Save
                 </button>
+
+                <a href="">
+                    <x-button-success value="Clear" />
+                </a>
             </div>
         </div>
 

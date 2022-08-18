@@ -244,7 +244,7 @@ class CertificateController extends Controller
 
 
         public function casteCertificate(Request $req) {
-            $exist = CertifyModel::where("student", $req->id)->first();
+            $exist = CasteCertificateModel::where("student", $req->id)->first();
             $print = false;
 
             if($exist !== null) {
@@ -304,7 +304,7 @@ class CertificateController extends Controller
 
             $std = CreateClass::where("student",$req->id)->orderBy("id", "DESC")->first()->standardClass->name;
 
-            $pdf = PDF::loadView('pdfs.caste', ["student" => $student, 'std' => $std, 'caste' => $caste, 'subCaste' => $subCaste, ' ' => $casteC]);
+            $pdf = PDF::loadView('pdfs.caste', ["student" => $student, 'std' => $std, 'caste' => $caste, 'subCaste' => $subCaste, 'cert' => $casteC]);
             return $pdf->stream($student->id.'.pdf');
         }
         

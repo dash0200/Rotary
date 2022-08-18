@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>STUDY CERTIFICATE</title>
+    <title>CASTE CERTIFICATE</title>
     <style>
         body {
             border: 1px solid black;
@@ -83,7 +83,7 @@
             </td>
 
             <td align="left" style="width: 100%;" class="bb fb">
-              {{strtoupper($student->fname)}}.{{strtoupper($student->lname)}}
+              {{$student->fname == null ? '' : strtoupper($student->fname)[0].' . '}} {{$student->lname==null ? '': strtoupper($student->lname).'.'}}
             </td>
         </tr>
     </table>
@@ -111,7 +111,7 @@
     <table style="width: 100%; padding-left: 0.5rem; margin-top: 0.5rem;">
         <tr>
             <td>
-                and Caste Details are mentioned below as per our School Records
+                and Caste Details are mentioned below as per our School Records.
             </td>
         </tr>
     </table>

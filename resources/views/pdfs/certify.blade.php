@@ -50,7 +50,7 @@
         <tr>
             <td align="center">
                 <div style="font-size: 20px; padding: 0.3rem;">
-                    CERTIFICATE
+                    BIRTH CERTIFICATE
                 </div>
             </td>
         </tr>
@@ -83,7 +83,7 @@
             </td>
 
             <td align="left" style="width: 100%;" class="bb fb">
-              {{strtoupper($student->fname)}}.{{strtoupper($student->lname)}}
+              {{$student->fname == null ? '' : strtoupper($student->fname)[0].' . '}}{{$student->lname==null ? '':strtoupper($student->lname)}}
             </td>
         </tr>
     </table>

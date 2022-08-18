@@ -85,7 +85,7 @@
             </td>
 
             <td align="left" style="width: 100%;" class="bb fb">
-              {{strtoupper($student->fname)}}.{{strtoupper($student->lname)}}
+              {{$student->fname == null ? '' : strtoupper($student->fname)}}{{$student->lname==null ? '':'.'.strtoupper($student->lname)}}
             </td>
         </tr>
     </table>
