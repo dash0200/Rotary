@@ -111,6 +111,8 @@ Route::controller(FeesDetailsController::class)->prefix('fees-details')->name('f
     Route::post('receipt-between-dates', 'receiptBetweenDates')->name('receiptBetweenDates');
 
     Route::get('duplicate-receipt', 'duplicateReceipt')->name('duplicateReceipt');
+    Route::post('duplicate-receipt-id', 'stdReceiptID')->name('stdReceiptID');
+    Route::get('duplicate-receipt-get', 'getDuplicate')->name('getDuplicate');
 });
 
 Route::controller(ReportsController::class)->prefix('report')->name('report.')->group(function(){

@@ -28,7 +28,8 @@ class TransactionController extends Controller
             'states' => StatesModel::get(),
             'districts' => DistrictModel::select('id', 'name')->get(),
             'castes' => CasteModel::get(),
-            'years' => AcademicYearModel::get()
+            'years' => AcademicYearModel::get(),
+            "id" => AdmissionModel::select("id")->orderBy("id", "DESC")->first()->id + 1,
         ]);
     }
     public function getDistrict(Request $req)

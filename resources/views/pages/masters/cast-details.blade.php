@@ -38,59 +38,68 @@
         </div>
 
         <div>
-            <h2>Add Caste</h2>
-            <form id="casteForm" class="flex items-center justify-evenly space-x-2 border-b">
-                <select name="cats" id="cats">
-                    <option value="">Select Category</option>
-                    @foreach ($cats as $cat)
-                        <option value="{{ $cat->id }}">{{ $cat->name }}</option>
-                    @endforeach
-                </select>
 
-                <x-input type="text" name="caste" id="caste" placeholder="Caste" />
-                <div class="loading">
-                    <x-button-primary value="Save" />
-                </div>
-            </form>
+            <div class="border p-2 my-10">
+                <h2>Add Caste</h2>
+                <form id="casteForm" class="flex items-center justify-evenly space-x-2">
+                    <select name="cats" id="cats">
+                        <option value="">Select Category</option>
+                        @foreach ($cats as $cat)
+                            <option value="{{ $cat->id }}">{{ $cat->name }}</option>
+                        @endforeach
+                    </select>
 
-           
-            <div class="m-2">
-                <select name="cast" id="cast" required> 
-                    <option value="">Select Caste</option>
-                    @foreach ($castes as $cast)
-                    <option value="{{ $cast->id }}">{{ $cast->name }}</option>
-                    @endforeach
-                </select>
-                <span class="text-xs">Select Cast and enter its subcast below to save</span>
+                    <x-input type="text" name="caste" id="caste" placeholder="Caste" />
+                    <div class="loading">
+                        <x-button-primary value="Save" />
+                    </div>
+                </form>
             </div>
-            <div>
-                <x-input type="text" name="subcast" id="subcast" placeholder="Enter Sub Caste" required/>
 
+
+            <div class="flex flex-col border p-2 mb-10">
+                <div class="flex justify-around">
+                    <div class="flex flex-col">
+                        <select name="cast" id="cast" required>
+                            <option value="">Select Caste</option>
+                            @foreach ($castes as $cast)
+                                <option value="{{ $cast->id }}">{{ $cast->name }}</option>
+                            @endforeach
+                        </select>
+                        <span class="text-xs">Select Cast and enter its subcast below to save</span>
+                    </div>
+                    <div>
+                        <x-input type="text" name="subcast" id="subcast" placeholder="Enter Sub Caste" required />
+                    </div>
+                </div>
                 <div class="loading">
                     <button
                         class="inline-block px-6 py-2.5 bg-indigo-600 text-white font-medium text-xs leading-tight my-2
-                            uppercase rounded shadow-md hover:bg-indigo-700 hover:shadow-lg focus:bg-indigo-700 focus:shadow-lg focus:outline-none 
-                            focus:ring-0 active:bg-indigo-800 active:shadow-lg transition duration-150 ease-in-out"
-                        onclick="saveSubCast()">Save</button>
+                        uppercase rounded shadow-md hover:bg-indigo-700 hover:shadow-lg focus:bg-indigo-700 focus:shadow-lg focus:outline-none 
+                        focus:ring-0 active:bg-indigo-800 active:shadow-lg transition duration-150 ease-in-out"
+                        onclick="saveSubCast()">Save Subcaste</button>
                 </div>
+
+                <table class="w-full">
+                    <thead class="bg-white border-b">
+                        <tr>
+                            <th scope="col" class="text-sm font-medium text-gray-900 px-6 py-4 text-left">
+                                #
+                            </th>
+                            <th scope="col" class="text-sm font-medium text-gray-900 px-6 py-4 text-left">
+                                sub-cast
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody id="sub_cast">
+
+                    </tbody>
+                </table>
+
             </div>
-            <table class="w-full">
-                <thead class="bg-white border-b">
-                    <tr>
-                        <th scope="col" class="text-sm font-medium text-gray-900 px-6 py-4 text-left">
-                            #
-                        </th>
-                        <th scope="col" class="text-sm font-medium text-gray-900 px-6 py-4 text-left">
-                            sub-cast
-                        </th>
-                    </tr>
-                </thead>
-                <tbody id="sub_cast">
-                    
-                </tbody>
-            </table>
-            <div>
-                <div class="mt-5 flex space-x-2 items-center">
+
+            <div class="border">
+                <div class="mt-5 flex space-x-2 items-center justify-around">
                     <select name="searchcat" id="searchcat">
                         <option value="">Select Cat</option>
                         @foreach ($cats as $cat)
@@ -105,10 +114,10 @@
                                 <option value="{{ $cast->id }}">{{ $cast->name }}</option>
                             @endforeach
                         </select>
-                        
+
                     </div>
                 </div>
-                <div class="text-xs">Select either one to show its corresponding category  or caste</div>
+                <div class="text-xs ml-10">Select either one to show its corresponding category or caste</div>
                 <div>
                     <table class="w-full">
                         <thead class="bg-white border-b">
@@ -122,13 +131,13 @@
                             </tr>
                         </thead>
                         <tbody id="searchCast">
-    
+
                         </tbody>
                     </table>
                 </div>
             </div>
         </div>
-        
+
     </div>
 </x-main-card>
 <script>
@@ -141,7 +150,7 @@
     $("#cast").select2();
     $("#searchcast").select2();
 
-    $("#cast").on("select2:select", function(e){
+    $("#cast").on("select2:select", function(e) {
         let data = e.params.data;
         $.ajax({
             type: "get",
@@ -431,22 +440,22 @@
     function saveSubCast() {
         let cast = $("#cast").val()
         let sub = $("#subcast").val()
-        if(cast == "" || cast == null || sub == null || sub =="") return;
+        if (cast == "" || cast == null || sub == null || sub == "") return;
         $.ajax({
             type: "post",
-            url: "{{route('master.subCast')}}",
+            url: "{{ route('master.subCast') }}",
             data: {
                 cast: cast,
                 sub: sub
             },
             dataType: "json",
-            beforeSend: function (){
+            beforeSend: function() {
                 $(".loading").html("")
                 $(".loading").append(
                     `<x-loading-button name="Saving" />`
                 )
             },
-            success: function (res) {
+            success: function(res) {
                 $(".loading").html("")
                 $(".loading").append(
                     ` <button

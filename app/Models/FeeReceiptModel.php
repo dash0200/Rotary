@@ -29,4 +29,8 @@ class FeeReceiptModel extends Model
     public function classes() {
         return $this->hasOne(ClassesModel::class, 'id', 'class');
     }
+
+    public function years() {
+        return $this->hasOne(AcademicYearModel::class, 'id', 'year');
+    }
 }

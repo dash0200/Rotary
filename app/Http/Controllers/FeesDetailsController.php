@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\AcademicYearModel;
+use App\Models\AdmissionModel;
 use App\Models\ClassesModel;
 use App\Models\CreateClass;
 use App\Models\FeeReceiptModel;
@@ -235,6 +236,29 @@ class FeesDetailsController extends Controller
     }
 
     public function duplicateReceipt() {
-        return view('pages.fees.duplicate-receipt');
+        return view('pages.fees.duplicate-receipt')->with([
+            "years" => AcademicYearModel::get()
+        ]);
+    }
+
+    public function stdReceiptID(Request $req) {
+
+        $receipts = FeeReceiptModel::where("student", $req->id)->get();
+
+        foreach($receipts as $r) {
+            $r['class'] = $r->classes->name;
+            $r['year'] = $r->years->year;
+        }
+
+        $student = AdmissionModel::where("id", $receipts[0]->student)->first();
+
+        return view("pages.fees.receipts-std")->with([
+            "receipts" => $receipts,
+            "student" => $student
+        ]);
+    }
+
+    public function getDuplicate(Request $req) {
+        
     }
 }

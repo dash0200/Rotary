@@ -4,9 +4,8 @@
     </h1>
     <div class="w-full bg-gray-200" style="height: 1px;"></div>
 
-    <div class="flex flex-col items-center mt-6">
+    <div class="flex items-center justify-around border p-4 mt-6">
 
-       <div class="flex space-x-2 items-center">
          <div>
              <x-label value="Student Name" />
              <x-input type="text" id="name" name="name" placeholder="Student Name" />
@@ -21,22 +20,20 @@
                  @endforeach
              </select> 
          </div>
-       </div>
 
        <x-button-primary value="GET" onclick="getByNameYear()" />
         
     </div>
+
+    
     <div class="mt-10 flex justify-center pb-10">OR</div>
 
-    <div class="flex space-x-16">
+    <div class="flex justify-around border p-4">
 
         <div class="w-1/4">
             <x-label value="STS" />
             <x-input type="text" id="sts" placeholder="STS" />
             <x-button-primary value="GET" onclick="getBysts()" />
-        </div>
-        <div>
-            OR
         </div>
         <div class="w-13">
             <x-label value="Registration ID" />
@@ -46,7 +43,7 @@
         
     </div>
 
-    <div class="pt-8 flex justify-around">
+    <div class="p-4 border my-10 flex justify-around">
         <div>
              <x-label value="First Name" />
             <x-input type="text" placeholder="First Name" name="name" />
