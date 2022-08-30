@@ -241,7 +241,16 @@
                 $("input[name='annualFee']").val(res[1].total)
                 $("input[name='feesPaid']").val(res[1].paid)
                 $("input[name='balanceFee']").val(res[1].balance)
-                $("#btn").append(`<x-button-primary value="Submit" onclick="saveAmount('${res[0].id}', '${res[1].year}', '${res[1].standard}')"/>`)
+                $("#btn").html("")
+                if(res[1].balance == 0) {
+                    $("#btn").append(`
+                    <x-button-primary value="No Balance"/>
+                `)
+                } else {
+                    $("#btn").append(`
+                    <x-button-primary value="Submit" onclick="saveAmount('${res[0].id}', '${res[1].year}', '${res[1].standard}')"/>
+                `)
+                }
 
                 $("tbody").html("");
                 for(let i=0; i < res[2].length; i++) {
@@ -309,14 +318,17 @@
                             </tbody>
                         </x-table>
                     </div>
-                    <div class="pb-2">
+                    <div class="pb-2" id="sbm">
                         <x-label value="Receipt No" />
                         <x-input class="w-1/2" type="text" placeholder="Receipt No" id="receipt${res.prev[i].id}"/>
                         <span id="rerror${res.prev[i].id}" class="text-red-600"></span>
                         <x-label value="Amount Paying" />
                         <x-input type="number" placeholder="Amount Paying" id="paying${res.prev[i].id}" class="onlyNum" />
-                        <div class="flex justify-center items-center">
-                            <x-button-primary value="Submit" onclick="savePrevAmount(${res.prev[i].total},${res.prev[i].paid},${res.prev[i].balance},'${res.prev[i].id}', '${res.prev[i].year}', '${res.prev[i].student}', '${res.prev[i].standard}' )"/>
+                        <div class="flex justify-center items-center" >
+                            <x-button-primary value="Submit" 
+                             onclick="savePrevAmount(${res.prev[i].total},${res.prev[i].paid},${res.prev[i].balance},'${res.prev[i].id}', '${res.prev[i].year}', '${res.prev[i].student}', '${res.prev[i].standard}' )"
+                            />
+
                             <div id="success${res.prev[i].id}"></div>
                         </div>
                     </div>

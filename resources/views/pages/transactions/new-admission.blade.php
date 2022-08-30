@@ -223,7 +223,7 @@
             <x-input type="text" name="prevSchool" />
 
             <input type="text" name="id" id="id" hidden>
-            <x-button-primary value="Save" />
+            <x-button-primary value="Save" class="w-full"/>
     </form>
 </x-main-card>
 
