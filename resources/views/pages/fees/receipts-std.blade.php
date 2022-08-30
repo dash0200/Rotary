@@ -44,7 +44,7 @@
                         {{$receipt->created_at->format("d-m-Y")}}
                     </x-td>
                     <x-td>
-                        <a href="{{route('fees.getDuplicate')}}">
+                        <a href="{{route('fees.getDuplicate', ["id" => $receipt->id])}}">
                             <x-button-primary value="get duplicate receipt" />
                         </a>
                     </x-td>
