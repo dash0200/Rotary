@@ -74,6 +74,7 @@ Route::controller(TransactionController::class)->prefix('transaction')->name('tr
     Route::post('save-lc', 'saveLc')->name('saveLc');
     Route::get('search-lc', 'searchLC')->name('searchLC');
     Route::post('print-lc', 'printLC')->name('printLC');
+    Route::post('print-duplicate-lc', 'printDuplicateLC')->name('printDuplicateLC');
     Route::get('get-studdent', 'getStuddent')->name('getStuddent');
 
 

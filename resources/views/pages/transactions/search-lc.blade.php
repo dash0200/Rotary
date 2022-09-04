@@ -87,6 +87,7 @@
             },
             dataType: "json",
             success: function (res) {
+                console.log(res );
                 $("#byId").html("")
                 $("#byId").append(
                     `
@@ -109,16 +110,11 @@
                     <x-td>
                         ${res.dob1}
                     </x-td>
-                    <x-td>
-                        <form action="{{route('trans.printLC')}}" method="post">
-                            @csrf
-                            <input type="text" name="id" value="${res.id}" hidden>
-                            <x-button-primary value="PRINT" />
-                        </form>
-                    </x-td>
                     </tr>
                         `
                 )
+
+              
             }
         });
     }
@@ -154,15 +150,31 @@
                     <x-td>
                         ${res.dob1}
                     </x-td>
+                    
+                    </tr>
+                        `
+                )
+
+                if(res.exist == 1) {
+                $("#byId tr").append(
+                    `
                     <x-td>
                         <form action="{{route('trans.printLC')}}" method="post">
                             @csrf
                             <input type="text" name="id" value="${res.id}" hidden>
                             <x-button-primary value="PRINT" />
                         </form>
-                    </x-td></tr>
-                        `
+                    </x-td>
+                    <x-td>
+                        <form action="{{route('trans.printDuplicateLC')}}" method="post">
+                            @csrf
+                            <input type="text" name="id" value="${res.id}" hidden>
+                            <x-button-primary value="Duplicate PRINT" />
+                        </form>
+                    </x-td>
+                    `
                 )
+               }
             }
         });
     }
@@ -201,15 +213,31 @@
                     <x-td>
                         ${res[i].dob1}
                     </x-td>
+                   
+                    </tr>
+                        `
+                )
+
+                if(res[i].exist == 1) {
+                $("#byId tr").append(
+                    `
                     <x-td>
                         <form action="{{route('trans.printLC')}}" method="post">
                             @csrf
                             <input type="text" name="id" value="${res[i].id}" hidden>
                             <x-button-primary value="PRINT" />
                         </form>
-                    </x-td></tr>
-                        `
+                    </x-td>
+                    <x-td>
+                        <form action="{{route('trans.printDuplicateLC')}}" method="post">
+                            @csrf
+                            <input type="text" name="id" value="${res[i].id}" hidden>
+                            <x-button-primary value="Duplicate PRINT" />
+                        </form>
+                    </x-td>
+                    `
                 )
+               }
                 }
             }
         });

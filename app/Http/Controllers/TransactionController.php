@@ -123,6 +123,10 @@ class TransactionController extends Controller
         $id = $req->id;
 
         $std = AdmissionModel::where("id", 'LIKE', '%'.$id.'%')->withTrashed()->first();
+
+        $std['exist'] = LCModel::where("student", $std->id)->first();
+        $std['exist'] = $std['exist'] == null ? "" : 1;
+
         $std['dob1'] = $std["dob"]->format("d-m-Y");
         return response()->json($std);
     } 
@@ -131,6 +135,10 @@ class TransactionController extends Controller
         $id = $req->id;
 
         $std = AdmissionModel::where("sts", 'LIKE', '%'.$id.'%')->withTrashed()->first();
+
+        $std['exist'] = LCModel::where("student", $std->id)->first();
+        $std['exist'] = $std['exist'] == null ? "" : 1;
+
         $std['dob1'] = $std["dob"]->format("d-m-Y");
         return response()->json($std);
     } 
@@ -141,12 +149,16 @@ class TransactionController extends Controller
             $stds = AdmissionModel::withTrashed()->where("name", 'LIKE', '%'.strtolower($req->name).'%')->limit(10)->get();
             foreach($stds as $std) {
                 $std['dob1'] = $std["dob"]->format("d-m-Y");
+                $std['exist'] = LCModel::where("student", $std->id)->first();
+                $std['exist'] = $std['exist'] == null ? "" : 1;
             }
             return response()->json($stds);
         } else {
             $stds = AdmissionModel::withTrashed()->where(["name"=> strtolower($req->name), "year"=>$req->year])->get();
             foreach($stds as $std) {
                 $std['dob1'] = $std["dob"]->format("d-m-Y");
+                $std['exist'] = LCModel::where("student", $std->id)->first();
+                $std['exist'] = $std['exist'] == null ? "" : 1;
             }
             return response()->json($stds);
         }
@@ -303,8 +315,6 @@ class TransactionController extends Controller
 
     public function saveLc(Request $req) {
 
-        AdmissionModel::where("id", $req->id)->delete();
-
         $data = [
             "student" => $req->id,
             "studied_till" => $req->stdTill,
@@ -319,6 +329,7 @@ class TransactionController extends Controller
 
         if( LCModel::where("student", $req->id)->first() == null ) {
             LCModel::create($data);
+            AdmissionModel::where("id", $req->id)->delete();
         } else {
             LCModel::where("student", $req->id)->update($data);
         }
@@ -347,6 +358,22 @@ class TransactionController extends Controller
         $lc['classes'] = $lc->studentDetails->classes;
         $lc['dobWord'] = Controller::getWord($lc->student->dob->format("d")) ."- ".$lc->student->dob->format("F")." - ".Controller::getWord($lc->student->dob->format("Y"));
         $pdf = PDF::loadView('pdfs.LC', ["lc" => $lc]);
+        return $pdf->stream($lc->student.'.pdf');
+    }
+
+    public function printDuplicateLC(Request $req) {
+
+        $lc = LCModel::where("student", $req->id)->first();
+
+        $lc['student'] = $lc->studentDetails;
+        $lc['studied_till'] = $lc->studiedTill;
+        $lc['till_aca_year'] = $lc->tillYear;
+        $lc['caste'] = $lc->studentDetails->stdCast;
+        $lc['subCaste'] = $lc->studentDetails->subCaste;
+        $lc['subDistrict'] = $lc->studentDetails->subDistrict;
+        $lc['classes'] = $lc->studentDetails->classes;
+        $lc['dobWord'] = Controller::getWord($lc->student->dob->format("d")) ."- ".$lc->student->dob->format("F")." - ".Controller::getWord($lc->student->dob->format("Y"));
+        $pdf = PDF::loadView('pdfs.LC', ["lc" => $lc, "duplicate" => ""]);
         return $pdf->stream($lc->student.'.pdf');
     }
 
