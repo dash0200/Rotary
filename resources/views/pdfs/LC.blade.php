@@ -39,9 +39,11 @@
 </head>
 
 <body>
+    @if(isset($duplicate))
     <div class="duplicate">
         D U P L I C A T E
     </div>
+    @endif
     <table style="width: 100%;" class="bb">
         <tr>
             <td align="center">
@@ -56,7 +58,8 @@
     <table style="width: 100%;" class="bb">
         <tr>
             <td align="center">
-                <div style="font-size: 22px; font-weight: bold;">LEAVING CERTIFICATE </div>
+                <div style="font-size: 22px; font-weight: bold;">LEAVING CERTIFICATE @if(isset($duplicate)) (DUPLICATE)
+                    @endif</div>
 
                 <div style="font-size: 13px;">
                     <div>No changes whatsoever may be made in the Certificate except by the issuing authority.</div>

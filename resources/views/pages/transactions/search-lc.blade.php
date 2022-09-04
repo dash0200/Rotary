@@ -113,7 +113,27 @@
                     </tr>
                         `
                 )
-
+                        
+                if(res.exist == 1) {
+                $("#byId tr").append(
+                    `
+                    <x-td>
+                        <form action="{{route('trans.printLC')}}" method="post">
+                            @csrf
+                            <input type="text" name="id" value="${res.id}" hidden>
+                            <x-button-primary value="PRINT" />
+                        </form>
+                    </x-td>
+                    <x-td>
+                        <form action="{{route('trans.printDuplicateLC')}}" method="post">
+                            @csrf
+                            <input type="text" name="id" value="${res.id}" hidden>
+                            <x-button-primary value="Duplicate PRINT" />
+                        </form>
+                    </x-td>
+                    `
+                )
+               }
               
             }
         });

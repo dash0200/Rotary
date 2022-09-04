@@ -373,7 +373,7 @@ class TransactionController extends Controller
         $lc['subDistrict'] = $lc->studentDetails->subDistrict;
         $lc['classes'] = $lc->studentDetails->classes;
         $lc['dobWord'] = Controller::getWord($lc->student->dob->format("d")) ."- ".$lc->student->dob->format("F")." - ".Controller::getWord($lc->student->dob->format("Y"));
-        $pdf = PDF::loadView('pdfs.LC', ["lc" => $lc, "duplicate" => ""]);
+        $pdf = PDF::loadView('pdfs.LC', ["lc" => $lc, "duplicate" => "1"]);
         return $pdf->stream($lc->student.'.pdf');
     }
 
