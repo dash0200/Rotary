@@ -29,7 +29,7 @@ class TransactionController extends Controller
             'districts' => DistrictModel::select('id', 'name')->get(),
             'castes' => CasteModel::get(),
             'years' => AcademicYearModel::get(),
-            "id" => AdmissionModel::select("id")->orderBy("id", "DESC")->first()->id + 1,
+            "id" => AdmissionModel::select("id")->orderBy("id", "DESC")->withTrashed()->first()->id + 1,
         ]);
     }
     public function getDistrict(Request $req)
@@ -122,7 +122,7 @@ class TransactionController extends Controller
     public function getByID(Request $req) {
         $id = $req->id;
 
-        $std = AdmissionModel::where("id", 'LIKE', '%'.$id.'%')->first();
+        $std = AdmissionModel::where("id", 'LIKE', '%'.$id.'%')->withTrashed()->first();
         $std['dob1'] = $std["dob"]->format("d-m-Y");
         return response()->json($std);
     } 
@@ -130,7 +130,7 @@ class TransactionController extends Controller
     public function getBysts(Request $req) {
         $id = $req->id;
 
-        $std = AdmissionModel::where("sts", 'LIKE', '%'.$id.'%')->first();
+        $std = AdmissionModel::where("sts", 'LIKE', '%'.$id.'%')->withTrashed()->first();
         $std['dob1'] = $std["dob"]->format("d-m-Y");
         return response()->json($std);
     } 
@@ -138,13 +138,13 @@ class TransactionController extends Controller
     public function getByName(Request $req) {
 
         if($req->year == null ) {
-            $stds = AdmissionModel::where("name", 'LIKE', '%'.strtolower($req->name).'%')->limit(10)->get();
+            $stds = AdmissionModel::withTrashed()->where("name", 'LIKE', '%'.strtolower($req->name).'%')->limit(10)->get();
             foreach($stds as $std) {
                 $std['dob1'] = $std["dob"]->format("d-m-Y");
             }
             return response()->json($stds);
         } else {
-            $stds = AdmissionModel::where(["name"=> strtolower($req->name), "year"=>$req->year])->get();
+            $stds = AdmissionModel::withTrashed()->where(["name"=> strtolower($req->name), "year"=>$req->year])->get();
             foreach($stds as $std) {
                 $std['dob1'] = $std["dob"]->format("d-m-Y");
             }
@@ -157,7 +157,7 @@ class TransactionController extends Controller
 
     public function editStudent( Request $req) {
 
-        $std = AdmissionModel::where("id", $req->id)->first();
+        $std = AdmissionModel::where("id", $req->id)->withTrashed()->first();
 
         $std['state'] = $std->district->state->state;
         $std['dist'] = $std->district->district;
@@ -181,7 +181,7 @@ class TransactionController extends Controller
     }
 
     public function getStdforEdit(Request $req) {
-        $stds = AdmissionModel::where('id', 'LIKE', '%'.$req->term.'%')->get();
+        $stds = AdmissionModel::withTrashed()->where('id', 'LIKE', '%'.$req->term.'%')->get();
         return response()->json([
             'stds' => $stds
         ]);
@@ -223,7 +223,7 @@ class TransactionController extends Controller
 
         // $year_id = AcademicYearModel::where("year",  $year)->first()->id;
         $createClass = CreateClass::get();
-        $newAdmission = AdmissionModel::where("year", $req->year)->get();
+        $newAdmission = AdmissionModel::withTrashed()->where("year", $req->year)->get();
 
         foreach ($createClass as $cr) {
             foreach ($newAdmission as $new) {
@@ -275,7 +275,7 @@ class TransactionController extends Controller
 
     public function getStuddent(Request $req) {
         
-        $student = AdmissionModel::where('id', $req->id)->first();
+        $student = AdmissionModel::withTrashed()->where('id', $req->id)->first();
         $student['c'] = $student->classes;
         $student['year'] = $student->acaYear;
         $student['doy'] = $student->date_of_adm->format("d-m-Y");
@@ -302,7 +302,9 @@ class TransactionController extends Controller
     }
 
     public function saveLc(Request $req) {
-        
+
+        AdmissionModel::where("id", $req->id)->delete();
+
         $data = [
             "student" => $req->id,
             "studied_till" => $req->stdTill,
@@ -344,7 +346,6 @@ class TransactionController extends Controller
         $lc['subDistrict'] = $lc->studentDetails->subDistrict;
         $lc['classes'] = $lc->studentDetails->classes;
         $lc['dobWord'] = Controller::getWord($lc->student->dob->format("d")) ."- ".$lc->student->dob->format("F")." - ".Controller::getWord($lc->student->dob->format("Y"));
-
         $pdf = PDF::loadView('pdfs.LC', ["lc" => $lc]);
         return $pdf->stream($lc->student.'.pdf');
     }
@@ -364,7 +365,7 @@ class TransactionController extends Controller
       
         if($req->dob == null) {
 
-            $stds = AdmissionModel::where("name", 'LIKE', '%'.strtolower($req->name).'%',)
+            $stds = AdmissionModel::withTrashed()->where("name", 'LIKE', '%'.strtolower($req->name).'%',)
             ->orWhere("fname", 'LIKE', '%'.strtolower($req->fname).'%',)
             ->orWhere("lname",'LIKE', '%'.strtolower($req->lname).'%',)
             ->limit(10)->get();
@@ -374,7 +375,7 @@ class TransactionController extends Controller
                 return response()->json($stds);
         } else {
 
-            $stds = AdmissionModel::where("name", 'LIKE', '%'.strtolower($req->name).'%',)
+            $stds = AdmissionModel::withTrashed()->where("name", 'LIKE', '%'.strtolower($req->name).'%',)
             ->orWhere("fname", 'LIKE', '%'.strtolower($req->fname).'%',)
             ->orWhere("lname",'LIKE', '%'.strtolower($req->lname).'%',)
             ->orWhere("dob",'LIKE', '%'.strtolower($req->dob).'%',)

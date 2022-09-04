@@ -70,7 +70,7 @@ class CertificateController extends Controller
             }
 
 
-            $student = AdmissionModel::where("id", $req->id)->first();
+            $student = AdmissionModel::where("id", $req->id)->withTrashed()->first();
 
             $std_from = CreateClass::where("student", "$req->id")->orderBy('id', 'ASC')->first();
             $from_year = $std_from->acaYear->year;
@@ -188,7 +188,7 @@ class CertificateController extends Controller
             }
 
 
-            $student = AdmissionModel::where("id", $req->id)->first();
+            $student = AdmissionModel::where("id", $req->id)->withTrashed()->first();
 
             $std = CreateClass::where("student", "$req->id")->orderBy('id', 'DESC')->first();
             $acaYear = $std->acaYear->year;
@@ -298,7 +298,7 @@ class CertificateController extends Controller
 
             $casteC = CasteCertificateModel::where('student', $req->id)->first();
 
-            $student = AdmissionModel::where("id", $req->id)->first();
+            $student = AdmissionModel::where("id", $req->id)->withTrashed()->first();
             $caste = $student->stdCast->name;
             $subCaste = $student->subCaste == null ? "-" : $student->subCaste->name;
 
@@ -352,7 +352,7 @@ class CertificateController extends Controller
                 ]);
             }
 
-            $student = AdmissionModel::where("id", $req->id)->first();
+            $student = AdmissionModel::where("id", $req->id)->withTrashed()->first();
 
             $std_from = CreateClass::where("student", "$req->id")->orderBy('id', 'ASC')->first();
             $from_year = $std_from->acaYear->year;
@@ -480,7 +480,7 @@ class CertificateController extends Controller
         public function pdfCertify(Request $req) {
       
             $cert = CertifyModel::where("student", $req->id)->first();
-            $std = AdmissionModel::where("id", $req->id)->first();
+            $std = AdmissionModel::where("id", $req->id)->withTrashed()->first();
             $dobWord = Controller::getWord($std->dob->format("d")) ."- ".$std->dob->format("F")." - ".Controller::getWord($std->dob->format("Y"));
             $pdf = PDF::loadView('pdfs.certify', ["cert" => $cert, "student" => $std, 'dobWord' => $dobWord]);
             return $pdf->stream($cert->student.'.pdf');

@@ -23,7 +23,7 @@ class FeeReceiptModel extends Model
     ];
 
     public function studentDetail() {
-        return $this->hasOne(AdmissionModel::class, 'id', 'student');
+        return $this->hasOne(AdmissionModel::class, 'id', 'student')->withTrashed();
     }
 
     public function classes() {

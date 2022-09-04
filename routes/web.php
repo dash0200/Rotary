@@ -117,9 +117,15 @@ Route::controller(FeesDetailsController::class)->prefix('fees-details')->name('f
 
 Route::controller(ReportsController::class)->prefix('report')->name('report.')->group(function(){
     Route::get('cast-details', 'castDetails')->name('castDetails');
+    Route::post('cast-details-cats', 'catAssocCast')->name('catAssocCast');
+
+
     Route::get('fees-structure', 'feesStructure')->name('feesStructure');
+
     Route::get('general-register', 'generalRegister')->name('generalRegister');
+
     Route::get('class-details', 'classDetails')->name('classDetails');
+    Route::post('details', 'detailsClass')->name('detailsClass');
 });
 
 Route::controller(CertificateController::class)->prefix('certificate')->name('certificate.')->group(function(){
@@ -157,8 +163,14 @@ Route::controller(BuildingFundController::class)->prefix('building-fund')->name(
 
 Route::controller(GeneralReceiptController::class)->prefix('general-receipts')->name('general.')->group(function(){
     Route::get('general-receipts', 'generalReceipts')->name('generalReceipts');
+    Route::post('receipts', 'receipt')->name('receipt');
+    
+    
     Route::get('day-book', 'dayBook')->name('dayBook');
+    Route::post('get-receipts', 'getReceipt')->name('getReceipt');
+
     Route::get('datewise', 'datewise')->name('datewise');
+    Route::post('datewise-get-receipt', 'datewiseGetReceipt')->name('datewiseGetReceipt');
 });
 
 Route::get("/state", [Controller::class, "state"])->name("state");

@@ -249,7 +249,7 @@ class FeesDetailsController extends Controller
             $r['year'] = $r->years->year;
         }
 
-        $student = AdmissionModel::where("id", $receipts[0]->student)->first(); 
+        $student = AdmissionModel::where("id", $receipts[0]->student)->withTrashed()->first(); 
 
         return view("pages.fees.receipts-std")->with([
             "receipts" => $receipts,
@@ -268,7 +268,7 @@ class FeesDetailsController extends Controller
         $tpb = CreateClass::select("total", "paid", "balance")->where(["year" => $receipt->year, "standard" => $receipt->class])->first();
         $receipt['class'] = $receipt->classes->name;
         $receipt['year'] = $receipt->years->year;
-        $student = AdmissionModel::where("id", $receipt->student)->first(); 
+        $student = AdmissionModel::where("id", $receipt->student)->withTrashed()->first();
 
         $pdf = PDF::loadView('pdfs.duplicate-receipt', [
             "receipt" => $receipt,
@@ -277,7 +277,7 @@ class FeesDetailsController extends Controller
             "tpb" => $tpb
 
         ]);
-    
+
         return $pdf->stream("Duplicate Receipt.pdf");
     }
 }

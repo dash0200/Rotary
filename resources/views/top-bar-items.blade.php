@@ -118,15 +118,15 @@
 <x-drop :name="'General Receipts'" :active="request()->routeIs('general.*')">
 
     <x-dropdown-link href="{{route('general.generalReceipts')}}" class="border-b border-b-indigo-200" :active="request()->routeIs('general.generalReceipts')">
-        Building Fund Receipt Deletion
+        General Receipts
      </x-dropdown-link>
 
     <x-dropdown-link href="{{route('general.dayBook')}}" class="border-b border-b-indigo-200" :active="request()->routeIs('general.dayBook')">
-        Building Fund Receipt
+        Day Book
      </x-dropdown-link>
 
     <x-dropdown-link href="{{route('general.datewise')}}" class="border-b border-b-indigo-200" :active="request()->routeIs('general.datewise')">
-        Building Fund Receipt Deletion
+        Datewise
      </x-dropdown-link>
     
 </x-drop>

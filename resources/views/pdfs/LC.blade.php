@@ -100,7 +100,7 @@
             <td class="fb">:</td>
 
             <td align="left" style="width: 100%;" class="bb">
-                {{$student->fname == null ? '' : strtoupper($student->fname)}}
+                {{$lc->student->fname == null ? '' : strtoupper($lc->student->fname)}}
             </td>
         </tr>
     </table>
@@ -128,7 +128,7 @@
             <td class="fb">:</td>
 
             <td align="left" style="width: 100%;" class="bb">
-                {{$student->lname==null ? '':'.'.strtoupper($student->lname)}}
+                {{$lc->student->lname==null ? '':'.'.strtoupper($lc->student->lname)}}
             </td>
         </tr>
     </table>

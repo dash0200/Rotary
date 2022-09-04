@@ -21,6 +21,6 @@ class StudyCertificate extends Model
     ];
 
     public function studentDetails() {
-        return $this->hasOne(AdmissionModel::class, 'id', 'student');
+        return $this->hasOne(AdmissionModel::class, 'id', 'student')->withTrashed();
     }
 }

@@ -20,7 +20,7 @@ class CreateClass extends Model
     ];
 
     public function getStudent() {
-        return $this->hasOne(AdmissionModel::class, 'id', 'student');
+        return $this->hasOne(AdmissionModel::class, 'id', 'student')->withTrashed();
     }
 
     public function acaYear() {

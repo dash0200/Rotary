@@ -59,7 +59,7 @@ class Controller extends BaseController
     public function getStuddent(Request $req)
     {
 
-        $student = AdmissionModel::where('id', $req->id)->first();
+        $student = AdmissionModel::where('id', $req->id)->withTrashed()->first();
         $student['doy'] = $student->date_of_adm->format("Y");
         $student['dob1'] = $student->dob->format("d-m-Y");
 
@@ -104,7 +104,7 @@ class Controller extends BaseController
             ->orWhere("fname", "LIKE", "%" . $q . "%")
             ->orWhere("mname", "LIKE", "%" . $q . "%")
             ->orWhere("lname", "LIKE", "%" . $q . "%")
-            ->limit(10)->get();
+            ->limit(10)->withTrashed()->get();
 
         $student = array();
 
@@ -119,7 +119,7 @@ class Controller extends BaseController
 
     public function getAdmStd(Request $req)
     {
-        $student = AdmissionModel::where("id", $req->id)->first();
+        $student = AdmissionModel::where("id", $req->id)->withTrashed()->first();
         $student["doy"] = $student->date_of_adm->format("Y-m-d");
         $student["dobf"] = $student->dob->format("Y-m-d");
 

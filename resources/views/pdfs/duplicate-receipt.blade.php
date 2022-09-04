@@ -109,7 +109,7 @@
     </table>
 
     <footer>
-        <table style="width: 100%;" style="margin-top: 1rem;">
+        <table style="width: 100%; margin-top: 1rem;">
             <tr>
                 <td align="right">
                     Authorised Signatory
