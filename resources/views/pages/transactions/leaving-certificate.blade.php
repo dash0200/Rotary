@@ -1,8 +1,12 @@
 <x-main-card>
-    <div>
+    <div class="flex justify-between">
         <a href="{{route('trans.searchLC')}}">
             <x-button-primary value="PRINT LC" />
         </a>
+
+        <div class="text-orange-500" id="exist">
+            
+        </div>
     </div>
     <div>
         <x-label value="Register Number" />
@@ -263,7 +267,13 @@
             },
             dataType: "json",
             success: function (res) {
-                console.log(res);
+
+                if(res[0].deleted_at !== null) {
+                    $("#exist").text("LC for the selected student has already been Generated if you click on submit the information will be update")
+                } else {
+                    $("#exist").text("")
+                }
+
                 $("#adm").html('')
                 $("#adm").append(
                     `
