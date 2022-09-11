@@ -280,6 +280,7 @@ class Controller extends BaseController
             "Dakshina Kannada",
             "Davangere",
             "Dharwad",
+            "Hubli",
             "Gadag",
             "Hassan",
             "Haveri",

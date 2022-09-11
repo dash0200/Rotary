@@ -6,9 +6,12 @@ use App\Models\AcademicYearModel;
 use App\Models\CasteModel;
 use App\Models\CategoriesModel;
 use App\Models\ClassesModel;
+use App\Models\DistrictModel;
 use App\Models\FeesDetailsModel;
 use App\Models\FeesHeadModel;
+use App\Models\StatesModel;
 use App\Models\SubcastModel;
+use App\Models\SubdistrictModel;
 use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
@@ -205,4 +208,42 @@ class MastersController extends Controller
         return response()->json(['subCast' => $subcats]);
     }
     //************** Fee Caste** ***************
+
+    public function states() {
+        return view("pages.masters.states")->with([
+            "states" => StatesModel::get(),
+            "dists" => DistrictModel::get(),
+        ]);
+    }
+
+    public function addState(Request $req) {
+        if(StatesModel::where("name", $req->state)->first() == null) {
+            StatesModel::create(["name" => $req->state]);
+        }
+        return redirect()->back();
+    }
+
+    public function addDist(Request $req) {
+
+        DistrictModel::create([
+            "name" => $req->dist,
+            "state" => $req->state
+        ]);
+
+        return redirect()->back();
+    }
+
+    public function addSub(Request $req) {
+
+        $sub = SubdistrictModel::create([
+            "name" => $req->sub,
+            "district" => $req->dist
+        ]);
+
+        if(isset($sub->id)) {
+            dd("sd");
+        }
+
+        return redirect()->back();
+    }
 }

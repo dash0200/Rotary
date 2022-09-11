@@ -3,6 +3,7 @@
 use App\Http\Controllers\BuildingFundController;
 use App\Http\Controllers\CertificateController;
 use App\Http\Controllers\Controller;
+use App\Http\Controllers\DataDump;
 use App\Http\Controllers\FeesDetailsController;
 use App\Http\Controllers\GeneralReceiptController;
 use App\Http\Controllers\MastersController;
@@ -55,6 +56,12 @@ Route::controller(MastersController::class)->prefix('master')->name('master.')->
     Route::get('search-cat', 'searchCat')->name('searchCat');
     Route::post('save-subcat', 'subCast')->name('subCast');
     Route::get('search-subcat', 'searchSubcast')->name('searchSubcast');
+
+    //states
+    Route::get("state-dist-tal", "states")->name("states");
+    Route::post("state-add", "addState")->name("addState");
+    Route::post("dist-add", "addDist")->name("addDist");
+    Route::post("sub-add", "addSub")->name("addSub");
 });
 
 
@@ -183,3 +190,9 @@ Route::get("/class", [Controller::class, "classes"])->name("class");
 Route::get("/get-student-id", [Controller::class, "getStdId"])->name("getStdId");
 Route::get("/get-student", [Controller::class, "getStuddent"])->name("getstudent");
 Route::get("/get-admstudent", [Controller::class, "getAdmStd"])->name("getAdmStd");
+
+Route::controller(DataDump::class)->group(function(){
+    Route::get("cat", "categories")->name("addCats");
+    Route::get("cast", "addRespectiveCasteToCategory")->name("addCaste");
+    Route::get("fee-head", "feeHead")->name("feeHead");
+});

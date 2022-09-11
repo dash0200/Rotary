@@ -20,7 +20,7 @@ return new class extends Migration
             $table->unsignedBigInteger('year');
             $table->foreign('year')->references('id')->on('academic_year');
 
-            $table->unsignedBigInteger('caste');
+            $table->unsignedBigInteger('caste')->nullable()->default(null);
             $table->foreign('caste')->references('id')->on('caste');
             $table->unsignedBigInteger('sub_caste')->nullable()->default(null);
             $table->foreign('sub_caste')->references('id')->on('sub_caste');
@@ -35,8 +35,8 @@ return new class extends Migration
             $table->string("fname", 50)->nullable()->default(null);
             $table->string("mname", 50)->nullable()->default(null);
             $table->string("lname", 50)->nullable()->default(null);
-            $table->string("address", 255);
-            $table->string("city");
+            $table->string("address", 255)->nullable()->default(null);
+            $table->string("city")->nullable()->default(null);
             $table->string("phone")->nullable()->default(null);
             $table->string("mobile")->nullable()->default(null);
             $table->date("dob");

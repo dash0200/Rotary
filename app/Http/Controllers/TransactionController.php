@@ -23,15 +23,19 @@ class TransactionController extends Controller
     // *************New Admission************************************************************************************************************************************************************************************
     public function newAdmission()
     {
+        $id = AdmissionModel::select("id")->orderBy("id", "DESC")->withTrashed()->first();
+        $id = $id == null ? 1 : $id->id + 1;
+
+
         return view('pages.transactions.new-admission')->with([
             'classes' => ClassesModel::get(),
             'states' => StatesModel::get(),
             'districts' => DistrictModel::select('id', 'name')->get(),
             'castes' => CasteModel::get(),
             'years' => AcademicYearModel::get(),
-            "id" => AdmissionModel::select("id")->orderBy("id", "DESC")->withTrashed()->first()->id + 1,
+            "id" => $id,
         ]);
-    }
+    }   
     public function getDistrict(Request $req)
     {
         $dist = DistrictModel::select('id', 'name')->where('state', $req->id)->get();
@@ -352,10 +356,12 @@ class TransactionController extends Controller
         $lc['student'] = $lc->studentDetails;
         $lc['studied_till'] = $lc->studiedTill;
         $lc['till_aca_year'] = $lc->tillYear;
+  
         $lc['caste'] = $lc->studentDetails->stdCast;
         $lc['subCaste'] = $lc->studentDetails->subCaste;
         $lc['subDistrict'] = $lc->studentDetails->subDistrict;
         $lc['classes'] = $lc->studentDetails->classes;
+
         $lc['dobWord'] = Controller::getWord($lc->student->dob->format("d")) ."- ".$lc->student->dob->format("F")." - ".Controller::getWord($lc->student->dob->format("Y"));
         $pdf = PDF::loadView('pdfs.LC', ["lc" => $lc]);
         return $pdf->stream($lc->student.'.pdf');

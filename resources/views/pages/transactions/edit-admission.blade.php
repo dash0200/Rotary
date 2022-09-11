@@ -79,11 +79,7 @@
             <div class="flex justify-around items-center">
                 <div class="m-2 w-full">
                     <x-label value="Address" />
-                    <textarea class="resize-y w-full h-11 rounded-md" id="address" name="address" required>
-@if (old('address') == null)
-{{ $std->address }}@else{{ old('address') }}
-@endif
-</textarea>
+                    <textarea class="resize-y w-full h-11 rounded-md" id="address" name="address" required>@if (old('address') == null){{ $std->address }}@else{{ old('address') }}@endif</textarea>
                 </div>
                 <div class="m-2 w-full">
                     <x-label value="Sur Name" />
@@ -223,7 +219,7 @@
                         @foreach ($std->sub_districts as $sub_district)
                             <option value="{{ $sub_district->id }}"
                                 @if ($std->sub_district == $sub_district->id) selected @endif>
-                                {{ $sub_district->name }} </option>
+                                {{ $sub_district->name}} </option>
                         @endforeach
                     </select>
                 </div>

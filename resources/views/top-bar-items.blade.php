@@ -14,6 +14,10 @@
         <x-dropdown-link href="{{route('master.castDetails')}}" class="border-b border-b-indigo-200" :active="request()->routeIs('master.castDetails')">
             Cast Details
         </x-dropdown-link>
+        
+        <x-dropdown-link href="{{route('master.states')}}" class="border-b border-b-indigo-200" :active="request()->routeIs('master.states')">
+           STATE-DIST-TAL
+        </x-dropdown-link>
 </x-drop>
 
 <x-drop :name="'Transactions'" :active="request()->routeIs('trans.*')">

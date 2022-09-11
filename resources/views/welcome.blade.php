@@ -146,6 +146,18 @@
                     <form action="{{route('class')}}">
                         <button type="submit">class</button>
                     </form>
+
+                    <form action="{{route('addCats')}}">
+                        <button type="submit">Add Categories</button>
+                    </form>
+
+                    <form action="{{route('addCaste')}}">
+                        <button type="submit">Add Castes</button>
+                    </form>
+
+                    <form action="{{route('feeHead')}}">
+                        <button type="submit">Fee Head</button>
+                    </form>
                 </div>
             </div>
         </div>
