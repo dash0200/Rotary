@@ -46,19 +46,11 @@
     <div class="p-4 border my-10 flex justify-around">
         <div>
              <x-label value="First Name" />
-            <x-input type="text" placeholder="First Name" name="name" />
-        </div>
-        <div>
-             <x-label value="Father Name" />
-            <x-input type="text" placeholder="Father Name" name="fname" />
-        </div>
-        <div>
-             <x-label value="Last Name" />
-            <x-input type="text" placeholder="Last Name" name="lname" />
+            <x-input type="text" placeholder="First Name" name="infname" />
         </div>
         <div>
              <x-label value="DOB" />
-            <x-input type="date" placeholder="DOB" name="dob" />
+            <x-input type="date" placeholder="DOB" name="infdob" />
         </div>
         <x-button-primary value="GET" onclick="getByInfo()" />
     </div>
@@ -238,15 +230,12 @@
     }
     
     function getByInfo() {
-
         $.ajax({
             type: "get",
             url: "{{route('trans.getByInfo')}}",
             data: {
-                name : $("input[name='name']").val(),
-                fname : $("input[name='fname']").val(),
-                lname : $("input[name='lname']").val(),
-                dob : $("input[name='dob']").val(),
+                name : $("input[name='infname']").val(),
+                dob : $("input[name='infdob']").val(),
             },
             dataType: "json",
             success: function (res) {

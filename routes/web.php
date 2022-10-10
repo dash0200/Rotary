@@ -85,7 +85,7 @@ Route::controller(TransactionController::class)->prefix('transaction')->name('tr
     Route::get('get-studdent', 'getStuddent')->name('getStuddent');
 
 
-    Route::get('get-student-id', 'getStudentId')->name('getStudentId');
+    Route::get('transaction-get-student-id', 'getStudentId')->name('getStudentId');
     Route::post('save-student-adm', 'saveAdmission')->name('saveAdmission');
     Route::get('edit-page', 'editPage')->name('editPage');
     Route::get('get-by-id', 'getByID')->name('getByID');

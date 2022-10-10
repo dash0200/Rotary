@@ -175,8 +175,10 @@ class TransactionController extends Controller
 
         $std = AdmissionModel::where("id", $req->id)->withTrashed()->first();
 
-        $std['state'] = $std->district->state->state;
-        $std['dist'] = $std->district->district;
+        if($std->district !== null) {
+            $std['state'] = $std->district->state->state;
+            $std['dist'] = $std->district->district;
+        }
 
         $std['doa'] = $std->date_of_adm->format("Y-m-d");
         $std['dob1'] = $std->dob->format("Y-m-d");
@@ -296,7 +298,6 @@ class TransactionController extends Controller
         $student['year'] = $student->acaYear;
         $student['doy'] = $student->date_of_adm->format("d-m-Y");
         $student['dob1'] = $student->dob->format("d-m-Y");
-
         $standard = CreateClass::where("student", $req->id)->orderBy("id", "DESC")->first();
 
         $qualify = ClassesModel::where('id', $standard->standard + 1)->first();
@@ -397,10 +398,7 @@ class TransactionController extends Controller
     public function getByInfo(Request $req) {
       
         if($req->dob == null) {
-
             $stds = AdmissionModel::withTrashed()->where("name", 'LIKE', '%'.strtolower($req->name).'%',)
-            ->orWhere("fname", 'LIKE', '%'.strtolower($req->fname).'%',)
-            ->orWhere("lname",'LIKE', '%'.strtolower($req->lname).'%',)
             ->limit(10)->get();
                 foreach($stds as $std) {
                     $std['dob1'] = $std["dob"]->format("d-m-Y");
@@ -409,8 +407,6 @@ class TransactionController extends Controller
         } else {
 
             $stds = AdmissionModel::withTrashed()->where("name", 'LIKE', '%'.strtolower($req->name).'%',)
-            ->orWhere("fname", 'LIKE', '%'.strtolower($req->fname).'%',)
-            ->orWhere("lname",'LIKE', '%'.strtolower($req->lname).'%',)
             ->orWhere("dob",'LIKE', '%'.strtolower($req->dob).'%',)
             ->limit(10)->get();
                 foreach($stds as $std) {

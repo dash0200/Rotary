@@ -98,12 +98,12 @@ class Controller extends BaseController
         $q = $req->term;
 
         $students = AdmissionModel::select('id', 'date_of_adm', 'sts', 'name', 'fname', 'mname', 'lname')->where("name", "LIKE", "%" . $q . "%")
-            ->orWhere("id", "LIKE", "%" . $q . "%")
-            ->orWhere("date_of_adm", "LIKE", "%" . $q . "%")
-            ->orWhere("sts", "LIKE", "%" . $q . "%")
             ->orWhere("fname", "LIKE", "%" . $q . "%")
             ->orWhere("mname", "LIKE", "%" . $q . "%")
             ->orWhere("lname", "LIKE", "%" . $q . "%")
+            ->orWhere("id", "LIKE", "%" . $q . "%")
+            ->orWhere("date_of_adm", "LIKE", "%" . $q . "%")
+            ->orWhere("sts", "LIKE", "%" . $q . "%")
             ->limit(10)->withTrashed()->get();
 
         $student = array();
