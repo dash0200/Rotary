@@ -273,7 +273,7 @@
                 } else {
                     $("#exist").text("")
                 }
-
+                console.log(res[1]);
                 $("#adm").html('')
                 $("#adm").append(
                     `
@@ -316,11 +316,11 @@
                     `
                     <x-body-tr>
                         <x-td>
-                            ${res[1].std.name}
+                            ${res[1] == '' ? '' : res[1].std.name}
                         </x-td>
 
                         <x-td>
-                            ${res[1].aca_year.year}
+                            ${res[1] == '' ? '' : res[1].aca_year.year}
                         </x-td>
                     </x-body-tr>
                     `
@@ -332,12 +332,12 @@
                     `
                 )
 
-                $("input[name='wasStd']").val(`WAS STUDYING IN ${res[1].std.name} CLASS`)
+                $("input[name='wasStd']").val(`WAS STUDYING IN ${res[1] == '' ? '' : res[1].std.name} CLASS`)
                 $("input[name='qualif']").val(`YES QUALIFIED FOR  ${res[2].name} CLASS`)
                 $("input[name='atc']").val(`${res[0].classes.name}`)
                 $("input[name='ay']").val(`${res[0].aca_year.year}`)
                 $("input[name='doa']").val(`${res[0].doy}`)
-                $("input[name='stdin']").val(`${res[1].std.name}`)
+                $("input[name='stdin']").val(`${res[1] == '' ? '' : res[1].std.name}`)
 
                 $("#name").val(`${res[0].name}`)
                 $("#fname").val(`${res[0].fname}`)

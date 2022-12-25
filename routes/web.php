@@ -173,6 +173,7 @@ Route::controller(GeneralReceiptController::class)->prefix('general-receipts')->
     Route::get('general-receipts', 'generalReceipts')->name('generalReceipts');
     Route::post('receipts', 'receipt')->name('receipt');
     
+    Route::get('singleRece', 'singleRece')->name('singleRece');
     
     Route::get('day-book', 'dayBook')->name('dayBook');
     Route::post('get-receipts', 'getReceipt')->name('getReceipt');

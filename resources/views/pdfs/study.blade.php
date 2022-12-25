@@ -162,17 +162,17 @@
         <tr>
             <td>Caste</td>
             <td>:</td>
-            <td>{{$caste}}</td>
+            <td>{{$study->cast}}</td>
         </tr>
         <tr>
             <td>Sub-Caste</td>
             <td>:</td>
-            <td>{{$subCaste}}</td>
+            <td>{{$study->subcast}}</td>
         </tr>
         <tr>
             <td>Religion</td>
             <td>:</td>
-            <td>{{$student->religion}}</td>
+            <td>{{$study->religion}}</td>
         </tr>
     </table>
 

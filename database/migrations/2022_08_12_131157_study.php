@@ -24,6 +24,9 @@ return new class extends Migration
             $table->string('from_year');
             $table->string('to_year');
             $table->string('mother_lang');
+            $table->string('cast');
+            $table->string('subcast');
+            $table->string('religion');
             
             $table->timestamps();
         });

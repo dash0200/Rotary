@@ -300,12 +300,15 @@ class TransactionController extends Controller
         $student['dob1'] = $student->dob->format("d-m-Y");
         $standard = CreateClass::where("student", $req->id)->orderBy("id", "DESC")->first();
 
-        $qualify = ClassesModel::where('id', $standard->standard + 1)->first();
+        $qualify = $standard == null ? '' : ClassesModel::where('id', $standard->standard + 1)->first();
 
-        $standard["std"] = $standard->standardClass;
-        $standard['yr'] = $standard->acaYear;
-
-
+        if($standard !== null) {
+            $standard["std"] = $standard->standardClass;
+            $standard['yr'] = $standard->acaYear;
+        } else {
+            $standard["std"] = '';
+            $standard['yr'] = '';
+        }
 
         return response()->json([$student, $standard, $qualify]);
     }

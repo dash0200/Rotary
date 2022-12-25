@@ -26,10 +26,20 @@ class GeneralReceiptController extends Controller
             "cause" => $req->cause,
         ];
 
-        GeneralReceiptModel::create($data);
+        $receipt = GeneralReceiptModel::create($data);
 
-        return redirect()->back();
+        
+        return redirect()->route('general.singleRece', ['id' => $receipt->id]);
     }
+
+    public function singleRece(Request $req) {
+        $receipt = GeneralReceiptModel::where('id', $req->id)->first();
+        $pdf = PDF::loadView("pdfs.receipt", [
+            "receipt" => $receipt
+        ]);
+        return $pdf->stream("General reciept.pdf");
+    }
+
     public function getReceipt(Request $req) {
         $receipts = GeneralReceiptModel::where("date", $req->date)->get();
         $pdf = PDF::loadView("pdfs.general-receipt", [

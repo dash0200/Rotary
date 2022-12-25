@@ -94,7 +94,7 @@
                             :
                         </x-td>
                         <x-td>
-                            {{$caste}}
+                            <input type="text" value="{{$caste}}" id="cast">
                         </x-td>
                         
                     </tr>
@@ -106,7 +106,7 @@
                             :
                         </x-td>
                         <x-td>
-                            {{$subCaste}}
+                            <input type="text" value="{{$subCaste}}" id="subcast">
                         </x-td>
                         
                     </tr>
@@ -118,7 +118,7 @@
                             :
                         </x-td>
                         <x-td>
-                            {{$student->religion}}
+                            <input type="text" value="{{$student->religion}}" id="cast">
                         </x-td>
                     </tr>
                 </tbody>
@@ -191,7 +191,10 @@
                 to_year: $("#to_yr").val(),
                 std_from: $("#std_from").val(),
                 std_to: $("#std_to").val(),
-                mt: $("#mt").val()
+                mt: $("#mt").val(),
+                cast: $("#cast").val(),
+                subcast: $("#subcast").val(),
+                religion: $("#religion").val(),
             },
             beforeSend: function(data) {
                 $("#save").html("");

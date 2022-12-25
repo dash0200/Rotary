@@ -18,6 +18,9 @@ class StudyCertificate extends Model
             "from_year",
             "to_year",
             "mother_lang",
+            'cast',
+            'subcast',
+            'religion'
     ];
 
     public function studentDetails() {

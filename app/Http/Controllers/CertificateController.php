@@ -42,12 +42,12 @@ class CertificateController extends Controller
                 $subCaste = $student->subCaste == null ? '-' : $student->subCaste->name;
 
                 $Rstd_from = CreateClass::where("student", "$req->id")->orderBy('id', 'ASC')->first();
-                $Rfrom_year = $Rstd_from->acaYear->year;
-                $Rstd_from = $Rstd_from->standardClass->name;
+                $Rfrom_year = $Rstd_from==null?'':$Rstd_from->acaYear->year;
+                $Rstd_from = $Rstd_from==null?'':$Rstd_from->standardClass->name;
     
                 $Rstd_to = CreateClass::where("student", "$req->id")->orderBy('id', 'DESC')->first();
-                $Rto_year = $Rstd_to->acaYear->year;
-                $Rstd_to = $Rstd_to->standardClass->name;
+                $Rto_year = $Rstd_to==null?'':$Rstd_to->acaYear->year;
+                $Rstd_to = $Rstd_to==null?'':$Rstd_to->standardClass->name;
 
                 return view("pages.certificate.study")->with([
                     "student" => $student,
@@ -73,23 +73,41 @@ class CertificateController extends Controller
             $student = AdmissionModel::where("id", $req->id)->withTrashed()->first();
 
             $std_from = CreateClass::where("student", "$req->id")->orderBy('id', 'ASC')->first();
+            if($std_from == null) {
+                return view("pages.certificate.study")->with([
+                    "student" => $student,
+                    "std_from" => null,
+                    "std_to" => null,
+                    "from_year" => null,
+                    "to_year" => null,
+                    "caste" => null,
+                    "subCaste" => null,
+                    'classes' => ClassesModel::get(),
+                    'years' => AcademicYearModel::get(),
+                    "print" => $print,
+                    'Rfrom_year' => null,
+                    'Rstd_from' => null,
+                    'Rto_year'=>null,
+                    'Rstd_to' =>null
+                ]);
+            }
             $from_year = $std_from->acaYear->year;
             $std_from = $std_from->standardClass->name;
 
             $std_to = CreateClass::where("student", "$req->id")->orderBy('id', 'DESC')->first();
-            $to_year = $std_to->acaYear->year;
-            $std_to = $std_to->standardClass->name;
+            $to_year = $std_to==null?'':$std_to->acaYear->year;
+            $std_to = $std_to==null?'':$std_to->standardClass->name;
             
             $caste = $student->stdCast->name;
             $subCaste = $student->subCaste == null ? '-' : $student->subCaste->name;
 
             $Rstd_from = CreateClass::where("student", "$req->id")->orderBy('id', 'ASC')->first();
-            $Rfrom_year = $Rstd_from->acaYear->year;
-            $Rstd_from = $Rstd_from->standardClass->name;
+            $Rfrom_year = $Rstd_from==null?'':$Rstd_from->acaYear->year;
+            $Rstd_from = $Rstd_from==null?'':$Rstd_from->standardClass->name;
 
             $Rstd_to = CreateClass::where("student", "$req->id")->orderBy('id', 'DESC')->first();
-            $Rto_year = $Rstd_to->acaYear->year;
-            $Rstd_to = $Rstd_to->standardClass->name;
+            $Rto_year = $Rstd_to==null?'':$Rstd_to->acaYear->year;
+            $Rstd_to = $Rstd_to==null?'':$Rstd_to->standardClass->name;
 
             
             return view("pages.certificate.study")->with([
@@ -119,6 +137,9 @@ class CertificateController extends Controller
                 "from_year"=> $req->from_year,
                 "to_year"=>$req->to_year,
                 "mother_lang"=>$req->mt,
+                'cast' => $req->cast,
+                'subcast' => $req->subcast,
+                'religion' => $req->religion,
             ];
 
             $exist = StudyCertificate::where("student", $req->id)->first();
@@ -170,8 +191,8 @@ class CertificateController extends Controller
                 $student = $bon->studentDetails;
 
                 $Rstd = CreateClass::where("student", "$req->id")->orderBy('id', 'DESC')->first();
-                $RacaYear = $Rstd->acaYear->year;
-                $Rstandard = $Rstd->standardClass->name;
+                $RacaYear = $Rstd==null?'':$Rstd->acaYear->year;
+                $Rstandard = $Rstd==null?'':$Rstd->standardClass->name;
 
                 return view("pages.certificate.bonafied")->with([
                     "student" => $student,
@@ -191,6 +212,18 @@ class CertificateController extends Controller
             $student = AdmissionModel::where("id", $req->id)->withTrashed()->first();
 
             $std = CreateClass::where("student", "$req->id")->orderBy('id', 'DESC')->first();
+            if($std == null) {
+                return view("pages.certificate.bonafied")->with([
+                    "student" => $student,
+                    "standard" => null,
+                    "acaYear" => null,
+                    'classes' => ClassesModel::get(),
+                    'years' => AcademicYearModel::get(),
+                    "print" => $print,
+                    "RacaYear" => null,
+                    "Rstandard" => null
+                ]);
+            }
             $acaYear = $std->acaYear->year;
             $standard = $std->standardClass->name;
 
@@ -253,7 +286,7 @@ class CertificateController extends Controller
                 $studying_in = CasteCertificateModel::where("student", $req->id)->first()->studying_in;
 
                 $Rstudying_in = CreateClass::where("student", $req->id)->orderby("id", "DESC")->first();
-                $Rstudying_in = $Rstudying_in->standardClass->name;
+                $Rstudying_in = $Rstudying_in==null?'':$Rstudying_in->standardClass->name;
 
                 return view("pages.certificate.caste")->with([
                     'studying_in' => $studying_in,
@@ -266,12 +299,13 @@ class CertificateController extends Controller
             }
 
             $studying_in = CreateClass::where("student", $req->id)->orderby("id", "DESC")->first();
-            $studying_in = $studying_in->standardClass->name;
+            $studying_in = $studying_in==null?'':$studying_in->standardClass->name;
 
            return view("pages.certificate.caste")->with([
             'studying_in' => $studying_in,
             'classes' => ClassesModel::get(),
             'print' => $print,
+            'Rstudying_in' => '',
             'id' => $req->id
            ]);
         }
@@ -302,9 +336,11 @@ class CertificateController extends Controller
             $caste = $student->stdCast->name;
             $subCaste = $student->subCaste == null ? "-" : $student->subCaste->name;
 
-            $std = CreateClass::where("student",$req->id)->orderBy("id", "DESC")->first()->standardClass->name;
+            // $std = CreateClass::where("student",$req->id)->orderBy("id", "DESC")->first();
 
-            $pdf = PDF::loadView('pdfs.caste', ["student" => $student, 'std' => $std, 'caste' => $caste, 'subCaste' => $subCaste, 'cert' => $casteC]);
+            $pdf = PDF::loadView('pdfs.caste', ["student" => $student, 
+            // 'std' => $std, 
+            'caste' => $caste, 'subCaste' => $subCaste, 'cert' => $casteC]);
             return $pdf->stream($student->id.'.pdf');
         }
         
@@ -327,12 +363,12 @@ class CertificateController extends Controller
                 $student = $char->studentDetails;
 
                 $Rstd_from = CreateClass::where("student", "$req->id")->orderBy('id', 'ASC')->first();
-                $Rfrom_year = $Rstd_from->acaYear->year;
-                $Rstd_from = $Rstd_from->standardClass->name;
+                $Rfrom_year = $Rstd_from==null?'':$Rstd_from->acaYear->year;
+                $Rstd_from = $Rstd_from==null?'':$Rstd_from->standardClass->name;
     
                 $Rstd_to = CreateClass::where("student", "$req->id")->orderBy('id', 'DESC')->first();
-                $Rto_year = $Rstd_to->acaYear->year;
-                $Rstd_to = $Rstd_to->standardClass->name;
+                $Rto_year = $Rstd_to==null?'':$Rstd_to->acaYear->year;
+                $Rstd_to = $Rstd_to==null?'':$Rstd_to->standardClass->name;
 
                 return view("pages.certificate.character")->with([
                     "student" => $student,
@@ -355,20 +391,20 @@ class CertificateController extends Controller
             $student = AdmissionModel::where("id", $req->id)->withTrashed()->first();
 
             $std_from = CreateClass::where("student", "$req->id")->orderBy('id', 'ASC')->first();
-            $from_year = $std_from->acaYear->year;
-            $std_from = $std_from->standardClass->name;
+            $from_year = $std_from==null?'':$std_from->acaYear->year;
+            $std_from = $std_from==null?'':$std_from->standardClass->name;
 
             $std_to = CreateClass::where("student", "$req->id")->orderBy('id', 'DESC')->first();
-            $to_year = $std_to->acaYear->year;
-            $std_to = $std_to->standardClass->name;
+            $to_year = $std_to==null?'':$std_to->acaYear->year;
+            $std_to = $std_to==null?'':$std_to->standardClass->name;
 
             $Rstd_from = CreateClass::where("student", "$req->id")->orderBy('id', 'ASC')->first();
-            $Rfrom_year = $Rstd_from->acaYear->year;
-            $Rstd_from = $Rstd_from->standardClass->name;
+            $Rfrom_year = $Rstd_from==null?'':$Rstd_from->acaYear->year;
+            $Rstd_from = $Rstd_from==null?'':$Rstd_from->standardClass->name;
 
             $Rstd_to = CreateClass::where("student", "$req->id")->orderBy('id', 'DESC')->first();
-            $Rto_year = $Rstd_to->acaYear->year;
-            $Rstd_to = $Rstd_to->standardClass->name;
+            $Rto_year = $Rstd_to==null?'':$Rstd_to->acaYear->year;
+            $Rstd_to = $Rstd_to==null?'':$Rstd_to->standardClass->name;
             
             return view("pages.certificate.character")->with([
                 "student" => $student,
@@ -429,7 +465,7 @@ class CertificateController extends Controller
                 $studying_in = CertifyModel::where("student", $req->id)->first()->studying_in;
 
                 $Rstudying_in = CreateClass::where("student", $req->id)->orderby("id", "DESC")->first();
-                $Rstudying_in = $Rstudying_in->standardClass->name;
+                $Rstudying_in = $Rstudying_in==null?'':$Rstudying_in->standardClass->name;
 
                 return view("pages.certificate.certify")->with([
                     'studying_in' => $studying_in,
@@ -442,10 +478,10 @@ class CertificateController extends Controller
             }
 
             $studying_in = CreateClass::where("student", $req->id)->orderby("id", "DESC")->first();
-            $studying_in = $studying_in->standardClass->name;
+            $studying_in = $studying_in==null?'':$studying_in->standardClass->name;
 
             $Rstudying_in = CreateClass::where("student", $req->id)->orderby("id", "DESC")->first();
-            $Rstudying_in = $Rstudying_in->standardClass->name;
+            $Rstudying_in = $Rstudying_in==null?'':$Rstudying_in->standardClass->name;
 
             return view("pages.certificate.certify")->with([
                 'studying_in' => $studying_in,
