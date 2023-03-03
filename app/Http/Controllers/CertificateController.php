@@ -121,7 +121,6 @@ class CertificateController extends Controller
                 'classes' => ClassesModel::get(),
                 'years' => AcademicYearModel::get(),
                 "print" => $print,
-
                 'Rfrom_year' => $Rfrom_year,
                 'Rstd_from' => $Rstd_from,
                 'Rto_year'=>$Rto_year,
@@ -137,9 +136,9 @@ class CertificateController extends Controller
                 "from_year"=> $req->from_year,
                 "to_year"=>$req->to_year,
                 "mother_lang"=>$req->mt,
-                'cast' => $req->cast,
-                'subcast' => $req->subcast,
-                'religion' => $req->religion,
+                // 'cast' => $req->cast,
+                // 'subcast' => $req->subcast,
+                // 'religion' => $req->religion,
             ];
 
             $exist = StudyCertificate::where("student", $req->id)->first();
@@ -162,7 +161,6 @@ class CertificateController extends Controller
             $student = $stdcert->studentDetails;
             $caste = $student->stdCast->name;
             $subCaste = $student->subCaste == null ? "-" : $student->subCaste->name;
-
             $pdf = PDF::loadView('pdfs.study', ["study" => $stdcert, "student" => $student, 'caste' => $caste, "subCaste" => $subCaste]);
             return $pdf->stream($stdcert->student.'.pdf');
         }
@@ -171,6 +169,7 @@ class CertificateController extends Controller
 
             $stdcert = StudyCertificate::where("student", $req->id)->first();
             $student = $stdcert->studentDetails;
+            // dd($student);
             $caste = $student->stdCast->name;
             $subCaste = $student->subCaste == null ? "-" : $student->subCaste->name;
 

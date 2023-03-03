@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -7,7 +8,7 @@
     <title>STUDY CERTIFICATE</title>
     <style>
         body {
-            border: 1px solid black;            
+            border: 1px solid black;
         }
 
         .fb {
@@ -19,17 +20,18 @@
         }
     </style>
 </head>
+
 <body>
-    
+
     <table style="width: 100%;" class="fb">
         <tr>
             <td align="center" style="width: 5rem; font-size: 13px;">
                 Estd. 1986
             </td>
             <td align="center" style="font-size: 14px; width: 100%;">
-               <div style="margin-bottom: 0.5rem;">
-                NAVANAGAR ROTARY EDUCATION SOCIETY'S
-               </div>
+                <div style="margin-bottom: 0.5rem;">
+                    NAVANAGAR ROTARY EDUCATION SOCIETY'S
+                </div>
             </td>
             <td style="width: 6rem; font-size: 13px;">
                 Ph: 2224144
@@ -50,8 +52,9 @@
         </tr>
         <tr>
             <td align="center">
-                <div style="font-size: 11px; padding: 0.4rem;"> 
-                    [P.Sch-Recognized by Govt. of Karnataka Vide Order No. ED.28 PGC 91 ] & [H.Sch-C8(7) PEC/N.HS/042000-01]
+                <div style="font-size: 11px; padding: 0.4rem;">
+                    [P.Sch-Recognized by Govt. of Karnataka Vide Order No. ED.28 PGC 91 ] & [H.Sch-C8(7)
+                    PEC/N.HS/042000-01]
                 </div>
             </td>
         </tr>
@@ -78,11 +81,11 @@
     <table style="width: 100%; padding-left: 0.5rem; margin-top: 0.5rem;">
         <tr>
             <td align="left" style="width: 30%;">
-                <span >KUMAR / KUMARI. </span>
+                <span>KUMAR / KUMARI. </span>
             </td>
 
             <td align="left" style="width: 100%;" class="bb fb">
-              {{strtoupper($student->name)}}
+                {{ strtoupper($student->name) }}
             </td>
         </tr>
     </table>
@@ -90,11 +93,12 @@
     <table style="width: 100%; padding-left: 0.5rem; margin-top: 0.5rem;">
         <tr>
             <td align="left" style="width: 30%;">
-                <span>Son/Daughter of  </span>
+                <span>Son/Daughter of </span>
             </td>
 
             <td align="left" style="width: 100%;" class="bb fb">
-              {{$student->fname == null ? '' : strtoupper($student->fname).' .'}} {{$student->lname==null ? '':strtoupper($student->lname)}}
+                {{ $student->fname == null ? '' : strtoupper($student->fname) . ' .' }}
+                {{ $student->lname == null ? '' : strtoupper($student->lname) }}
             </td>
         </tr>
     </table>
@@ -109,18 +113,18 @@
 
     <table style="width: 100%; padding-left: 0.5rem; margin-top: 0.5rem;">
         <tr>
-            <td >
+            <td>
                 <span>He/She Studied from</span>
             </td>
 
             <td>
-              <u class="fb">{{$study->from_stdy}}</u>              
+                <u class="fb">{{ $study->from_stdy }}</u>
             </td>
 
             <td>to</td>
 
             <td>
-                <u class="fb">{{$study->to_stdy}}</u>
+                <u class="fb">{{ $study->to_stdy }}</u>
             </td>
 
             <td>
@@ -136,10 +140,10 @@
             </td>
 
             <td align="left" style="width: 10%;">
-              <u class="fb">{{$study->from_year}}</u>              
+                <u class="fb">{{ $study->from_year }}</u>
             </td>
 
-            <td>to  <u style="margin-left: 1rem;" class="fb">{{$study->to_year}}</u></td>
+            <td>to <u style="margin-left: 1rem;" class="fb">{{ $study->to_year }}</u></td>
         </tr>
     </table>
 
@@ -150,7 +154,7 @@
             </td>
 
             <td align="center" class="bb fb">
-              {{$student->id}}              
+                {{ $student->id }}
             </td>
             <td>
                 and He/She belongs to caste
@@ -162,17 +166,17 @@
         <tr>
             <td>Caste</td>
             <td>:</td>
-            <td>{{$study->cast}}</td>
+            <td>{{ $caste }}</td>
         </tr>
         <tr>
             <td>Sub-Caste</td>
             <td>:</td>
-            <td>{{$study->subcast}}</td>
+            <td>{{ $subCaste }}</td>
         </tr>
         <tr>
             <td>Religion</td>
             <td>:</td>
-            <td>{{$study->religion}}</td>
+            <td>{{ $student->religion }}</td>
         </tr>
     </table>
 
@@ -183,7 +187,7 @@
             </td>
 
             <td align="center" class="bb fb">
-              {{$study->mother_lang}}              
+                {{ $study->mother_lang }}
             </td>
         </tr>
     </table>
@@ -199,7 +203,7 @@
     <table style="width: 100%; padding-left: 0.5rem; margin-top: 1rem;  padding-bottom: 0.6rem;">
         <tr>
             <td align="left">
-                Date : {{date("d-m-Y")}}
+                Date : {{ date('d-m-Y') }}
             </td>
         </tr>
     </table>
@@ -211,11 +215,11 @@
             </td>
 
             <td align="center">
-               <div style="margin-left: 15rem;">
-                 <div>Signature of</div>
-                 <div>Head of Instituition</div>
-                 <div>MRS. VIJAYASHREE. V. KALBURGI</div>
-               </div>
+                <div style="margin-left: 15rem;">
+                    <div>Signature of</div>
+                    <div>Head of Instituition</div>
+                    <div>MRS. VIJAYASHREE. V. KALBURGI</div>
+                </div>
             </td>
         </tr>
     </table>
@@ -234,4 +238,5 @@
     </table>
 
 </body>
+
 </html>

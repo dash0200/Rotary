@@ -143,7 +143,7 @@
                             <form action="{{route('certificate.certify')}}" method="post">
                                 @csrf
                                 <input type="text" name="id" value="${res.id}" hidden>
-                                <x-button-primary value="certificate" />
+                                <x-button-primary value="BIRTH CERTIFICATE" />
                             </form>
                         </x-td>
                     </tr>
@@ -220,7 +220,7 @@
                             <form action="{{route('certificate.certify')}}" method="post">
                                 @csrf
                                 <input type="text" name="id" value="${res.id}" hidden>
-                                <x-button-primary value="certificate" />
+                                <x-button-primary value="BIRTH CERTIFICATE" />
                             </form>
                         </x-td>
                     </tr>
@@ -300,7 +300,7 @@
                             <form action="{{route('certificate.certify')}}" method="post">
                                 @csrf
                                 <input type="text" name="id" value="${res.id}" hidden>
-                                <x-button-primary value="certificate" />
+                                <x-button-primary value="BIRTH CERTIFICATE" />
                             </form>
                         </x-td>
                     </tr>
