@@ -1,19 +1,20 @@
+<script type="text/javascript" src="{{ url('js/transliteration-input.bundle.js') }}"></script>
 <x-main-card>
-    Fees Details
+    ಶುಲ್ಕದ ವಿವರಗಳು
     <div class="p-10 flex justify-evenly">
         <div class="flex flex-col">
-            <label for="year" class="p-1">Academic Year</label>
+            <label for="year" class="p-1">ಶೈಕ್ಷಣಿಕ ವರ್ಷ</label>
             <select name="year" id="year">
-                <option value="">Select Academic Year</option>
+                <option value="">ಶೈಕ್ಷಣಿಕ ವರ್ಷ ಆಯ್ಕೆ ಮಾಡಿ</option>
                 @foreach ($years as $year)
                     <option value="{{ $year->id }}">{{ $year->year }}</option>
                 @endforeach
             </select>
         </div>
         <div class="flex flex-col">
-            <label for="class" class="p-1">Classes</label>
+            <label for="class" class="p-1">ತರಗತಿಗಳು</label>
             <select name="class" id="class">
-                <option value="">Select Class</option>
+                <option value="">ತರಗತಿಗಳು ಆಯ್ಕೆ ಮಾಡಿ </option>
                 @foreach ($classes as $class)
                     <option value="{{ $class->id }}">{{ $class->name }}</option>
                 @endforeach
@@ -32,10 +33,10 @@
                             #
                         </th>
                         <th scope="col" class="text-sm font-medium text-gray-900 px-6 py-4 text-left">
-                            Fee Description
+                            ಶುಲ್ಕ ವಿವರಣೆ
                         </th>
                         <th scope="col" class="text-sm font-medium text-gray-900 px-6 py-4 text-left">
-                            Amount
+                            ಮೊತ್ತ
                         </th>
                     </tr>
                 </thead>
@@ -55,23 +56,23 @@
             <table class="w-full h-full">
                 <tr class="border-t">
                     <td colspan="2" align="center" class="border-r">
-                        Tuition Fee
+                        ಬೋಧನಾ ಶುಲ್ಕ 
                         <x-input type="number" oninput="calculate()" name="tuition" id="tuition" />
                     </td>
                     <td class="h-full">
                         <div class="space-y-10">
                             <div>
-                                Total Fees
+                                ಒಟ್ಟು ಶುಲ್ಕಗಳು
                                 <x-input type="number" name="total" disabled id="total" />
                             </div>
 
                             <div>
-                                Total Months
+                                ಒಟ್ಟು ತಿಂಗಳುಗಳು
                                 <x-input type="number" name="moths" value="12" id="months" />
                             </div>
 
                             <div>
-                                Fees Per Annum
+                                ವಾರ್ಷಿಕ ಶುಲ್ಕಗಳು
                                 <x-input type="number" disabled name="feePerAnnum" id="feePerAnnum" />
                             </div>
                         </div>
@@ -79,21 +80,27 @@
                 </tr>
             </table>
             <div class="p-2 flex justify-between items-center loading">
-                <button value="Save" onclick="saveDetails()"
+                <button value="ಉಳಿಸಿ" onclick="saveDetails()"
                     class="inline-block px-6 py-2.5 bg-indigo-600 text-white font-medium text-xs leading-tight my-2
                 uppercase rounded shadow-md hover:bg-indigo-700 hover:shadow-lg focus:bg-indigo-700 focus:shadow-lg focus:outline-none 
                focus:ring-0 active:bg-indigo-800 active:shadow-lg transition duration-150 ease-in-out">Save
                 </button>
 
                 <a href="">
-                    <x-button-success value="Clear" />
+                    <x-button-success value="ಮರುಹೊಂದಿಸಿ" />
                 </a>
             </div>
         </div>
 
     </div>
 </x-main-card>
+<script>
+    var inputs, index;
 
+    inputs = document.getElementsByTagName('input');
+
+    enableTransliteration(document.getElementById('address'), 'kn')
+</script>
 <script>
     var descTable;
     $(document).ready(function() {

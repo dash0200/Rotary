@@ -1,16 +1,19 @@
+<script type="text/javascript" src="{{ url('js/transliteration-input.bundle.js') }}"></script>
+
 <x-main-card>
     <div class="flex justify-between">
-       <a href="{{route('trans.editPage')}}">
-         <x-button-primary value="Edit Student Information" />
-       </a>
+        <a href="{{ route('trans.editPage') }}">
+            <x-button-primary value="ವಿದ್ಯಾರ್ಥಿ ಮಾಹಿತಿಯನ್ನು ಸಂಪಾದಿಸಿ" />
+        </a>
+        {{-- <div id="google_translate_element"></div> --}}
 
-       <div>
-        Registration No: <b>{{$id}}</b>
-       </div>
+        <div>
+            ನೋಂದಣಿ ಸಂಖ್ಯೆ: <b>{{ $id }}</b>
+        </div>
     </div>
-    New Admission
+    ಹೊಸ ಪ್ರವೇಶ
     <div class="w-full bg-gray-200" style="height: 1px;"></div>
-    
+
     <form action="{{ route('trans.saveAdmission') }}" method="post">
         @csrf
         <div class="flex flex-col justify-around">
@@ -20,105 +23,103 @@
                     <x-input type="text" name="sts" placeholder="SST" />
                 </div>
                 <div class="m-2 w-full">
-                    <x-label value="Student Name" />
-                    <x-input type="text" placeholder="First Name"
+                    <x-label value="ವಿದ್ಯಾರ್ಥಿಯ ಹೆಸರು" />
+                    <x-input type="text" placeholder="ಮೊದಲ ಹೆಸರು"
                         class="{{ $errors->has('fname') ? 'is-invalid' : '' }}" name="fname" required
                         class="alphaonly" />
                 </div>
                 <div class="m-2 w-full">
-                    <x-label value="City" />
+                    <x-label value="ನಗರ" />
                     <select name="city" id="city" required class="w-full">
-                        <option value="">Select City</option>
+                        <option value="">ನಗರವನ್ನು ಆಯ್ಕೆಮಾಡಿ</option>
                         @foreach ($districts as $district)
                             <option value="{{ $district->id }}">{{ $district->name }}</option>
                         @endforeach
                     </select>
                 </div>
-            </div> 
-    
+            </div>
+
             <div class="flex justify-around">
                 <div class="m-2 w-full">
-                    <x-label value="Admission Date" />
-                    <x-input type="date" name="admDate"
-                        class="{{ $errors->has('admDate') ? 'is-invalid' : '' }}" required
-                        value="{{ date('Y-m-d') }}" placeholder="Pick Date" />
+                    <x-label value="ಪ್ರವೇಶ ದಿನಾಂಕ" />
+                    <x-input type="date" name="admDate" class="{{ $errors->has('admDate') ? 'is-invalid' : '' }}"
+                        required value="{{ date('Y-m-d') }}" placeholder="Pick Date" />
                 </div>
                 <div class="m-2 w-full">
-                    <x-label value="Father Name" />
-                    <x-input type="text" placeholder="Father Name" name="father" class="alphaonly" />
+                    <x-label value="ತಂದೆಯ ಹೆಸರು" />
+                    <x-input type="text" placeholder="Fತಂದೆಯ ಹೆಸರು" name="father" class="alphaonly" />
                 </div>
                 <div class="m-2 w-full">
-                    <x-label value="Phone Number" />
-                    <x-input type="text" placeholder="Phone" name="phone" class="numOnly" />
+                    <x-label value="ದೂರವಾಣಿ ಸಂಖ್ಯೆ" />
+                    <x-input type="text" placeholder="ದೂರವಾಣಿ" name="phone" class="numOnly" />
                 </div>
             </div>
-    
+
             <div class="flex justify-around">
                 <div class="m-2 w-full">
-                    <x-label value="Classes" />
+                    <x-label value="ತರಗತಿಗಳು" />
                     <select name="class" id="class" required
                         class="{{ $errors->has('class') ? 'is-invalid' : '' }} w-full">
-                        <option value="">Select Class</option>
+                        <option value="">ವರ್ಗ ಆಯ್ಕೆಮಾಡಿ</option>
                         @foreach ($classes as $class)
                             <option value="{{ $class->id }}">{{ $class->name }}</option>
                         @endforeach
                     </select>
                 </div>
-    
+
                 <div class="m-2 w-full">
-                    <x-label value="Mother Name" />
-                    <x-input type="text" placeholder="Mother Name" name="mname" class="alphaonly" />
+                    <x-label value="ತಾಯಿಯ ಹೆಸರು" />
+                    <x-input type="text" placeholder="ತಾಯಿಯ ಹೆಸರು" name="mname" class="alphaonly" />
                 </div>
-    
+
                 <div class="m-2 w-full">
-                    <x-label value="Mobile Number" />
-                    <x-input type="text" placeholder="Mobile" name="mobile" class="numOnly" />
+                    <x-label value="ಮೊಬೈಲ್ ನಂಬರ" />
+                    <x-input type="text" placeholder="ಮೊಬೈಲ್ ನಂಬರ" name="mobile" class="numOnly" />
                 </div>
             </div>
-    
+
             <div class="flex justify-around">
                 <div class="m-2 w-full">
-                    <x-label value="Address" />
+                    <x-label value="ವಿಳಾಸ" />
                     <textarea class="resize-y w-full h-11 rounded-md" id="address" name="address" required></textarea>
                 </div>
-    
+
                 <div class="m-2 w-full">
-                    <x-label value="Sur Name" />
-                    <x-input type="text" placeholder="Sur Name" name="surname" class="alphaonly" />
+                    <x-label value="ಉಪ ಹೆಸರು" />
+                    <x-input type="text" placeholder="ಉಪ ಹೆಸರು" name="surname" class="alphaonly" />
                 </div>
-    
+
                 <div class="m-2 w-full">
-                    <x-label value="Date of Birth" />
-                    <x-input type="date" placeholder="DOB" name="dob" required 
-                        max="{{ date('Y-m-d') }}" />
+                    <x-label value="ಹುಟ್ತಿದ ದಿನ" />
+                    <x-input type="date" placeholder="DOB" name="dob" required max="{{ date('Y-m-d') }}" />
                 </div>
             </div>
-            
+
             <div class="flex justify-around">
                 <div class="m-2 w-full">
-                    <x-label value="Birth Place" />
-                    <x-input type="text" placeholder="Birth Place" name="birthPlace" class="alphaonly" />
+                    <x-label value="ಹುಟ್ಟಿದ ಸ್ಥಳ" />
+                    <x-input type="text" placeholder="ಹುಟ್ಟಿದ ಸ್ಥಳ" name="birthPlace" class="alphaonly" />
                 </div>
-    
+
                 <div class="m-2 w-full">
-                    <x-label value="Caste" />
+                    <x-label value="ಜಾತಿ" />
                     <select name="caste" id="caste" class="w-full" required>
-                        <option value="">Select Caste</option>
+                        <option value="">ಜಾತಿ ಆಯ್ಕೆಮಾಡಿ</option>
                         @foreach ($castes as $caste)
                             <option value="{{ $caste->id }}">{{ $caste->name }}</option>
                         @endforeach
                     </select>
                 </div>
-    
+
                 <div class="m-2 w-full">
-                    <x-label value="Gender" />
+                    <x-label value="ಲಿಂಗ" />
                     <div class="flex justify-around">
                         <div class="form-check">
                             <input
                                 class="form-check-input appearance-none rounded-full h-4 w-4 border border-gray-300 bg-white checked:bg-blue-600 checked:border-blue-600 focus:outline-none transition duration-200 mt-1 align-top bg-no-repeat bg-center bg-contain float-left mr-2 cursor-pointer"
                                 value="1" type="radio" checked name="gender" id="male">
                             <label class="form-check-label inline-block text-gray-800" for="male">
-                                Male
+                                ಪುರುಷ
                             </label>
                         </div>
                         <div class="form-check">
@@ -126,106 +127,118 @@
                                 class="form-check-input appearance-none rounded-full h-4 w-4 border border-gray-300 bg-white checked:bg-blue-600 checked:border-blue-600 focus:outline-none transition duration-200 mt-1 align-top bg-no-repeat bg-center bg-contain float-left mr-2 cursor-pointer"
                                 value="0" type="radio" name="gender" id="female">
                             <label class="form-check-label inline-block text-gray-800" for="female">
-                                Female
+                                ಹೆಣ್ಣು
                             </label>
                         </div>
                     </div>
                 </div>
             </div>
-    
+
             <div class="flex justify-around">
                 <div class="m-2 w-full">
-                    <x-label value="State" />
+                    <x-label value="ರಾಜ್ಯ" />
                     <select name="states" id="states" class="w-full">
-                        <option value="">Select State</option>
+                        <option value="">ರಾಜ್ಯವನ್ನು ಆಯ್ಕೆಮಾಡಿ</option>
                         @foreach ($states as $state)
-                            <option value="{{$state->id}}">
+                            <option value="{{ $state->id }}">
                                 {{ $state->name }}
                             </option>
                         @endforeach
                     </select>
                     <input id="slectedState" type="text" hidden />
                 </div>
-    
+
                 <div class="m-2 w-full ">
-                    <x-label value="Sub Caste" />
+                    <x-label value="ಉಪ ಜಾತಿ" />
                     <select name="subc" id="subc" class="w-full"></select>
                 </div>
-    
+
                 <div class="m-2 w-full">
-                    <x-label value="Handicap ?" />
-                        <div class="flex justify-around">
-                            <div class="form-check">
-                                <input
-                                    class="form-check-input appearance-none rounded-full h-4 w-4 border border-gray-300 bg-white checked:bg-blue-600 checked:border-blue-600 focus:outline-none transition duration-200 mt-1 align-top bg-no-repeat bg-center bg-contain float-left mr-2 cursor-pointer"
-                                    value="0" type="radio" checked name="handicap" id="no">
-                                <label class="form-check-label inline-block text-gray-800" for="no">
-                                    No
-                                </label>
-                            </div>
-                            <div class="form-check">
-                                <input
-                                    class="form-check-input appearance-none rounded-full h-4 w-4 border border-gray-300 bg-white checked:bg-blue-600 checked:border-blue-600 focus:outline-none transition duration-200 mt-1 align-top bg-no-repeat bg-center bg-contain float-left mr-2 cursor-pointer"
-                                    value="1" type="radio" name="handicap" id="yes">
-                                <label class="form-check-label inline-block text-gray-800" for="yes">
-                                    Yes
-                                </label>
-                            </div>
+                    <x-label value="    ಅಂಗವಿಕಲತೆ ?" />
+                    <div class="flex justify-around">
+                        <div class="form-check">
+                            <input
+                                class="form-check-input appearance-none rounded-full h-4 w-4 border border-gray-300 bg-white checked:bg-blue-600 checked:border-blue-600 focus:outline-none transition duration-200 mt-1 align-top bg-no-repeat bg-center bg-contain float-left mr-2 cursor-pointer"
+                                value="0" type="radio" checked name="handicap" id="no">
+                            <label class="form-check-label inline-block text-gray-800" for="no">
+                                ಇಲ್ಲ
+                            </label>
                         </div>
+                        <div class="form-check">
+                            <input
+                                class="form-check-input appearance-none rounded-full h-4 w-4 border border-gray-300 bg-white checked:bg-blue-600 checked:border-blue-600 focus:outline-none transition duration-200 mt-1 align-top bg-no-repeat bg-center bg-contain float-left mr-2 cursor-pointer"
+                                value="1" type="radio" name="handicap" id="yes">
+                            <label class="form-check-label inline-block text-gray-800" for="yes">
+                                ಹೌದು
+                            </label>
+                        </div>
+                    </div>
                 </div>
             </div>
-    
+
             <div class="flex justify-around">
                 <div class="m-2 w-full">
-                    <x-label value="District" />
+                    <x-label value="ಜಿಲ್ಲೆ" />
                     <select name="district" id="district" class="w-full"> </select>
                 </div>
-    
+
                 <div class="m-2 w-full">
-                    <x-label value="cat" />
+                    <x-label value="ವರ್ಗ" />
                     <select name="cat" id="cat" class="w-full">
-                        <option value="">Select Category</option>
+                        <option value=""></option>
                     </select>
                 </div>
-    
-    
+
+
                 <div class="m-2 w-full">
-                    <x-label value="Year" />
+                    <x-label value="ವರ್ಷ" />
                     <select name="ac_year" id="year" class="w-full" required>
-                        <option value="">Academic Year</option>
+                        <option value="">ಶೈಕ್ಷಣಿಕ ವರ್ಷ</option>
                         @foreach ($years as $year)
-                            <option value="{{$year->id}}">{{ $year->year }}</option>
+                            <option value="{{ $year->id }}">{{ $year->year }}</option>
                         @endforeach
                     </select>
                 </div>
             </div>
-    
+
             <div class="flex justify-around">
                 <div class="m-2 w-full">
-                    <x-label value="Taluk" />
+                    <x-label value="ತಾಲೂಕು" />
                     <select name="taluk" id="taluk" class="w-full"> </select>
                 </div>
-    
+
                 <div class="m-2 w-full">
-                    <x-label value="Religion" />
+                    <x-label value="ಧರ್ಮ" />
                     <x-input type="text" name="religion" id="religion" />
-                </div>  
-    
+                </div>
+
                 <div class="m-2 w-full">
-                    <x-label value="nationaluty" />
+                    <x-label value="ರಾಷ್ಟ್ರೀಯತೆ" />
                     <select name="nationaluty" id="nationaluty" class="w-full">
                         <option value="INDIAN">Indian</option>
                     </select>
                 </div>
             </div>
         </div>
-            <x-label value="Previous School" />
-            <x-input type="text" name="prevSchool" />
+        <x-label value="ಹಿಂದಿನ ಶಾಲೆ" />
+        <x-input type="text" name="prevSchool" />
 
-            <input type="text" name="id" id="id" hidden>
-            <x-button-primary value="Save" class="w-full"/>
+        <input type="text" name="id" id="id" hidden>
+        <x-button-primary value="ಉಳಿಸಿ" class="w-full" />
     </form>
 </x-main-card>
+<script>
+    var inputs, index;
+
+    inputs = document.getElementsByTagName('input');
+    const nos = inputs.length
+    for (index = 1; index <= nos; index++) {
+        console.log(inputs[index]);
+        enableTransliteration(inputs[index], 'kn')
+    }
+
+    enableTransliteration(document.getElementById('name'), 'kn')
+</script>
 
 <script>
     $("#editStd").select2();
@@ -332,8 +345,8 @@
             return false;
     });
 
-    $('.alphaonly').bind('keyup blur', function() {
-        var node = $(this);
-        node.val(node.val().replace(/[^aA-zZ]/g, ''));
-    });
+    // $('.alphaonly').bind('keyup blur', function() {
+    //     var node = $(this);
+    //     node.val(node.val().replace(/[^aA-zZ]/g, ''));
+    // });
 </script>

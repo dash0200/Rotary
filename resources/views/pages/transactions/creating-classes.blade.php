@@ -1,192 +1,196 @@
 <x-app-layout>
     <div class="relative ...">
-    <div class="py-12">
-        <div id="pageLoad">
-           
-        </div>
-        <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
-            <div class="bg-white overflow-hidden shadow-xl sm:rounded-lg p-5">
-                Creating Classes
-                <div class="w-full bg-gray-200" style="height: 1px;"></div>
+        <div class="py-12">
+            <div id="pageLoad">
 
-                <div class="flex flex-col">
-                    <div class="flex space-x-3 w-full justify-around">
-                        <div class="m-2">
-                            <x-label value="Admission Date" />
-                            <select name="year" id="year">
-                                <option value="">Select Year</option>
-                                @foreach ($years as $year)
-                                    <option value="{{ $year->id }}">{{ $year->year }}</option>
-                                @endforeach
-                            </select>
-                        </div>
-                        <div class="m-2">
-                            <x-label value="Classes" />
-                            <select name="class" id="class">
-                                <option value="">Select Year</option>
-                                @foreach ($classes as $class)
-                                    <option value="{{ $class->id }}">{{ $class->name }}</option>
-                                @endforeach
-                            </select>
-                        </div>
-                        <div class="m-2">
-                            <x-label value="Total Amount" />
-                            <div class="flex flex-col justify-center">
-                                <x-input type="text" disabled id="amt" />
-                                <div id="amtError" class="text-red-500"></div>
-                                <div id="amtError2" class="text-red-500"></div>
-                                <div id="amtLink" class="text-blue-500"></div>
+            </div>
+            <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
+                <div class="bg-white overflow-hidden shadow-xl sm:rounded-lg p-5">
+                    ತರಗತಿಗಳನ್ನು ರಚಿಸುವುದು
+                    <div class="w-full bg-gray-200" style="height: 1px;"></div>
+
+                    <div class="flex flex-col">
+                        <div class="flex space-x-3 w-full justify-around">
+                            <div class="m-2">
+                                <x-label value="ಪ್ರವೇಶ ದಿನಾಂಕ" />
+                                <select name="year" id="year">
+                                    <option value="">ವರ್ಷವನ್ನು ಆಯ್ಕೆಮಾಡಿ</option>
+                                    @foreach ($years as $year)
+                                        <option value="{{ $year->id }}">{{ $year->year }}</option>
+                                    @endforeach
+                                </select>
+                            </div>
+                            <div class="m-2">
+                                <x-label value="ತರಗತಿಗಳು" />
+                                <select name="class" id="class">
+                                    <option value="">ವರ್ಷವನ್ನು ಆಯ್ಕೆಮಾಡಿ</option>
+                                    @foreach ($classes as $class)
+                                        <option value="{{ $class->id }}">{{ $class->name }}</option>
+                                    @endforeach
+                                </select>
+                            </div>
+                            <div class="m-2">
+                                <x-label value="ಒಟ್ಟು ಮೊತ್ತ" />
+                                <div class="flex flex-col justify-center">
+                                    <x-input type="text" disabled id="amt" />
+                                    <div id="amtError" class="text-red-500"></div>
+                                    <div id="amtError2" class="text-red-500"></div>
+                                    <div id="amtLink" class="text-blue-500"></div>
+                                </div>
                             </div>
                         </div>
                     </div>
-                </div>
 
+                    <x-table>
+
+                        <x-thead>
+                            <x-th>
+                                ನೋಂದಣಿ ಸಂಖ್ಯೆ
+                            </x-th>
+                            <x-th>
+                                ವಿದ್ಯಾರ್ಥಿಯ ಹೆಸರು
+                            </x-th>
+                            <x-th>
+                                ಉಪ ಹೆಸರು
+                            </x-th>
+                            <x-th>
+                                ಹಿಂದಿನ ವರ್ಗ
+                            </x-th>
+                            <x-th>
+                                ಶೈಕ್ಷಣಿಕ ವರ್ಷ
+                            </x-th>
+                            <x-th>
+                                Action
+                            </x-th>
+                        </x-thead>
+
+                        <tbody id="creating">
+
+                        </tbody>
+
+                    </x-table>
+                    <div class="flex justify-center border-t" id="saveLoad">
+                        <x-button-primary value="ಉಳಿಸಿ" onclick="createClass()" />
+                    </div>
+                    <x-table class="border-t">
+                        <h2 class="flex justify-center border-t text-blue-400">ಈಗಾಗಲೇ ವಿದ್ಯಾರ್ಥಿಗಳನ್ನು ಸೇರಿಸಲಾಗಿದೆ</h2>
+                        <x-thead>
+                            <x-th>
+                                ನೋಂದಣಿ ಸಂಖ್ಯೆ
+                            </x-th>
+                            <x-th>
+                                ವಿದ್ಯಾರ್ಥಿಯ ಹೆಸರು
+                            </x-th>
+                            <x-th>
+                                ಉಪ ಹೆಸರು
+                            </x-th>
+                            <x-th>
+                                ಶೈಕ್ಷಣಿಕ ವರ್ಷ
+                            </x-th>
+                        </x-thead>
+
+                        <tbody id="added">
+
+                        </tbody>
+
+                    </x-table>
+
+                </div>
+            </div>
+        </div>
+
+        <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
+            <div class="bg-white overflow-hidden shadow-xl sm:rounded-lg p-5">
+                <h1 class="text-xl flex justify-center text-violet-600">ಹೊಸದಾಗಿ ಪ್ರವೇಶ ಪಡೆದ ವಿದ್ಯಾರ್ಥಿಗಳು</h1>
+                <div class="flex">
+                    <div class="mb-3 xl:w-96">
+                        <div class="input-group relative flex flex-wrap items-stretch w-full mb-4 rounded">
+                            <input type="search"
+                                class="form-control relative flex-auto min-w-0 block w-full px-3 py-1.5 text-base font-normal text-gray-700 bg-white bg-clip-padding border border-solid border-gray-300 rounded transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none"
+                                id="search" placeholder="Search" aria-label="Search"
+                                aria-describedby="button-addon2">
+                        </div>
+                    </div>
+                </div>
                 <x-table>
 
                     <x-thead>
                         <x-th>
-                            Register Number
+                            ನೋಂದಣಿ ಸಂಖ್ಯೆ
                         </x-th>
                         <x-th>
-                            Student Name
+                            ವಿದ್ಯಾರ್ಥಿಯ ಹೆಸರು
                         </x-th>
                         <x-th>
-                            Sur Name
+                            ಉಪ ಹೆಸರು
                         </x-th>
                         <x-th>
-                            Previous Class
+                            ಪ್ರಸ್ತುತ ವರ್ಗ
                         </x-th>
                         <x-th>
-                            Academic Year
+                            ಗೆ ಅಡ್ಮಿಷನ್ ತೆಗೆದುಕೊಂಡರು
+                        </x-th>
+                        <x-th>
+                            ಶೈಕ್ಷಣಿಕ ವರ್ಷ
                         </x-th>
                         <x-th>
                             Action
                         </x-th>
                     </x-thead>
 
-                    <tbody id="creating">
+                    <tbody id="newstd">
 
                     </tbody>
 
                 </x-table>
-                <div class="flex justify-center border-t" id="saveLoad">
-                    <x-button-primary value="Save" onclick="createClass()" />
+            </div>
+        </div>
+
+        <div class="max-w-7xl mx-auto my-8 sm:px-6 lg:px-8">
+            <div class="bg-white overflow-hidden shadow-xl sm:rounded-lg p-5">
+                <h1 class="text-xl flex justify-center text-orange-600">ಹಿಂದಿನ ವರ್ಗ ವಿದ್ಯಾರ್ಥಿಗಳು</h1>
+                <div class="flex">
+                    <div class="mb-3 xl:w-96">
+                        <div class="input-group relative flex flex-wrap items-stretch w-full mb-4 rounded">
+                            <input type="search"
+                                class="form-control relative flex-auto min-w-0 block w-full px-3 py-1.5 text-base font-normal text-gray-700 bg-white bg-clip-padding border border-solid border-gray-300 rounded transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none"
+                                id="searchPrev" placeholder="Search" aria-label="Search"
+                                aria-describedby="button-addon2">
+                        </div>
+                    </div>
                 </div>
-                <x-table class="border-t">
-                    <h2 class="flex justify-center border-t text-blue-400">Already Added Students</h2>
+                <x-table>
+
                     <x-thead>
                         <x-th>
-                            Register Number
+                            ನೋಂದಣಿ ಸಂಖ್ಯೆ
                         </x-th>
                         <x-th>
-                            Student Name
+                            ವಿದ್ಯಾರ್ಥಿಯ ಹೆಸರು
                         </x-th>
                         <x-th>
-                            Sur Name
+                            ಉಪ ಹೆಸರು
                         </x-th>
                         <x-th>
-                            Academic Year
+                            ಪ್ರಸ್ತುತ ವರ್ಗ
+                        </x-th>
+                        <x-th>
+                            ಶೈಕ್ಷಣಿಕ ವರ್ಷ
+                        </x-th>
+                        <x-th>
+                            Action
                         </x-th>
                     </x-thead>
 
-                    <tbody id="added">
+                    <tbody id="current">
 
                     </tbody>
 
                 </x-table>
-               
             </div>
+
         </div>
     </div>
-
-    <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
-        <div class="bg-white overflow-hidden shadow-xl sm:rounded-lg p-5">
-            <h1 class="text-xl flex justify-center text-violet-600">Newly Admitted Students</h1>
-            <div class="flex">
-                <div class="mb-3 xl:w-96">
-                  <div class="input-group relative flex flex-wrap items-stretch w-full mb-4 rounded">
-                    <input type="search" class="form-control relative flex-auto min-w-0 block w-full px-3 py-1.5 text-base font-normal text-gray-700 bg-white bg-clip-padding border border-solid border-gray-300 rounded transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none"
-                           id="search" placeholder="Search" aria-label="Search" aria-describedby="button-addon2">
-                  </div>
-                </div>
-              </div>
-            <x-table>
-
-                <x-thead>
-                    <x-th>
-                        Register Number
-                    </x-th>
-                    <x-th>
-                        Student Name
-                    </x-th>
-                    <x-th>
-                        Sur Name
-                    </x-th>
-                    <x-th>
-                        Current Class
-                    </x-th>
-                    <x-th>
-                        Took Admission for
-                    </x-th>
-                    <x-th>
-                        Academic Year
-                    </x-th>
-                    <x-th>
-                        Action
-                    </x-th>
-                </x-thead>
-
-                <tbody id="newstd">
-
-                </tbody>
-
-            </x-table>
-        </div>
-    </div>
-    
-    <div class="max-w-7xl mx-auto my-8 sm:px-6 lg:px-8">
-        <div class="bg-white overflow-hidden shadow-xl sm:rounded-lg p-5">
-            <h1 class="text-xl flex justify-center text-orange-600">Previous Class Students</h1>
-            <div class="flex">
-                <div class="mb-3 xl:w-96">
-                  <div class="input-group relative flex flex-wrap items-stretch w-full mb-4 rounded">
-                    <input type="search" class="form-control relative flex-auto min-w-0 block w-full px-3 py-1.5 text-base font-normal text-gray-700 bg-white bg-clip-padding border border-solid border-gray-300 rounded transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none"
-                           id="searchPrev" placeholder="Search" aria-label="Search" aria-describedby="button-addon2">
-                  </div>
-                </div>
-              </div>
-            <x-table>
-
-                <x-thead>
-                    <x-th>
-                        Register Number
-                    </x-th>
-                    <x-th>
-                        Student Name
-                    </x-th>
-                    <x-th>
-                        Sur Name
-                    </x-th>
-                    <x-th>
-                        Current Class
-                    </x-th>
-                    <x-th>
-                        Academic Year
-                    </x-th>
-                    <x-th>
-                        Action
-                    </x-th>
-                </x-thead>
-
-                <tbody id="current">
-
-                </tbody>
-
-            </x-table>
-        </div>
-        
-    </div>
-</div>
 </x-app-layout>
 
 <script>
@@ -213,9 +217,9 @@
                 clas: clas
             },
             dataType: "json",
-           beforeSend: function(){
-            $("#pageLoad").html("");
-            $("#pageLoad").append(`  <div class="absolute bg-white bg-opacity-60 z-10 h-full w-full flex items-center justify-center">
+            beforeSend: function() {
+                $("#pageLoad").html("");
+                $("#pageLoad").append(`  <div class="absolute bg-white bg-opacity-60 z-10 h-full w-full flex items-center justify-center">
                               <div class="flex items-center">
                                 <span class="text-3xl mr-4">Loading</span>
                                 <!-- loading icon -->
@@ -229,7 +233,7 @@
                                 <!-- end loading icon -->
                               </div>
                             </div>`);
-           },
+            },
             success: function(res) {
                 console.log(res);
                 $("#pageLoad").html("");
@@ -239,9 +243,9 @@
                 let prevs = res.old;
                 $("#newstd").html("");
                 for (let i = 0; i < news.length; i++) {
-                    if(news[i].id == null ) continue;
+                    if (news[i].id == null) continue;
 
-                    if(news[i].lname == null) {
+                    if (news[i].lname == null) {
                         news[i].lname = "";
                     }
                     $("#newstd").append(
@@ -278,7 +282,7 @@
                 $("#current").html("");
                 for (let i = 0; i < prevs.length; i++) {
                     // removeAdmit(prevs[i].get_student.id)
-                    if(prevs[i].get_student.lname == null) {
+                    if (prevs[i].get_student.lname == null) {
                         prevs[i].get_student.lname = "";
                     }
                     $("#current").append(
@@ -307,13 +311,13 @@
                         </x-td>
                     </x-body-tr>`
                     )
-                    
+
                 }
 
                 $("#added").html("");
                 console.log(added);
                 for (let i = 0; i < added.length; i++) {
-                    if(added[i].get_student.lname == null) {
+                    if (added[i].get_student.lname == null) {
                         added[i].get_student.lname = "";
                     }
                     $("#added").append(
@@ -335,24 +339,26 @@
                         
                     </x-body-tr>`
                     )
-                     removeAdmit(`#trPre_${added[i].get_student.id}`)
+                    removeAdmit(`#trPre_${added[i].get_student.id}`)
                 }
 
                 $("#amtError").text("");
                 $("#amtError2").text("");
                 $("#amtLink").html("")
-            }, error: function(){
-                $("#amtError").text("You have not added fees details for the selected academic year & class");
-                $("#amtError2").text("You need to add them before creating class");
+            },
+            error: function() {
+                $("#amtError").text(
+                    "ಆಯ್ಕೆಮಾಡಿದ ಶೈಕ್ಷಣಿಕ ವರ್ಷಕ್ಕೆ ನೀವು ಶುಲ್ಕದ ವಿವರಗಳನ್ನು ಸೇರಿಸಿಲ್ಲ");
+                $("#amtError2").text("ವರ್ಗವನ್ನು ರಚಿಸುವ ಮೊದಲು ನೀವು ಅವುಗಳನ್ನು ಸೇರಿಸುವ ಅಗತ್ಯವಿದೆ");
                 $("#amtLink").append(
                     `
-                    <a href="{{route('master.feesDetails')}}"><x-button-success value="Add Fees Details" /></a>
+                    <a href="{{ route('master.feesDetails') }}"><x-button-success value="ಶುಲ್ಕದ ವಿವರಗಳನ್ನು ಸೇರಿಸಿ" /></a>
                     `
                 );
                 $("#amt").val("")
                 $("#pageLoad").html("");
             },
-            
+
         });
     }
 
@@ -433,30 +439,30 @@
         });
     });
 
-    
+
     function createClass() {
 
         let year = $("#year").val();
         let clas = $("#class").val();
         let amt = $("#amt").val();
-        if(amt == "" || amt == null) {
-            alert("Total Amount cannot be empty")
+        if (amt == "" || amt == null) {
+            alert("ಒಟ್ಟು ಮೊತ್ತವು ಖಾಲಿಯಾಗಿರಬಾರದು")
             return;
         }
         if (year == "" || year == null || clas == '' || clas == null) return;
-        
+
         let ids = [];
         $("#creating > tr").each(function() {
-            ids.push(
-                {id: $(this).attr("id").split("_")[1]}
-            )
+            ids.push({
+                id: $(this).attr("id").split("_")[1]
+            })
         });
 
-        if(ids.length < 1) return;
-        
+        if (ids.length < 1) return;
+
         $.ajax({
             type: "post",
-            url: "{{route('trans.createClass')}}",
+            url: "{{ route('trans.createClass') }}",
             data: {
                 stds: ids,
                 year: year,
@@ -464,14 +470,14 @@
                 amt: amt
             },
             dataType: "json",
-            beforeSend: function(){
+            beforeSend: function() {
                 $("#saveLoad").html("");
                 $("#saveLoad").append(
                     `<x-loading-button/>`
                 );
             },
-            success: function (res) {
-               location.reload();
+            success: function(res) {
+                location.reload();
             }
         });
     }
@@ -479,5 +485,4 @@
     function removeAdmit(id) {
         $(id).remove();
     }
-
 </script>

@@ -1,14 +1,14 @@
 <x-main-card>
-    Fees Arrears
+    ಶುಲ್ಕ ಬಾಕಿ
     <div class="w-full bg-gray-200" style="height: 1px;"></div>
 
     <form method="post" action="{{route('fees.submitFeesArrears')}}">
         @csrf
     <div class="flex justify-around">
         <div class="m-2">
-            <x-label value="Academic Year" />
+            <x-label value="ವರ್ಷವನ್ನು ಆಯ್ಕೆಮಾಡಿ" />
             <select name="year" id="year" required>
-                <option value="">Select Year</option>
+                <option value="">ವರ್ಷವನ್ನು ಆಯ್ಕೆಮಾಡಿ</option>
                 @foreach ($years as $year)
                     <option value="{{ $year->id }}">{{ $year->year }}</option>
                 @endforeach
@@ -16,16 +16,16 @@
         </div>
 
         <div class="m-2">
-            <x-label value="Class" />
+            <x-label value="ವರ್ಗ" />
             <select name="class" id="class" required>
-                <option value="">Select Year</option>
+                <option value="">ವರ್ಗವನ್ನು ಆಯ್ಕೆಮಾಡಿ</option>
                 @foreach ($classes as $classe)
                     <option value="{{ $classe->id }}">{{ $classe->name }}</option>
                 @endforeach
             </select>
         </div>
 
-        <x-button-primary value="SUBMIT" />
+        <x-button-primary value="ಸಲ್ಲಿಸು" />
     </div>
     </form>
 </x-main-card>

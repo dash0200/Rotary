@@ -71,13 +71,13 @@
 <div>
     <form action="{{route('report.feesStructure')}}" method="get">
         <select name="year" id="years">
-            <option value="">Select Year</option>
+            <option value="">ವರ್ಷವನ್ನು ಆಯ್ಕೆಮಾಡಿ</option>
             @foreach($years as $year)
                 <option value="{{ $year->id }}"> {{$year->year}} </option>
             @endforeach
         </select>
 
-        <x-button-primary value="GET" />
+        <x-button-primary value="ಪಡೆಯಿರಿ" />
     </form>
 </div>
 <div class="w-full">
@@ -94,12 +94,12 @@
             </th>
             @endforeach
             <th>
-                Annual Fees
+                ವಾರ್ಷಿಕ ಶುಲ್ಕಗಳು
             </th>
         </tr>
 
         <tr>
-            <th>NURSERY</th>
+            <th>ನರ್ಸರಿ</th>
             @if(count($nursery) > 1)
             @foreach($nursery as $n)
                 <td>{{$n->amount}}</td>
@@ -109,7 +109,7 @@
         </tr>
         <tr>
             
-            <th>LKG</th>
+            <th>ಎಲ್.ಕೆ.ಜಿ</th>
             @if(count($lkg) > 1)
             @foreach($lkg as $n)
                 <td>{{$n->amount}}</td>
@@ -119,7 +119,7 @@
         </tr>
         <tr>
             
-            <th>UKG</th>
+            <th>ಯುಕೆಜಿ</th>
             @if(count($ukg) > 1)
             @foreach($ukg as $n)
                 <td>{{$n->amount}}</td>
@@ -129,7 +129,7 @@
         </tr>
         <tr>
             
-            <th>1ST</th>
+            <th>1 ನೇ</th>
             @if(count($first) > 1)
             @foreach($first as $n)
                 <td>{{$n->amount}}</td>
@@ -139,7 +139,7 @@
         </tr>
         <tr>
             
-            <th>2ND</th>
+            <th>2ನೇ</th>
             @if(count($second) > 1)
             @foreach($second as $n)
                 <td>{{$n->amount}}</td>
@@ -149,7 +149,7 @@
         </tr>
         <tr>
             
-            <th>3RD</th>
+            <th>3ನೇ</th>
             @if(count($third) > 1)
             @foreach($third as $n)
                 <td>{{$n->amount}}</td>
@@ -159,7 +159,7 @@
         </tr>
         <tr>
             
-            <th>4TH</th>
+            <th>4ನೇ</th>
             @if(count($fourth) > 1)
             @foreach($fourth as $n)
                 <td>{{$n->amount}}</td>
@@ -169,7 +169,7 @@
         </tr>
         <tr>
             
-            <th>5TH</th>
+            <th>5ನೇ</th>
             @if(count($fifth) > 1)
             @foreach($fifth as $n)
                 <td>{{$n->amount}}</td>
@@ -179,7 +179,7 @@
         </tr>
         <tr>
             
-            <th>6TH</th>
+            <th>6ನೇ</th>
             @if(count($sixth) > 1)
             @foreach($sixth as $n)
                 <td>{{$n->amount}}</td>
@@ -189,7 +189,7 @@
         </tr>
         <tr>
             
-            <th>7TH</th>
+            <th>7ನೇ</th>
             @if(count($seventh) > 1)
             @foreach($seventh as $n)
                 <td>{{$n->amount}}</td>
@@ -199,7 +199,7 @@
         </tr>
         <tr>
             
-            <th>8TH</th>
+            <th>8ನೇ</th>
             @if(count($eighth) > 1)
             @foreach($eighth as $n)
                 <td>{{$n->amount}}</td>
@@ -209,7 +209,7 @@
         </tr>
         <tr>
             
-            <th>9TH</th>
+            <th>9ನೇ</th>
             @if(count($ninth) > 1)
             @foreach($ninth as $n)
                 <td>{{$n->amount}}</td>
@@ -219,7 +219,7 @@
         </tr>
         <tr>
             
-            <th>10TH</th>
+            <th>10ನೇ</th>
             @if(count($tenth) > 1)
             @foreach($tenth as $n)
                 <td>{{$n->amount}}</td>

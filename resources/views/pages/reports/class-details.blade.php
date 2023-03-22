@@ -1,13 +1,13 @@
 <x-main-card>
-    Class Details
+    ವರ್ಗ ವಿವರಗಳು
     <form action="{{route("report.detailsClass")}}" method="post">
         @csrf
 <div class="flex justify-around">
         <div class="m-2 w-full">
-            <x-label value="Classes" />
+            <x-label value="ತರಗತಿಗಳು" />
             <select name="class" id="class" required
                 class="{{ $errors->has('class') ? 'is-invalid' : '' }} w-full">
-                <option value="">Select Class</option>
+                <option value="">ವರ್ಗವನ್ನು ಆಯ್ಕೆಮಾಡಿ</option>
                 @foreach ($classes as $class)
                     <option value="{{ $class->id }}">{{ $class->name }}</option>
                 @endforeach
@@ -15,9 +15,9 @@
         </div>
     
         <div class="m-2 w-full">
-            <x-label value="Year" />
+            <x-label value="ವರ್ಷ" />
             <select name="year" id="year" class="w-full" required>
-                <option value="">Academic Year</option>
+                <option value="">ಶೈಕ್ಷಣಿಕ ವರ್ಷ</option>
                 @foreach ($years as $year)
                     <option value="{{$year->id}}">{{ $year->year }}</option>
                 @endforeach
@@ -25,17 +25,17 @@
         </div>
     
         <div class="m-2 w-full">
-            <x-label value="Selection Criteria" />
+            <x-label value="ಆಯ್ಕೆ ಮಾನದಂಡ" />
             <select name="critic" id="critic" class="w-full" required>
-                <option value="">Select Criteria</option>
-                <option value="IN">IN</option>
-                <option value="OUT">OUT</option>
-                <option value="BOTH" selected>BOTH</option>
+                <option value="">ಆಯ್ಕೆ ಮಾನದಂಡ</option>
+                <option value="IN">ಒಳಗೆ</option>
+                <option value="OUT">OUTಹೊರಗೆ</option>
+                <option value="BOTH" selected>ಎರಡೂ</option>
             </select>
         </div>
 
         <div>
-            <x-button-primary value="SUBMIT" />
+            <x-button-primary value="ಸಲ್ಲಿಸು" />
         </div>
 </div>
 </form>

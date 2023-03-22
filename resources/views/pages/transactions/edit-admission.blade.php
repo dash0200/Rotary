@@ -1,5 +1,7 @@
+<script type="text/javascript" src="{{ url('js/transliteration-input.bundle.js') }}"></script>
+
 <x-main-card>
-    Update Student Admission Information
+    ವಿದ್ಯಾರ್ಥಿ ಪ್ರವೇಶ ಮಾಹಿತಿಯನ್ನು ನವೀಕರಿಸಿ
     <div class="w-full bg-gray-200" style="height: 1px;"></div>
     <form action="{{ route('trans.saveAdmission') }}" method="post">
         @csrf
@@ -12,16 +14,16 @@
                 </div>
 
                 <div class="m-2 w-full">
-                    <x-label value="Student Name" />
-                    <x-input type="text" placeholder="First Name" value="{{ $std->name }}"
+                    <x-label value="ವಿದ್ಯಾರ್ಥಿಯ ಹೆಸರು" />
+                    <x-input type="text" placeholder="ವಿದ್ಯಾರ್ಥಿಯ ಹೆಸರು" value="{{ $std->name }}"
                         class="{{ $errors->has('fname') ? 'is-invalid' : '' }}" name="fname" required
                         class="alphaonly" />
                 </div>
 
                 <div class="m-2 w-full">
-                    <x-label value="City" />
+                    <x-label value="ನಗರ" />
                     <select name="city" id="city" required class="w-full">
-                        <option value="">Select City</option>
+                        <option value="">ನಗರವನ್ನು ಆಯ್ಕೆಮಾಡಿ</option>
                         @foreach ($districts as $district)
                             <option value="{{ $district->id }}" @if ($std->city == $district->id) selected @endif>
                                 {{ $district->name }}</option>
@@ -32,20 +34,20 @@
 
             <div class="flex justify-around items-center">
                 <div class="m-2 w-full">
-                    <x-label value="Admission Date" />
+                    <x-label value="ಪ್ರವೇಶ ದಿನಾಂಕ" />
                     <x-input type="date" name="admDate" value="{{ $std->doa }}"
                         class="{{ $errors->has('admDate') ? 'is-invalid' : '' }}" required
                         placeholder="Date of Admission" />
                 </div>
 
                 <div class="m-2 w-full">
-                    <x-label value="Father Name" />
-                    <x-input type="text" placeholder="Father Name" value="{{ $std->fname }}" name="father"
+                    <x-label value="ತಂದೆಯ ಹೆಸರು" />
+                    <x-input type="text" placeholder="ತಂದೆಯ ಹೆಸರು" value="{{ $std->fname }}" name="father"
                         class="alphaonly" />
                 </div>
 
                 <div class="m-2 w-full">
-                    <x-label value="Phone Number" />
+                    <x-label value="ದೂರವಾಣಿ ಸಂಖ್ಯೆ" />
                     <x-input type="text" placeholder="Phone" value="{{ $std->phone }}" name="phone"
                         class="numOnly" />
                 </div>
@@ -53,10 +55,10 @@
 
             <div class="flex justify-around items-center">
                 <div class="m-2 w-full">
-                    <x-label value="Classes" />
+                    <x-label value="ತರಗತಿಗಳು" />
                     <select name="class" id="class" required
                         class="{{ $errors->has('class') ? 'is-invalid' : '' }} w-full">
-                        <option value="">Select Class</option>
+                        <option value="">ಆಯ್ಕೆಮಾಡಿ ತರಗತಿಗಳು</option>
                         @foreach ($classes as $class)
                             <option value="{{ $class->id }}" @if ($std->class == $class->id) selected @endif>
                                 {{ $class->name }}
@@ -65,30 +67,30 @@
                     </select>
                 </div>
                 <div class="m-2 w-full">
-                    <x-label value="Mother Name" />
-                    <x-input type="text" placeholder="Mother Name" value="{{ $std->mname }}" name="mname"
+                    <x-label value="ತಾಯಿಯ ಹೆಸರು" />
+                    <x-input type="text" placeholder="ತಾಯಿಯ ಹೆಸರು" value="{{ $std->mname }}" name="mname"
                         class="alphaonly" />
                 </div>
                 <div class="m-2 w-full">
-                    <x-label value="Mobile Number" />
-                    <x-input type="text" placeholder="Mobile" value="{{ $std->mobile }}" name="mobile"
+                    <x-label value="ಮೊಬೈಲ್ ನಂಬರ" />
+                    <x-input type="text" placeholder="ಮೊಬೈಲ್ ನಂಬರ" value="{{ $std->mobile }}" name="mobile"
                         class="numOnly" />
                 </div>
             </div>
 
             <div class="flex justify-around items-center">
                 <div class="m-2 w-full">
-                    <x-label value="Address" />
+                    <x-label value="ವಿಳಾಸ" />
                     <textarea class="resize-y w-full h-11 rounded-md" id="address" name="address" required>@if (old('address') == null){{ $std->address }}@else{{ old('address') }}@endif</textarea>
                 </div>
                 <div class="m-2 w-full">
-                    <x-label value="Sur Name" />
-                    <x-input type="text" placeholder="Sur Name" value="{{ $std->lname }}" name="surname"
+                    <x-label value="ಉಪ ಹೆಸರು" />
+                    <x-input type="text" placeholder="ಉಪ ಹೆಸರು" value="{{ $std->lname }}" name="surname"
                         class="alphaonly" />
                 </div>
 
                 <div class="m-2 w-full">
-                    <x-label value="Date of Birth" />
+                    <x-label value="ಹುಟ್ತಿದ ದಿನ" />
                     <x-input type="date" value="{{ $std->dob1 }}" placeholder="DOB" name="dob" required
                         max="{{ date('Y-m-d') }}" />
                 </div>
@@ -97,13 +99,13 @@
             <div class="flex justify-around items-center">
                 <div class="m-2 w-full">
                     <x-label value="Birth Place" />
-                    <x-input type="text" placeholder="Birth Place" value="{{ $std->birth_place }}"
+                    <x-input type="text" placeholder="ಹುಟ್ಟಿದ ಸ್ಥಳ" value="{{ $std->birth_place }}"
                         name="birthPlace" class="alphaonly" />
                 </div>
                 <div class="m-2 w-full">
-                    <x-label value="Caste" />
+                    <x-label value="ಜಾತಿ" />
                     <select name="caste" id="caste" class="w-full" required>
-                        <option value="">Select Caste</option>
+                        <option value="">ಜಾತಿ ಆಯ್ಕೆಮಾಡಿ</option>
                         @foreach ($castes as $caste)
                             <option value="{{ $caste->id }}" @if ($std->caste == $caste->id) selected @endif>
                                 {{ $caste->name }}</option>
@@ -111,7 +113,7 @@
                     </select>
                 </div>
                 <div class="m-2 w-full">
-                    <x-label value="Gender" />
+                    <x-label value="ಲಿಂಗ" />
                     <div class="flex justify-around">
                         <div class="form-check">
                             <input
@@ -119,7 +121,7 @@
                                 value="1" type="radio" name="gender" id="male"
                                 @if ($std->gender == 1) checked @endif>
                             <label class="form-check-label inline-block text-gray-800" for="male">
-                                Male
+                                ಪುರುಷ
                             </label>
                         </div>
                         <div class="form-check">
@@ -128,7 +130,7 @@
                                 value="0" type="radio" name="gender" id="female"
                                 @if ($std->gender == 0) checked @endif>
                             <label class="form-check-label inline-block text-gray-800" for="female">
-                                Female
+                                ಹೆಣ್ಣು
                             </label>
                         </div>
                     </div>
@@ -136,9 +138,9 @@
             </div>
             <div class="flex justify-around items-center">
                 <div class="m-2 w-full">
-                    <x-label value="State" />
+                    <x-label value="ರಾಜ್ಯ" />
                     <select name="states" id="states" class="w-full">
-                        <option value="">Select State</option>
+                        <option value="">ರಾಜ್ಯವನ್ನು ಆಯ್ಕೆಮಾಡಿ</option>
                         @foreach ($states as $state)
                             <option value="{{ $state->id }}" @if ($std->state == $state->id) selected @endif>
                                 {{ $state->name }}
@@ -148,7 +150,7 @@
                     <input id="slectedState" type="text" hidden />
                 </div>
                 <div class="m-2 w-full ">
-                    <x-label value="Sub Caste" />
+                    <x-label value="ಉಪ ಜಾತಿ" />
                     <select name="subc" id="subc" class="w-full">
                         @foreach ($std->sub_castes as $sub_caste)
                             <option value="{{ $sub_caste->id }}" @if ($std->sub_caste == $sub_caste->id) selected @endif>
@@ -157,7 +159,7 @@
                     </select>
                 </div>
                 <div class="m-2 w-full">
-                    <x-label value="Handicap ?" />
+                    <x-label value="ಅಂಗವಿಕಲತೆ ?" />
                     <div class="flex justify-around">
                         <div class="form-check">
                             <input
@@ -165,7 +167,7 @@
                                 value="0" type="radio" checked name="handicap" id="no"
                                 @if ($std->handicap == 0) checked @endif>
                             <label class="form-check-label inline-block text-gray-800" for="no">
-                                No
+                                ಇಲ್ಲ
                             </label>
                         </div>
                         <div class="form-check">
@@ -174,7 +176,7 @@
                                 value="1" type="radio" name="handicap" id="yes"
                                 @if ($std->handicap == 1) checked @endif>
                             <label class="form-check-label inline-block text-gray-800" for="yes">
-                                Yes
+                                ಹೌದು
                             </label>
                         </div>
                     </div>
@@ -182,7 +184,7 @@
             </div>
             <div class="flex justify-around items-center">
                 <div class="m-2 w-full">
-                    <x-label value="District" />
+                    <x-label value="ಜಿಲ್ಲೆ" />
                     <select name="district" id="district" class="w-full">
                         @foreach ($districts as $district)
                             <option value="{{ $district->id }}" @if ($std->dist == $district->id) selected @endif>
@@ -192,7 +194,7 @@
                     </select>
                 </div>
                 <div class="m-2 w-full">
-                    <x-label value="cat" />
+                    <x-label value="ವರ್ಗ" />
                     <select name="cat" id="cat" class="w-full">
                         @foreach ($categories as $cat)
                             <option value="{{ $cat->id }}" @if ($std->category == $cat->id) selected @endif>
@@ -201,9 +203,9 @@
                     </select>
                 </div>
                 <div class="m-2 w-full">
-                    <x-label value="Year" />
+                    <x-label value="ವರ್ಷ" />
                     <select name="ac_year" id="year" class="w-full" required>
-                        <option value="">Academic Year</option>
+                        <option value="">ಶೈಕ್ಷಣಿಕ ವರ್ಷ</option>
                         @foreach ($years as $year)
                             <option value="{{ $year->id }}" @if ($std->year == $year->id) selected @endif>
                                 {{ $year->year }}</option>
@@ -214,7 +216,7 @@
 
             <div class="flex justify-around items-center">
                 <div class="m-2 w-full">
-                    <x-label value="Taluk" />
+                    <x-label value="ತಾಲೂಕು" />
                     <select name="taluk" id="taluk" class="w-full">
                         @foreach ($std->sub_districts as $sub_district)
                             <option value="{{ $sub_district->id }}"
@@ -224,23 +226,36 @@
                     </select>
                 </div>
                 <div class="m-2 w-full">
-                    <x-label value="Religion" />
+                    <x-label value="ಧರ್ಮ" />
                     <x-input type="text" value="{{ $std->religion }}" name="religion" id="religion" />
                 </div>
                 <div class="m-2 w-full">
-                    <x-label value="nationaluty" />
+                    <x-label value="ರಾಷ್ಟ್ರೀಯತೆ" />
                     <select name="nationaluty" id="nationaluty" class="w-full">
                         <option value="IN">Indian</option>
                     </select>
                 </div>
             </div>
 
-            <x-label value="Previous School" />
+            <x-label value="ಹಿಂದಿನ ಶಾಲೆ" />
             <x-input type="text" value="{{ $std->prev_school }}" name="prevSchool" />
             <x-button-primary value="Save" />
         </div>
     </form>
 </x-main-card>
+
+<script>
+    var inputs, index;
+
+    inputs = document.getElementsByTagName('input');
+    const nos = inputs.length
+    for (index = 1; index <= nos; index++) {
+        console.log(inputs[index]);
+        enableTransliteration(inputs[index], 'kn')
+    }
+
+    enableTransliteration(document.getElementById('address'), 'kn')
+</script>
 
 <script>
     $("#editStd").select2();
@@ -340,10 +355,5 @@
         if ((event.which != 46 || $(this).val().indexOf('.') != -1) && (event.which < 48 || event.which >
                 57))
             return false;
-    });
-
-    $('.alphaonly').bind('keyup blur', function() {
-        var node = $(this);
-        node.val(node.val().replace(/[^aA-zZ]/g, ''));
     });
 </script>

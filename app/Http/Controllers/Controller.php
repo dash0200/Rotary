@@ -129,26 +129,27 @@ class Controller extends BaseController
         return response()->json($student);
     }
 
-    public function dashboard() {
+    public function dashboard()
+    {
 
         $totalStudents = AdmissionModel::get()->count();
 
         $nurseryStudents = CreateClass::where("standard", 1)->get()->count();
-        
+
         $year = '';
 
-        if((int)date("m") >= 6) {
+        if ((int)date("m") >= 6) {
             $crr = date("Y");
-            $nxt = date("Y")[2].date("Y")[3];
-            $year = $crr."-".(int)$nxt+1;
+            $nxt = date("Y")[2] . date("Y")[3];
+            $year = $crr . "-" . (int)$nxt + 1;
         } else {
-            $crr = date("Y")-1;
-            $nxt = date("Y")[2].date("Y")[3];
-            $year = $crr."-".(int)$nxt;
+            $crr = date("Y") - 1;
+            $nxt = date("Y")[2] . date("Y")[3];
+            $year = $crr . "-" . (int)$nxt;
         }
 
         $year = AcademicYearModel::where('year', $year)->first();
-        
+
         $nurseryStudents = CreateClass::where(["standard" => 1, 'year' => $year->id])->get()->count();
         $lkgStudents = CreateClass::where(["standard" => 2, 'year' => $year->id])->get()->count();
         $ukgStudents = CreateClass::where(["standard" => 3, 'year' => $year->id])->get()->count();
@@ -188,31 +189,32 @@ class Controller extends BaseController
         ]);
     }
 
-    public function getCurrentAcadmicYear() {
-        
+    public function getCurrentAcadmicYear()
+    {
+
         $crr = date("Y");
-        $nxt = date("Y")[2].date("Y")[3];
-        $year = $crr."-".(int)$nxt+1;
+        $nxt = date("Y")[2] . date("Y")[3];
+        $year = $crr . "-" . (int)$nxt + 1;
         return $year;
-        
     }
 
-    public function moneyFormatIndia($num) {
-        $explrestunits = "" ;
-        if(strlen($num)>3) {
-            $lastthree = substr($num, strlen($num)-3, strlen($num));
-            $restunits = substr($num, 0, strlen($num)-3); // extracts the last three digits
-            $restunits = (strlen($restunits)%2 == 1)?"0".$restunits:$restunits; // explodes the remaining digits in 2's formats, adds a zero in the beginning to maintain the 2's grouping.
+    public function moneyFormatIndia($num)
+    {
+        $explrestunits = "";
+        if (strlen($num) > 3) {
+            $lastthree = substr($num, strlen($num) - 3, strlen($num));
+            $restunits = substr($num, 0, strlen($num) - 3); // extracts the last three digits
+            $restunits = (strlen($restunits) % 2 == 1) ? "0" . $restunits : $restunits; // explodes the remaining digits in 2's formats, adds a zero in the beginning to maintain the 2's grouping.
             $expunit = str_split($restunits, 2);
-            for($i=0; $i<sizeof($expunit); $i++) {
+            for ($i = 0; $i < sizeof($expunit); $i++) {
                 // creates each of the 2's group and adds a comma to the end
-                if($i==0) {
-                    $explrestunits .= (int)$expunit[$i].","; // if is first value , convert into integer
+                if ($i == 0) {
+                    $explrestunits .= (int)$expunit[$i] . ","; // if is first value , convert into integer
                 } else {
-                    $explrestunits .= $expunit[$i].",";
+                    $explrestunits .= $expunit[$i] . ",";
                 }
             }
-            $thecash = $explrestunits.$lastthree;
+            $thecash = $explrestunits . $lastthree;
         } else {
             $thecash = $num;
         }
@@ -222,35 +224,35 @@ class Controller extends BaseController
     public function state()
     {
         $states = [
-            'Andhra Pradesh',
-            'Arunachal Pradesh',
-            'Assam',
-            'Bihar',
-            'Chhattisgarh',
-            'Goa',
-            'Gujarat',
-            'Haryana',
-            'Himachal Pradesh',
-            'Jharkhand',
-            'Karnataka',
-            'Kerala',
-            'Madhya Pradesh',
-            'Maharashtra',
-            'Manipur',
-            'Meghalaya',
-            'Mizoram',
-            'Nagaland',
-            'Odisha',
-            'Punjab',
-            'Rajasthan',
-            'Sikkim',
-            'Tamil Nadu',
-            'Telangana',
-            'Tripura',
-            'Uttar Pradesh',
-            'Uttarakhand Dehradun ',
-            'Gairsain ',
-            'West Bengal'
+            'ಆಂಧ್ರ ಪ್ರದೇಶ',
+            'ಅರುಣಾಚಲ ಪ್ರದೇಶ',
+            'ಅಸ್ಸಾಂ',
+            'ಬಿಹಾರ',
+            'ಛತ್ತೀಸ್‌ಗಢ',
+            'ಗೋವಾ',
+            'ಗುಜರಾತ್',
+            'ಹರಿಯಾಣ',
+            'ಹಿಮಾಚಲ ಪ್ರದೇಶ',
+            'ಜಾರ್ಖಂಡ್',
+            'ಕರ್ನಾಟಕ',
+            'ಕೇರಳ',
+            'ಮಧ್ಯ ಪ್ರದೇಶ',
+            'ಮಹಾರಾಷ್ಟ್ರ',
+            'ಮಣಿಪುರ',
+            'ಮೇಘಾಲಯ',
+            'ಮಿಜೋರಾಂ',
+            'ನಾಗಾಲ್ಯಾಂಡ್',
+            'ಒಡಿಶಾ',
+            'ಪಂಜಾಬ್',
+            'ರಾಜಸ್ಥಾನ',
+            'ಸಿಕ್ಕಿಂ',
+            'ತಮಿಳುನಾಡು',
+            'ತೆಲಂಗಾಣ',
+            'ತ್ರಿಪುರ',
+            'ಉತ್ತರ ಪ್ರದೇಶ',
+            'ಉತ್ತರಾಖಂಡ ಡೆಹ್ರಾಡೂನ್',
+            'ಗೈರ್ಸೈನ್',
+            'ಪಶ್ಚಿಮ ಬಂಗಾಳ',
         ];
 
         for ($i = 0; $i < count($states); $i++) {
@@ -267,37 +269,56 @@ class Controller extends BaseController
     public function district()
     {
         $district = [
-            "Bagalkot",
-            "Ballari (Bellary)",
-            "Belagavi (Belgaum)",
-            "Bengaluru (Bangalore) Rural",
-            "Bengaluru (Bangalore) Urban",
-            "Bidar",
-            "Chamarajanagar",
-            "Chikballapur",
-            "Chikkamagaluru (Chikmagalur)",
-            "Chitradurga",
-            "Dakshina Kannada",
-            "Davangere",
-            "Dharwad",
-            "Hubli",
-            "Gadag",
-            "Hassan",
-            "Haveri",
-            "Kalaburagi (Gulbarga)",
-            "Kodagu",
-            "Kolar",
-            "Koppal",
-            "Mandya",
-            "Mysuru (Mysore)",
-            "Raichur",
-            "Ramanagara",
-            "Shivamogga (Shimoga)",
-            "Tumakuru (Tumkur)",
-            "Udupi",
-            "Uttara Kannada (Karwar)",
-            "Vijayapura (Bijapur)",
-            "Yadgir",
+            'ಬಾಗಲಕೋಟೆ',
+            'ಬಳ್ಳಾರಿ',
+            'ಬೆಳಗಾವಿ',
+            'ಬೆಂಗಳೂರು',
+            'ಬೆಂಗಳೂರು2',
+            'ಬೀದರ್',
+            'ಚಾಮರಾಜನಗರ',
+            'ಚಿಕ್ಕಬಳ್ಳಾಪುರ',
+            'ಚಿಕ್ಕಮಗಳೂರು',
+            'ಚಿತ್ರದುರ್ಗ',
+            'ದಕ್ಷಿಣ ಕನ್ನಡ',
+            'ದಾವಣಗೆರೆ',
+            'ಧಾರವಾಡ',
+            'ಗದಗ',
+            'ಹಾಸನ',
+            'ಹಾವೇರಿ',
+            'ಕಲಬುರಗಿ',
+            'ಕೊಡಗು',
+            'ಕೋಲಾರ',
+            'ಕೊಪ್ಪಳ',
+            'ಮಂಡ್ಯ',
+            'ಮೈಸೂರು',
+            'ರಾಯಚೂರು',
+            'ರಾಮನಗರ',
+            'ಶಿವಮೊಗ್ಗ',
+            'ತುಮಕೂರು',
+            'ಉಡುಪಿ',
+            'ಉತ್ತರ ಕನ್ನಡ',
+            'ವಿಜಯಪುರ',
+            'ಯಾದಗಿರಿ',
+            'ಬೆಂಗಳೂರು ಗ್ರಾಮಾಂತರ',
+            'ಬೆಂಗಳೂರು ನಗರ',
+            'ಹುಬ್ಬಳ್ಳಿ',
+            'ಗದಗ',
+            'ಹಾಸನ',
+            'ಹಾವೇರಿ',
+            'ಕಲಬುರಗಿ (ಗುಲ್ಬರ್ಗ)',
+            'ಕೊಡಗು',
+            'ಕೋಲಾರ',
+            'ಕೊಪ್ಪಳ',
+            'ಮಂಡ್ಯ',
+            'ಮೈಸೂರು (ಮೈಸೂರು)',
+            'ರಾಯಚೂರು',
+            'ರಾಮನಗರ',
+            'ಶಿವಮೊಗ್ಗ (ಶಿವಮೊಗ್ಗ)',
+            'ತುಮಕೂರು (ತುಮಕೂರು)',
+            'ಉಡುಪಿ',
+            'ಉತ್ತರ ಕನ್ನಡ (ಕಾರವಾರ)',
+            'ವಿಜಯಪುರ (ಬಿಜಾಪುರ)',
+            'ಯಾದಗಿರಿ',
         ];
 
         for ($i = 0; $i < count($district); $i++) {
@@ -316,280 +337,280 @@ class Controller extends BaseController
 
         $subDist = [
             "district_1" => [
-                "Jamkhandi",
-                "Badami",
-                "Hungund",
-                "Mudhol",
-                "Bagalkot",
-                "Bilgi",
-                "Mahalingpur",
+                "ಜಮಖಂಡಿ",
+                "ಬಾದಾಮಿ",
+                "ಹುನಗುಂಡ್",
+                "ಮುಧೋಳ",
+                "ಬಾಗಲಕೋಟ",
+                "ಬಿಲ್ಗಿ",
+                "ಮಹಾಲಿಂಗಪುರ",
             ],
             "district_2" => [
-                "Hadagalli",
-                "Hagaribommanahalli",
-                "Hospet",
-                "Siruguppa",
-                "Bellary",
-                "Sandur",
-                "Kudligi",
+                "ಹಡಗಲ್ಲಿ",
+                "ಹಗರಿಬೊಮ್ಮನಹಳ್ಳಿ",
+                "ಹೊಸಪೇಟೆ",
+                "ಸಿರುಗುಪ್ಪ",
+                "ಬಳ್ಳಾರಿ",
+                "ಸಂಡೂರ್",
+                "ಕೂಡ್ಲಿಗಿ",
             ],
 
             "district_3" => [
-                "Athani",
-                "Bailhongal",
-                "Belagavi",
-                "Chikkodi",
-                "Gokak",
-                "Hukkeri",
-                "Khanapur",
-                "Raibag",
-                "Ramdurg",
-                "Soudatti",
-                "Kittur",
-                "Nippani",
-                "Kagawad",
-                "Mudalagi",
-                "Yaragatii",
+                "ಅಥಣಿ",
+                "ಬೈಲಹೊಂಗಲ",
+                "ಬೆಳಗಾವಿ",
+                "ಚಿಕ್ಕೋಡಿ",
+                "ಗೋಕಾಕ್",
+                "ಹುಕ್ಕೇರಿ",
+                "ಖಾನಾಪುರ",
+                "ರಾಯಬಾಗ್",
+                "ರಾಮದುರ್ಗ",
+                "ಸೌದತ್ತಿ",
+                "ಕಿತ್ತೂರು",
+                "ನಿಪ್ಪಾಣಿ",
+                "ಕಾಗವಾಡ",
+                "ಮೂಡಲಗಿ",
+                "ಯರಗತಿ",
             ],
 
             "district_4" => [
-                "Dod Ballapur",
-                "Hosakote ",
-                "Nelamangala ",
-                "Devanahalli ",
+                "ದೊಡ್ ಬಳ್ಳಾಪುರ",
+                "ಹೊಸಕೋಟೆ",
+                "ನೆಲಮಂಗಲ",
+                "ದೇವನಹಳ್ಳಿ",
             ],
 
             "district_6" => [
-                "Aurad",
-                "Basavakalyan",
-                "Bhalki",
-                "Bidar",
-                "Humnabad",
+                "ಔರಾದ್",
+                "ಬಸವಕಲ್ಯಾಣ",
+                "ಭಾಲ್ಕಿ",
+                "ಬೀದರ್",
+                "ಹುಮ್ನಾಬಾದ್",
             ],
 
             "district_7" => [
-                "Kollegal",
-                "Chamarajanagar",
-                "Gundlupet",
-                "Yelandur",
+                "ಕೊಳ್ಳೇಗಾಲ",
+                "ಚಾಮರಾಜನಗರ",
+                "ಗುಂಡ್ಲುಪೇಟೆ",
+                "ಯಳಂದೂರು",
             ],
 
             "district_19" => [
-                "Kolar",
-                "Bangarpet",
-                "Malur",
-                "Mulbagilu",
-                "Srinivaspura",
-                "Kolar Gold Fields",
+                "ಕೋಲಾರ",
+                "ಬಂಗಾರಪೇಟೆ",
+                "ಮಾಲೂರು",
+                "ಮುಳಬಾಗಿಲು",
+                "ಶ್ರೀನಿವಾಸಪುರ",
+                "ಕೋಲಾರ ಗೋಲ್ಡ್ ಫೀಲ್ಡ್ಸ್",
             ],
             "district_18" => [
-                "Somvarpet",
-                "Virajpet",
-                "Madikeri",
+                "ಸೋಮವಾರಪೇಟೆ",
+                "ವಿರಾಜಪೇಟೆ",
+                "ಮಡಿಕೇರಿ",
             ],
             "district_17" => [
-                "Kalaburagi",
-                "Aland",
-                "Jewargi",
-                "Afzalpur",
-                "Kalagi",
-                "Kamalapur",
-                "Shahbad",
-                "Yadrami",
+                "ಕಲಬುರಗಿ",
+                "ಅಲಂಡ್",
+                "ಜೇವರ್ಗಿ",
+                "ಅಫಜಲಪುರ",
+                "ಕಳಗಿ",
+                "ಕಮಲಾಪುರ",
+                "ಶಹಾಬಾದ್",
+                "ಯಡ್ರಾಮಿ",
             ],
             "district_16" => [
-                "Byadgi",
-                "Hangal",
-                "Haveri",
-                "Hirekerur",
-                "Ranebennur",
-                "Savanur",
-                "Shiggaon",
+                "ಬ್ಯಾಡಗಿ",
+                "ಹಂಗಲ್",
+                "ಹಾವೇರಿ",
+                "ಹಿರೇಕೆರೂರು",
+                "ರಾಣೆಬೆನ್ನೂರು",
+                "ಸವಣೂರು",
+                "ಶಿಗ್ಗಾಂವ್",
             ],
             "district_15" => [
-                "Alur",
-                "Arkalgud",
-                "Arsikere",
-                "Belur",
-                "Channarayapatna",
-                "Hassan",
-                "Hole Narsipur",
-                "Sakleshpur",
+                "ಆಲೂರ್",
+                "ಅರಕಲಗೂಡು",
+                "ಅರಸಿಕೆರೆ",
+                "ಬೇಲೂರು",
+                "ಚನ್ನರಾಯಪಟ್ಟಣ",
+                "ಹಾಸನ",
+                "ಹೊಳೆ ನರಸೀಪುರ",
+                "ಸಕಲೇಶಪುರ",
             ],
             "district_14" => [
-                "Gadag",
-                "Ron",
-                "Shirhatti",
-                "Mundargi",
-                "Nargund",
+                "ಗದಗ",
+                "ರಾನ್",
+                "ಶಿರಹಟ್ಟಿ",
+                "ಮುಂಡರಗಿ",
+                "ನರಗುಂದ",
             ],
             "district_13" => [
-                "Hubli Dharwad",
-                "Dharwad",
-                "Navalgund",
-                "Kundgol",
-                "Kalghatgi",
-                "Hubli",
+                "ಹುಬ್ಬಳ್ಳಿ ಧಾರವಾಡ",
+                "ಧಾರವಾಡ",
+                "ನವಲಗುಂದ",
+                "ಕುಂಡಗೋಲ್",
+                "ಕಲಘಟಗಿ",
+                "ಹುಬ್ಬಳ್ಳಿ",
             ],
             "district_12" => [
-                "Davanagere",
-                "Channagiri",
-                "Harapanahalli",
-                "Harihar",
-                "Honnali",
-                "Jagalur",
+                "ದಾವಣಗೆರೆ",
+                "ಚನ್ನಗಿರಿ",
+                "ಹರಪನಹಳ್ಳಿ",
+                "ಹರಿಹರ",
+                "ಹೊನ್ನಾಳಿ",
+                "ಜಗಳೂರು",
             ],
             "district_11" => [
-                "Mangalore",
-                "Bantval",
-                "Puttur",
-                "Beltangadi",
-                "Sulya",
+                "ಮಂಗಳೂರು",
+                "ಬಂಟ್ವಾಳ",
+                "ಪುತ್ತೂರು",
+                "ಬೆಳ್ತಂಗಡಿ",
+                "ಸುಳ್ಯ",
             ],
             "district_10" => [
-                "Chitradurga",
-                "Challakere",
-                "Hiriyur",
-                "Hosadurga",
-                "Holalkere",
-                "Molakalmuru",
+                "ಚಿತ್ರದುರ್ಗ",
+                "ಚಳ್ಳಕೆರೆ",
+                "ಹಿರಿಯೂರು",
+                "ಹೊಸದುರ್ಗ",
+                "ಹೊಳಲ್ಕೆರೆ",
+                "ಮೊಳಕಾಲ್ಮುರು",
             ],
             "district_9" => [
-                "Chikmagalur",
-                "Kadur",
-                "Tarikere",
-                "Mudigere",
-                "Koppa",
-                "Narasimharajapura",
-                "Sringeri",
+                "ಚಿಕ್ಕಮಗಳೂರು",
+                "ಕಡೂರ್",
+                "ತರೀಕೆರೆ",
+                "ಮುದಿಗೆರೆ",
+                "ಕೊಪ್ಪ",
+                "ನರಸಿಂಹರಾಜಪುರ",
+                "ಶೃಂಗೇರಿ",
             ],
             "district_8" => [
-                "Chintamani",
-                "Gauribidanur",
-                "Sidlaghatta",
-                "Chikkaballapura",
-                "Bagepalli",
-                "Gudibanda",
+                "ಚಿಂತಾಮಣಿ",
+                "ಗೌರಿಬಿದನೂರು",
+                "ಸಿಡ್ಲಘಟ್ಟ",
+                "ಚಿಕ್ಕಬಳ್ಳಾಪುರ",
+                "ಬಾಗೇಪಲ್ಲಿ",
+                "ಗುಡಿಬಂಡಾ",
             ],
 
             "district_30" => [
-                "Shorapur",
-                "Shahpur",
-                "Yadgir",
+                "ಶೋರಾಪುರ",
+                "ಶಹಪುರ್",
+                "ಯಾದಗಿರಿ",
             ],
             "district_29" => [
-                "Kanamadi",
-                "Bijjaragi",
-                "Alaginal",
-                "Gonasagi",
-                "Kallakavatagi",
-                "Hubanur",
-                "Indiranagar",
-                "Yatnal",
-                "Takkalaki",
-                "Jalageri",
-                "Arakeri",
-                "Siddapura",
-                "Baratagi",
-                "Hanchinal",
-                "Itangihal",
-                "Lohagaon",
-                "Sevalalnagar",
-                "Dhanaragi",
-                "Siddapur",
-                "Malakandevarahatti",
-                "Somadevarahatti",
-                "Babanagar",
-                "Honawad",
-                "Kotyal",
-                "Tajapur",
-                "Harnal",
-                "Ratnapura",
-                "Tikota",
-                "Rampur",
+                "ಕನಮಡಿ",
+                "ಬಿಜ್ಜರಗಿ",
+                "ಅಲಜಿನಲ್",
+                "ಗೊಣಸಗಿ",
+                "ಕಲ್ಲಕವಟಗಿ",
+                "ಹುಬನೂರು",
+                "ಇಂದಿರಾನಗರ",
+                "ಯತ್ನಾಳ್",
+                "ಟಕ್ಕಳಕಿ",
+                "ಜಲಗೇರಿ",
+                "ಅರಕೇರಿ",
+                "ಸಿದ್ದಾಪುರ",
+                "ಬರಟಗಿ",
+                "ಹಂಚಿನಾಲ್",
+                "ಇಟಂಗಿಹಾಳ್",
+                "ಲೋಹಗಾಂವ್",
+                "ಸೇವಾಲಾಲ್ನಗರ",
+                "ಧನರಾಗಿ",
+                "ಸಿದ್ದಾಪುರ",
+                "ಮಲಕದೇವರಹಟ್ಟಿ",
+                "ಸೋಮದೇವರಹಟ್ಟಿ",
+                "ಬಾಬಾನಗರ",
+                "ಹೊನವಾಡ",
+                "ಕೋಟ್ಯಾಲ್",
+                "ತಾಜಾಪುರ",
+                "ಹರ್ನಾಲ್",
+                "ರತ್ನಾಪುರ",
+                "ಟಿಕೋಟಾ",
+                "ರಾಂಪುರ್",
             ],
             "district_28" => [
-                "Karwar",
-                "Supa",
-                "Haliyal",
-                "Yellapur",
-                "Mundgod",
-                "Sirsi",
-                "Ankola",
-                "Kumta",
-                "Siddapur",
-                "Honavar",
-                "Bhatka",
+                "ಕಾರವಾರ",
+                "ಸೂಪಾ",
+                "ಹಳಿಯಾಳ",
+                "ಯಲ್ಲಾಪುರ",
+                "ಮುಂಡಗೋಡ್",
+                "ಸಿರ್ಸಿ",
+                "ಅಂಕೋಲಾ",
+                "ಕುಮಟಾ",
+                "ಸಿದ್ದಾಪುರ",
+                "ಹೊನಾವರ್",
+                "ಭಾಟ್ಕಾ",
             ],
             "district_27" => [
-                "Udupi",
-                "Kapu",
-                "Brahmavara",
-                "Kundapura",
-                "Byndoor",
-                "Karkala",
-                "Hebri",
+                "ಉಡುಪಿ",
+                "ಕಾಪು",
+                "ಬ್ರಹ್ಮಾವರ",
+                "ಕುಂದಾಪುರ",
+                "ಬೈಂದೂರು",
+                "ಕಾರ್ಕಳ",
+                "ಹೆಬ್ರಿ",
             ],
             "district_26" => [
-                "Chikkanayakanahalli",
-                "Gubbi",
-                "Koratagere",
-                "Kunigal",
-                "Madhugiri",
-                "Pavagada",
-                "Sira",
-                "Tiptur",
-                "Tumkur",
-                "Turuvekere",
+                "ಚಿಕ್ಕನಾಯಕನಹಳ್ಳಿ",
+                "ಗುಬ್ಬಿ",
+                "ಕೊರಟಗೆರೆ",
+                "ಕುಣಿಗಲ್",
+                "ಮಧುಗಿರಿ",
+                "ಪಾವಗಡ",
+                "ಸಿರಾ",
+                "ತಿಪಟೂರು",
+                "ತುಮಕೂರು",
+                "ತುರುವೇಕೆರೆ",
             ],
             "district_25" => [
-                "Shimoga",
-                "Bhadravati",
-                "Shikarpur",
-                "Sagar",
-                "Sorab",
-                "Tirthahalli",
-                "Hosanagara",
+                "ಶಿವಮೊಗ್ಗ",
+                "ಭದ್ರಾವತಿ",
+                "ಶಿಕರಪುರ",
+                "ಸಾಗರ್",
+                "ಸೊರಬ್",
+                "ತೀರ್ಥಹಳ್ಳಿ",
+                "ಹೊಸನಗರ",
             ],
             "district_24" => [
-                "Kanakapura",
-                "Ramanagara",
-                "Channapatna",
-                "Magadi",
+                "ಕನಕಪುರ",
+                "ರಾಮನಗರ",
+                "ಚನ್ನಪಟ್ಟಣ",
+                "ಮಾಗಡಿ",
             ],
             "district_23" => [
-                "Raichur",
-                "Sindhnur",
-                "Lingsugur",
-                "Manvi",
-                "Devadurga",
+                "ರಾಯಚೂರು",
+                "ಸಿಂಧನೂರು",
+                "ಲಿಂಗ್ಸುಗೂರ್",
+                "ಮಾನ್ವಿ",
+                "ದೇವದುರ್ಗ",
             ],
             "district_22" => [
-                "Mysore",
-                "Nanjangud",
-                "Tirumakudal-Narsipur",
-                "Hunsur",
-                "Heggadadevankote",
-                "Krishnarajanagara",
-                "Piriyapatna",
+                "ಮೈಸೂರು",
+                "ನಂಜನಗೂಡು",
+                "ತಿರುಮಕೂಡಲ್-ನರಸೀಪುರ",
+                "ಹುಣಸೂರು",
+                "ಹೆಗ್ಗಡದೇವನಕೋಟೆ",
+                "ಕೃಷ್ಣರಾಜನಗರ",
+                "ಪಿರಿಯಾಪಟ್ಟಣ",
             ],
             "district_21" => [
-                "Mandya",
-                "Maddur",
-                "Malavalli",
-                "Krishnarajpet",
-                "Nagamangala",
-                "Pandavapura",
-                "Shrirangapattana",
+                "ಮಂಡ್ಯ",
+                "ಮದ್ದೂರು",
+                "ಮಳವಳ್ಳಿ",
+                "ಕೃಷ್ಣರಾಜಪೇಟೆ",
+                "ನಾಗಮಂಗಲ",
+                "ಪಾಂಡವಪುರ",
+                "ಶ್ರೀರಂಗಪಟ್ಟಣ",
             ],
             "district_20" => [
-                "Yelburga",
-                "Kushtagi",
-                "Gangavathi",
-                "Koppal",
-                "Karatagi",
-                "Kukanoor",
-                "Kanakagiri",
+                "ಯೆಲ್ಬುರ್ಗಾ",
+                "ಕುಷ್ಟಗಿ",
+                "ಗಂಗಾವತಿ",
+                "ಕೊಪ್ಪಳ",
+                "ಕಾರಟಗಿ",
+                "ಕುಕನೂರು",
+                "ಕನಕಗಿರಿ",
             ],
         ];
 
@@ -637,43 +658,43 @@ class Controller extends BaseController
         for ($i = 0; $i <= 12; $i++) {
             switch ($i) {
                 case 0:
-                    $std = "NURSERY";
+                    $std = "ನರ್ಸರಿ";
                     break;
                 case 1:
-                    $std = "LKG";
+                    $std = "ಎಲ್.ಕೆ.ಜಿ";
                     break;
                 case 2:
-                    $std = "UKG";
+                    $std = "ಯುಕೆಜಿ";
                     break;
                 case 3:
-                    $std = "1ST";
+                    $std = "ಯುಕೆಜಿ";
                     break;
                 case 4:
-                    $std = "2ND";
+                    $std = "2ನೇ";
                     break;
                 case 5:
-                    $std = "3RD";
+                    $std = "3ನೇ";
                     break;
                 case 6:
-                    $std = "4TH";
+                    $std = "4ನೇ";
                     break;
                 case 7:
-                    $std = "5TH";
+                    $std = "5ನೇ";
                     break;
                 case 8:
-                    $std = "6TH";
+                    $std = "6ನೇ";
                     break;
                 case 9:
-                    $std = "7TH";
+                    $std = "7ನೇ";
                     break;
                 case 10:
-                    $std = "8TH";
+                    $std = "8ನೇ";
                     break;
                 case 11:
-                    $std = "9TH";
+                    $std = "9ನೇ";
                     break;
                 case 12:
-                    $std = "10TH";
+                    $std = "10ನೇ";
                     break;
             }
 

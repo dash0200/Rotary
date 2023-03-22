@@ -9,6 +9,8 @@ use App\Http\Controllers\GeneralReceiptController;
 use App\Http\Controllers\MastersController;
 use App\Http\Controllers\ReportsController;
 use App\Http\Controllers\TransactionController;
+use App\Models\DistrictModel;
+use App\Models\StatesModel;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -23,7 +25,8 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', function () {
-    return view('welcome');
+    
+    return redirect()->route('dashboard');
 });
 
 Route::middleware([
@@ -191,6 +194,7 @@ Route::get("/class", [Controller::class, "classes"])->name("class");
 Route::get("/get-student-id", [Controller::class, "getStdId"])->name("getStdId");
 Route::get("/get-student", [Controller::class, "getStuddent"])->name("getstudent");
 Route::get("/get-admstudent", [Controller::class, "getAdmStd"])->name("getAdmStd");
+Route::get("/get-autoAddclass", [TransactionController::class, "autoAddclass"])->name("autoAddclass");
 
 Route::controller(DataDump::class)->group(function(){
     Route::get("cat", "categories")->name("addCats");

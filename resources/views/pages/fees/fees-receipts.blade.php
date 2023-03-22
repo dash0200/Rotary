@@ -1,69 +1,70 @@
 <x-main-card>
-    Fees Receipt
+    ಶುಲ್ಕ ರಶೀದಿ
     <div class="w-full bg-gray-200" style="height: 1px;"></div>
     <div class="mt-5">
         <select name="student" id="stdsearh" class="w-full">
-            <option value="">Start Typing [ STS - Register_No, Name Father_Name Last_Name, (date_of_admission) ]</option>
+            <option value=""> ID ನಮೂದಿಸಿ
+            </option>
         </select>
     </div>
     <div class="flex m-9">
         <div class="w-full">
             <div class="flex justify-between border-2 p-1">
                 <div>
-                    <x-label value="Admission Type" />
-                    <x-input type="text" name="stdtype" id="admType" placeholder="Admission Type" readonly />
+                    <x-label value="ಪ್ರವೇಶ ಪ್ರಕಾರ" />
+                    <x-input type="text" name="stdtype" id="admType" placeholder="ಪ್ರವೇಶ ಪ್ರಕಾರ" readonly />
                 </div>
                 <div>
-                    <x-label value="Standard" />
-                    <x-input type="text" name="standard" placeholder="Standard" readonly />
+                    <x-label value="ವರ್ಗ" />
+                    <x-input type="text" name="standard" placeholder="ವರ್ಗ" readonly />
                 </div>
             </div>
-           <div class="border-2 p-1">
-             <div class="mb-2">
-                 <x-label value="Student Name" />
-                 <x-input type="text" name="name" placeholder="Student Name" readonly />
-             </div>
-             <div class="mb-2">
-                 <x-label value="Father Name" />
-                 <x-input type="text" name="fname" placeholder="Father Name" readonly />
-             </div>
-           </div>
+            <div class="border-2 p-1">
+                <div class="mb-2">
+                    <x-label value="ವಿದ್ಯಾರ್ಥಿಯ ಹೆಸರು" />
+                    <x-input type="text" name="name" placeholder="ವಿದ್ಯಾರ್ಥಿಯ ಹೆಸರು" readonly />
+                </div>
+                <div class="mb-2">
+                    <x-label value="ತಂದೆಯ ಹೆಸರು" />
+                    <x-input type="text" name="fname" placeholder="ತಂದೆಯ ಹೆಸರು" readonly />
+                </div>
+            </div>
             <div class="flex justify-between space-x-2 border-2 p-1">
                 <div>
-                    <x-label value="Receipt Date" />
-                    <x-input type="date" value="{{ date('Y-m-d') }}" name="rdate" placeholder="Receipt Date" />
+                    <x-label value="ರಶೀದಿ ದಿನಾಂಕ" />
+                    <x-input type="date" value="{{ date('Y-m-d') }}" name="rdate" placeholder="ರಶೀದಿ ದಿನಾಂಕ" />
                 </div>
                 <div>
-                    <x-label value="Receipt No" />
-                    <x-input type="text" name="receipt_no" id="receipt_no" placeholder="Receipt No" />
+                    <x-label value="ರಸೀದಿ ಸಂ" />
+                    <x-input type="text" name="receipt_no" id="receipt_no" placeholder="ರಸೀದಿ ಸಂ" />
                     <span id="receiptError" class="text-red-600"></span>
                 </div>
                 <div>
-                    <x-label value="Financial Year" />
-                    <x-input type="text" name="fyear" placeholder="Financial Year" readonly/>
+                    <x-label value="ಹಣಕಾಸು ವರ್ಷ" />
+                    <x-input type="text" name="fyear" placeholder="ಹಣಕಾಸು ವರ್ಷ" readonly />
                 </div>
             </div>
 
             <div class="flex justify-between space-x-2 border-2 p-1">
 
                 <div>
-                    <x-label value="Annual Fee" />
-                    <x-input type="text" name="annualFee" placeholder="Annual Fee" readonly/>
-                    
+                    <x-label value="ವಾರ್ಷಿಕ ಶುಲ್ಕ" />
+                    <x-input type="text" name="annualFee" placeholder="ವಾರ್ಷಿಕ ಶುಲ್ಕ" readonly />
+
                 </div>
                 <div>
-                    <x-label value="Fees Paid" />
-                    <x-input type="text" name="feesPaid" placeholder="Fees Paid" readonly/>
+                    <x-label value="ಶುಲ್ಕ ಪಾವತಿಸಲಾಗಿದೆ" />
+                    <x-input type="text" name="feesPaid" placeholder="ಶುಲ್ಕ ಪಾವತಿಸಲಾಗಿದೆ" readonly />
                 </div>
                 <div>
-                    <x-label value="Balance" />
-                    <x-input type="text" name="balanceFee" placeholder="Balance Fee" readonly/>
+                    <x-label value="ಸಮತೋಲನ" />
+                    <x-input type="text" name="balanceFee" placeholder="ಸಮತೋಲನ ಶುಲ್ಕ" readonly />
                 </div>
 
             </div>
 
             <div class="mt-10">
-            <h2 class="mb-5">Preveious Balances</h2>
+                <h2 class="mb-5">ಹಿಂದಿನ ಬಾಕಿಗಳು</h2>
                 <div class="flex flex-wrap justify-evenly" id="prev">
 
                 </div>
@@ -78,25 +79,25 @@
                         #
                     </x-th>
                     <x-th>
-                        Description
+                        ವಿವರಣೆ
                     </x-th>
                     <x-th>
-                        Amount
+                        ಮೊತ್ತ
                     </x-th>
                 </x-thead>
                 <tbody>
-                    
+
                 </tbody>
             </x-table>
 
             <div id="success">
                 <div>
-                    <x-label value="Amount Paying" />
-                    <x-input type="number" name="paying" placeholder="Amount Paying" class="onlyNum" />
+                    <x-label value="ಪಾವತಿಸುವ ಮೊತ್ತ" />
+                    <x-input type="number" name="paying" placeholder="ಪಾವತಿಸುವ ಮೊತ್ತ" class="onlyNum" />
                     <span id="payingError" class="text-red-600"></span>
                 </div>
 
-                <input type="text" id="id" hidden placeholder="id"/>
+                <input type="text" id="id" hidden placeholder="id" />
                 <span id="btn"></span>
             </div>
 
@@ -105,7 +106,6 @@
 </x-main-card>
 
 <script>
-
     function saveAmount(student, year, standard) {
 
         Swal.fire({
@@ -118,43 +118,46 @@
             confirmButtonText: 'Yes, save it!'
         }).then((result) => {
             if (result.isConfirmed) {
-                if($("input[name='paying']").val() == "" || $("input[name='paying']").val() == null || $("input[name='paying']").val() == undefined) {
-            $("#payingError").text("Amount Paying Cannot be Empty");
-            return;
-        }
+                if ($("input[name='paying']").val() == "" || $("input[name='paying']").val() == null || $(
+                        "input[name='paying']").val() == undefined) {
+                    $("#payingError").text("Amount Paying Cannot be Empty");
+                    return;
+                }
 
-        if($("input[name='feesPaid']").val() == "" || $("input[name='feesPaid']").val() == null || $("input[name='feesPaid']").val() == undefined) return;
-        if($("input[name='balanceFee']").val() == "" || $("input[name='balanceFee']").val() == null || $("input[name='balanceFee']").val() == undefined) return;
+                if ($("input[name='feesPaid']").val() == "" || $("input[name='feesPaid']").val() == null || $(
+                        "input[name='feesPaid']").val() == undefined) return;
+                if ($("input[name='balanceFee']").val() == "" || $("input[name='balanceFee']").val() == null ||
+                    $("input[name='balanceFee']").val() == undefined) return;
 
-        $.ajax({
-            type: "post",
-            url: "{{route('fees.savePaidFees')}}",
-            data: {
-                id:$("#id").val(),
-                annualFee:$("input[name='annualFee']").val(),
-                feesPaid:$("input[name='feesPaid']").val(),
-                balance:$("input[name='balanceFee']").val(),
-                paying:$("input[name='paying']").val(),
-                student: student,
-                year: year,
-                class: standard,
-                receipt_no: $("#receipt_no").val()
-            },
-            dataType: "json",
-            success: function (res) {
-                $("#success").append(
-                    `<span class="text-green-500">success</span>`
-                );
+                $.ajax({
+                    type: "post",
+                    url: "{{ route('fees.savePaidFees') }}",
+                    data: {
+                        id: $("#id").val(),
+                        annualFee: $("input[name='annualFee']").val(),
+                        feesPaid: $("input[name='feesPaid']").val(),
+                        balance: $("input[name='balanceFee']").val(),
+                        paying: $("input[name='paying']").val(),
+                        student: student,
+                        year: year,
+                        class: standard,
+                        receipt_no: $("#receipt_no").val()
+                    },
+                    dataType: "json",
+                    success: function(res) {
+                        $("#success").append(
+                            `<span class="text-green-500">success</span>`
+                        );
 
-                setTimeout(() => {
-                    location.reload();
-                }, 1500);
-            }
-        });
+                        setTimeout(() => {
+                            location.reload();
+                        }, 1500);
+                    }
+                });
             }
         })
-        
-        
+
+
     }
 
     function savePrevAmount(annualFee, feesPaid, balance, id, year, student, standard) {
@@ -167,67 +170,68 @@
             cancelButtonColor: '#d33',
             confirmButtonText: 'Yes, save it!'
         }).then((result) => {
-            if (result.isConfirmed){
-                if( $("#paying"+id).val() == null ||  $("#paying"+id).val() == undefined ||  $("#paying"+id).val() == "") return;
-               
+            if (result.isConfirmed) {
+                if ($("#paying" + id).val() == null || $("#paying" + id).val() == undefined || $("#paying" + id)
+                    .val() == "") return;
+
                 $.ajax({
                     type: "post",
-                    url: "{{route('fees.savePaidFees')}}",
+                    url: "{{ route('fees.savePaidFees') }}",
                     data: {
                         id: id,
                         annualFee: annualFee,
                         feesPaid: feesPaid,
                         balance: balance,
-                        paying: $("#paying"+id).val(),
+                        paying: $("#paying" + id).val(),
                         student: student,
                         year: year,
                         class: standard,
-                        receipt_no: $("#receipt"+id).val()
+                        receipt_no: $("#receipt" + id).val()
                     },
                     dataType: "json",
-                    success: function (res) {
-                        $("#success"+id).append(
+                    success: function(res) {
+                        $("#success" + id).append(
                             `<span class="text-green-500">success</span>`
                         );
                     }
                 });
             }
         })
-        
+
     }
-   
+
     $("#stdsearh").select2({
-        ajax: { 
-        url: "{{route('getStdId')}}",
-        type: "get",
-        dataType: 'json',
-        data: function (params) {
-            return {
-            term: params.term // search term
-            };
-        },
-        processResults: function (response) {
-            return {
-                results: response
-            };
-        },
-        cache: true
+        ajax: {
+            url: "{{ route('getStdId') }}",
+            type: "get",
+            dataType: 'json',
+            data: function(params) {
+                return {
+                    term: params.term // search term
+                };
+            },
+            processResults: function(response) {
+                return {
+                    results: response
+                };
+            },
+            cache: true
         }
     });
 
-    $("#stdsearh").on("select2:select", function(e){
+    $("#stdsearh").on("select2:select", function(e) {
         let data = e.params.data;
-        
+
         $.ajax({
             type: "get",
-            url: "{{route('getstudent')}}",
+            url: "{{ route('getstudent') }}",
             data: {
                 id: data.id
             },
             dataType: "json",
-            success: function (res) {
+            success: function(res) {
                 console.log(res);
-                if(parseInt(res.doy) == new Date().getFullYear()) {
+                if (parseInt(res.doy) == new Date().getFullYear()) {
                     $("#admType").val("NEW")
                 } else {
                     $("#admType").val("OLD")
@@ -242,7 +246,7 @@
                 $("input[name='feesPaid']").val(res[1].paid)
                 $("input[name='balanceFee']").val(res[1].balance)
                 $("#btn").html("")
-                if(res[1].balance == 0) {
+                if (res[1].balance == 0) {
                     $("#btn").append(`
                     <x-button-primary value="No Balance"/>
                 `)
@@ -253,7 +257,7 @@
                 }
 
                 $("tbody").html("");
-                for(let i=0; i < res[2].length; i++) {
+                for (let i = 0; i < res[2].length; i++) {
                     $("tbody").append(
                         `
                         <x-body-tr>
@@ -272,8 +276,8 @@
                 }
 
                 $("#prev").html("");
-                for(let i=1; i < res.prev.length; i++){
-                    if(parseInt(res.prev[i].balance) == 0) {
+                for (let i = 1; i < res.prev.length; i++) {
+                    if (parseInt(res.prev[i].balance) == 0) {
                         continue;
                     }
                     $("#prev").append(
@@ -334,16 +338,16 @@
                     </div>
                     </div>
                         `
-                    )   
-                }       
-                
-                for(let i=1; i < res.prev.length; i++){
-                    
-                    if(parseInt(res.prev[i].balance) == 0) {
+                    )
+                }
+
+                for (let i = 1; i < res.prev.length; i++) {
+
+                    if (parseInt(res.prev[i].balance) == 0) {
                         continue;
                     }
 
-                    for(let j=0; j < res.prev[i].fees.length; j++) {
+                    for (let j = 0; j < res.prev[i].fees.length; j++) {
                         $(`#feeBody${res.prev[i].id}`).append(
                             `
                         <x-body-tr>
@@ -365,5 +369,4 @@
             }
         });
     })
-
 </script>

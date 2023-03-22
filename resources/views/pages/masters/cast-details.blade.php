@@ -1,10 +1,13 @@
+
+<script type="text/javascript" src="{{ url('js/transliteration-input.bundle.js') }}"></script>
+
 <x-main-card>
-    Cast Details
+    ಪಾತ್ರವರ್ಗದ ವಿವರಗಳು
     <div class="w-full bg-gray-200" style="height: 1px;"></div>
 
     <div class="p-10 flex justify-around">
         <div class="flex flex-col justify-evenly">
-            <h1>Add Category</h1>
+            <h1>ವರ್ಗವನ್ನು ಸೇರಿಸಿ</h1>
             <div class="border-b ">
                 <x-input type="text" name="cat" id="cat" placeholder="Category" />
                 <div class="loading">
@@ -12,7 +15,7 @@
                         class="inline-block px-6 py-2.5 bg-indigo-600 text-white font-medium text-xs leading-tight my-2
                     uppercase rounded shadow-md hover:bg-indigo-700 hover:shadow-lg focus:bg-indigo-700 focus:shadow-lg focus:outline-none 
                    focus:ring-0 active:bg-indigo-800 active:shadow-lg transition duration-150 ease-in-out"
-                        onclick="catSave()">Save</button>
+                        onclick="catSave()">ಉಳಿಸಿ</button>
                 </div>
             </div>
             <div>
@@ -23,10 +26,10 @@
                                 #
                             </th>
                             <th scope="col" class="text-sm font-medium text-gray-900 px-6 py-4 text-left">
-                                Categories
+                                ವರ್ಗ
                             </th>
                             <th scope="col" class="text-sm font-medium text-gray-900 px-6 py-4 text-left">
-                                Action
+                                ಕ್ರಿಯೆ
                             </th>
                         </tr>
                     </thead>
@@ -40,18 +43,18 @@
         <div>
 
             <div class="border p-2 my-10">
-                <h2>Add Caste</h2>
+                <h2>ಜಾತಿ ಸೇರಿಸಿ</h2>
                 <form id="casteForm" class="flex items-center justify-evenly space-x-2">
                     <select name="cats" id="cats">
-                        <option value="">Select Category</option>
+                        <option value="">ವರ್ಗವನ್ನು ಆಯ್ಕೆಮಾಡಿ</option>
                         @foreach ($cats as $cat)
                             <option value="{{ $cat->id }}">{{ $cat->name }}</option>
                         @endforeach
                     </select>
 
-                    <x-input type="text" name="caste" id="caste" placeholder="Caste" />
+                    <x-input type="text" name="caste" id="caste" placeholder="ವರ್ಗ" />
                     <div class="loading">
-                        <x-button-primary value="Save" />
+                        <x-button-primary value="ಉಳಿಸಿ" />
                     </div>
                 </form>
             </div>
@@ -61,7 +64,7 @@
                 <div class="flex justify-around">
                     <div class="flex flex-col">
                         <select name="cast" id="cast" required>
-                            <option value="">Select Caste</option>
+                            <option value="">ಜಾತಿ ಆಯ್ಕೆಮಾಡಿ</option>
                             @foreach ($castes as $cast)
                                 <option value="{{ $cast->id }}">{{ $cast->name }}</option>
                             @endforeach
@@ -69,7 +72,7 @@
                         <span class="text-xs">Select Cast and enter its subcast below to save</span>
                     </div>
                     <div>
-                        <x-input type="text" name="subcast" id="subcast" placeholder="Enter Sub Caste" required />
+                        <x-input type="text" name="subcast" id="subcast" placeholder="ಉಪ ಜಾತಿಯನ್ನು ನಮೂದಿಸಿ" required />
                     </div>
                 </div>
                 <div class="loading">
@@ -77,7 +80,7 @@
                         class="inline-block px-6 py-2.5 bg-indigo-600 text-white font-medium text-xs leading-tight my-2
                         uppercase rounded shadow-md hover:bg-indigo-700 hover:shadow-lg focus:bg-indigo-700 focus:shadow-lg focus:outline-none 
                         focus:ring-0 active:bg-indigo-800 active:shadow-lg transition duration-150 ease-in-out"
-                        onclick="saveSubCast()">Save Subcaste</button>
+                        onclick="saveSubCast()">ಉಪಜಾತಿ ಉಳಿಸಿ</button>
                 </div>
 
                 <table class="w-full">
@@ -87,7 +90,7 @@
                                 #
                             </th>
                             <th scope="col" class="text-sm font-medium text-gray-900 px-6 py-4 text-left">
-                                sub-cast
+                                ಉಪ ಜಾತಿ
                             </th>
                         </tr>
                     </thead>
@@ -101,7 +104,7 @@
             <div class="border">
                 <div class="mt-5 flex space-x-2 items-center justify-around">
                     <select name="searchcat" id="searchcat">
-                        <option value="">Select Cat</option>
+                        <option value="">ವರ್ಗವನ್ನು ಆಯ್ಕೆಮಾಡಿ</option>
                         @foreach ($cats as $cat)
                             <option value="{{ $cat->id }}">{{ $cat->name }}</option>
                         @endforeach
@@ -109,7 +112,7 @@
                     <span>OR</span>
                     <div class="flex flex-col">
                         <select name="searchcast" id="searchcast">
-                            <option value="">Select Caste</option>
+                            <option value="">ಜಾತಿ ಆಯ್ಕೆಮಾಡಿ</option>
                             @foreach ($castes as $cast)
                                 <option value="{{ $cast->id }}">{{ $cast->name }}</option>
                             @endforeach
@@ -126,7 +129,7 @@
                                     #
                                 </th>
                                 <th scope="col" class="text-sm font-medium text-gray-900 px-6 py-4 text-left th">
-                                    Categories
+                                    ವರ್ಗಗಳು
                                 </th>
                             </tr>
                         </thead>
@@ -140,6 +143,13 @@
 
     </div>
 </x-main-card>
+
+<script>
+    enableTransliteration(document.getElementById('caste'), 'kn')
+
+    enableTransliteration(document.getElementById('subcast'), 'kn')
+</script>
+
 <script>
     $(document).ready(function() {
         getCategories()

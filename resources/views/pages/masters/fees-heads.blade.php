@@ -1,13 +1,15 @@
+<script type="text/javascript" src="{{ url('js/transliteration-input.bundle.js') }}"></script>
+
 <x-main-card>
-    <div class="">Fees Head</div>
+    <div class="">ಶುಲ್ಕದ ಮುಖ್ಯಸ್ಥ</div>
     <div class="p-10 flex justify-around">
         <form class="w-full">
             <div class="relative z-0 w-1/4 mb-6 group">
-                <x-label value="Fee Description" for="name" />
-                <x-input type="text" name="name" id="name" placeholder="Description" />
+                <x-label value="ಶುಲ್ಕ ವಿವರಣೆ" for="name" />
+                <x-input type="text" name="name" id="name" placeholder="ವಿವರಣೆ" />
             </div>
             <div class="loading">
-                <x-button-primary value="Save" />
+                <x-button-primary value="ಉಳಿಸಿ" />
             </div>
         </form>
 
@@ -25,7 +27,7 @@
                             </button>
                             <div id="tooltip-default" role="tooltip"
                                 class="inline-block absolute invisible z-10 py-1 px-1.5 text-sm font-medium text-white bg-violet-400 rounded-lg shadow-sm opacity-0 transition-opacity duration-300 tooltip dark:bg-gray-700">
-                                Refresh
+                                ರಿಫ್ರೆಶ್ ಮಾಡಿ
                                 <div class="tooltip-arrow" data-popper-arrow></div>
                             </div>
                         </div>
@@ -36,10 +38,10 @@
                                         #
                                     </th>
                                     <th scope="col" class="text-sm font-medium text-gray-900 px-6 py-4 text-left">
-                                        Fee Description
+                                        ಶುಲ್ಕ ವಿವರಣೆ
                                     </th>
                                     <th scope="col" class="text-sm font-medium text-gray-900 px-6 py-4 text-left">
-                                        Edit
+                                        ತಿದ್ದು
                                     </th>
                                 </tr>
                             </thead>
@@ -53,6 +55,10 @@
     </div>
 
 </x-main-card>
+
+<script>
+    enableTransliteration(document.querySelector("input[name='name']"), 'kn')
+</script>
 
 <script>
     $(document).ready(function() {
@@ -102,7 +108,7 @@
                     $('tbody').append(
                         `<tr class="bg-white border-b transition duration-300 ease-in-out hover:bg-gray-100">
                         <td align="center" colspan="2" class="text-red-300">
-                            No Description
+                            ಇಲ್ಲ ವಿವರಣೆ
                         </td>
                         </tr>`
                     );
@@ -166,7 +172,7 @@
     $("form").submit(function(e) {
         e.preventDefault();
         var desc = $("#name").val();
-        if(desc == "" || desc == undefined || desc  == null) return;
+        if (desc == "" || desc == undefined || desc == null) return;
         Swal.fire({
             title: 'Are you sure?',
             text: "You won't be able to revert this!",
@@ -177,7 +183,7 @@
             confirmButtonText: 'Yes, save it!'
         }).then((result) => {
             if (result.isConfirmed) {
-                
+
                 $.ajax({
                     type: "post",
                     url: "{{ route('master.saveFeesDesc') }}",
@@ -196,16 +202,17 @@
                         $(".loading").append(
                             `
                     <div class="flex space-x-2 items-center">
-                        <x-button-primary value="Save" />
+                        <x-button-primary value="ಉಳಿಸಿ" />
                     <svg xmlns="" class="h-5 w-5 text-green-500" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
                         <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7" />
                     </svg>
                     </div>
                     `
                         )
-                        
-                        
-                        var row = isNaN(parseInt($("tbody tr:last td:first").text())) ? 0 : parseInt($("tbody tr:last td:first").text());
+
+
+                        var row = isNaN(parseInt($("tbody tr:last td:first").text())) ? 0 :
+                            parseInt($("tbody tr:last td:first").text());
 
                         $('tbody').append(`<tr class="bg-white border-b transition duration-300 ease-in-out hover:bg-gray-100">
                             <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">${row+1}</td>
@@ -222,7 +229,7 @@
                         $(".loading").append(
                             `
                     <div class="flex space-x-2 items-center">
-                        <x-button-primary value="Save" />
+                        <x-button-primary value="ಉಳಿಸಿ" />
                         <div class="text-red-400 text-sm">
                             ${err.message}
                         </div>
