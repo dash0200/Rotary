@@ -240,10 +240,6 @@ class MastersController extends Controller
             "district" => $req->dist
         ]);
 
-        if(isset($sub->id)) {
-            dd("sd");
-        }
-
         return redirect()->back();
     }
 }

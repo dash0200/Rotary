@@ -74,11 +74,12 @@ class TransactionController extends Controller
     }
     public function saveAdmission(Request $req)
     {
-        $req->validate([
-            'admDate' => ['required', 'date'],
-            'class' => ['required', 'numeric', 'gt:0'],
-            'fname' => ['required', 'regex:/^[\pL\s\-]+$/u'],
-        ]);
+        // dd($req->all());
+        // $req->validate([
+        //     'admDate' => ['required', 'date'],
+        //     'class' => ['required', 'numeric', 'gt:0'],
+        //     'fname' => ['required', 'regex:/^[\pL\s\-]+$/u'],
+        // ]);
 
         $data = [
             "date_of_adm" => $req->admDate,
@@ -241,7 +242,7 @@ class TransactionController extends Controller
 
         // $year_id = AcademicYearModel::where("year",  $year)->first()->id;
         $createClass = CreateClass::get();
-        $newAdmission = AdmissionModel::withTrashed()->where("year", $req->year)->get();
+        $newAdmission = AdmissionModel::withTrashed()->where(["year"=>$req->year, "class" => $req->clas])->get();
 
         foreach ($createClass as $cr) {
             foreach ($newAdmission as $new) {
@@ -418,5 +419,10 @@ class TransactionController extends Controller
                 return response()->json($stds);
         }
      
+    }
+
+    public function autoAddclass() {
+        $stds = AdmissionModel::where("date_of_adm", "LIKE", '%'.'2022'.'%')->where('class', 2)->get();
+        dd($stds);
     }
 }

@@ -1,8 +1,10 @@
+<script type="text/javascript" src="{{ url('js/transliteration-input.bundle.js') }}"></script>
 <x-main-card>
     <div class="flex justify-between">
-       <a href="{{route('trans.editPage')}}">
-         <x-button-primary value="Edit Student Information" />
-       </a>
+        <a href="{{route('trans.editPage')}}">
+            <x-button-primary value="Edit Student Information" />
+        </a>
+        <div id="google_translate_element"></div>
 
        <div>
         Registration No: <b>{{$id}}</b>
@@ -226,6 +228,26 @@
             <x-button-primary value="Save" class="w-full"/>
     </form>
 </x-main-card>
+<script type="text/javascript">
+    function googleTranslateElementInit() {
+      new google.translate.TranslateElement({pageLanguage: 'en'}, 'google_translate_element');
+    }
+    </script>
+    
+    <script type="text/javascript" src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
+<script>
+    var inputs, index;
+    
+    inputs = document.getElementsByTagName('input');
+    console.log(inputs);
+    for (index = 1; index <= 22; index++) {
+        console.log(inputs[index]);
+            enableTransliteration(inputs[index], 'kn')
+        }
+
+        enableTransliteration(document.getElementById('address'), 'kn')
+
+</script>
 
 <script>
     $("#editStd").select2();
@@ -332,8 +354,8 @@
             return false;
     });
 
-    $('.alphaonly').bind('keyup blur', function() {
-        var node = $(this);
-        node.val(node.val().replace(/[^aA-zZ]/g, ''));
-    });
+    // $('.alphaonly').bind('keyup blur', function() {
+    //     var node = $(this);
+    //     node.val(node.val().replace(/[^aA-zZ]/g, ''));
+    // });
 </script>
