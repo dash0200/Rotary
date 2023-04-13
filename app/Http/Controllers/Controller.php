@@ -137,7 +137,7 @@ class Controller extends BaseController
         
         $year = '';
 
-        if((int)date("m") >= 6) {
+        if((int)date("m") >= 4) {
             $crr = date("Y");
             $nxt = date("Y")[2].date("Y")[3];
             $year = $crr."-".(int)$nxt+1;
@@ -164,6 +164,8 @@ class Controller extends BaseController
         $tenthStudents = CreateClass::where(["standard" => 12, 'year' => $year->id])->get()->count();
 
         $totalStudentThisYear = CreateClass::where(["year" => $year->id])->count();
+        
+        $newAdmission = AdmissionModel::where('year', $year->id)->get()->count();
 
         return view('dashboard')->with([
             "students" => $totalStudents,
@@ -184,7 +186,9 @@ class Controller extends BaseController
 
             "year" => $year->year,
 
-            'totalStudentThisYear' => $totalStudentThisYear
+            'totalStudentThisYear' => $totalStudentThisYear,
+
+            'newAdmission' => $newAdmission
         ]);
     }
 

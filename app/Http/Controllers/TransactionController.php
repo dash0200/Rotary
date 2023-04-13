@@ -16,6 +16,7 @@ use App\Models\SubcastModel;
 use App\Models\SubdistrictModel;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use PDF;
 
 class TransactionController extends Controller
@@ -26,6 +27,19 @@ class TransactionController extends Controller
         $id = AdmissionModel::select("id")->orderBy("id", "DESC")->withTrashed()->first();
         $id = $id == null ? 1 : $id->id + 1;
 
+        $year = '';
+
+        if((int)date("m") >= 4) {
+            $crr = date("Y");
+            $nxt = date("Y")[2].date("Y")[3];
+            $year = $crr."-".(int)$nxt+1;
+        } else {
+            $crr = date("Y")-1;
+            $nxt = date("Y")[2].date("Y")[3];
+            $year = $crr."-".(int)$nxt;
+        }
+
+        $year = AcademicYearModel::where('year', $year)->first();
 
         return view('pages.transactions.new-admission')->with([
             'classes' => ClassesModel::get(),
@@ -33,6 +47,8 @@ class TransactionController extends Controller
             'districts' => DistrictModel::select('id', 'name')->get(),
             'castes' => CasteModel::get(),
             'years' => AcademicYearModel::get(),
+            'categories' => CategoriesModel::get(),
+            'acaYear' => $year->id,
             "id" => $id,
         ]);
     }   
@@ -220,13 +236,13 @@ class TransactionController extends Controller
     public function getCurrentClass(Request $req)
     {
         $year = $req->year;
-        $crStudents = CreateClass::where(["year" => $year - 1, "standard" => $req->clas - 1])->get();
-
-        foreach ($crStudents as $crr) {
-            $crr->getStudent;
-            $crr->acaYear;
-            $crr->standardClass;
-        }
+        
+        $prevClassStudents = CreateClass::select('create_class.year','create_class.standard','create_class.student as id', 'admission.name', 'academic_year.year', 'classes.name as current_class')
+                    ->join('admission', 'create_class.student', '=', 'admission.id')
+                    ->join('academic_year', 'create_class.year', '=', 'academic_year.id')
+                    ->join('classes', 'create_class.standard', '=', 'classes.id')
+                    ->where('create_class.year', $year - 1)->where('create_class.standard', $req->clas - 1)
+                    ->get();
 
         $tuition = FeesDetailsModel::select("amt_per_annum")->where(["year" => $year, "class" => $req->clas])->first()->amt_per_annum;
         $y = date("Y");
@@ -234,36 +250,28 @@ class TransactionController extends Controller
         $y1 = $yr[2] . $yr[3];
         $year = $y . "-" . (int)$y1 + 1;
 
-        $added = CreateClass::where(["year" => $req->year, "standard" => $req->clas])->get();
-        foreach ($added as $std) {
-            $std->getStudent;
-            $std->acaYear->year;
-        }
+        $alreadyAddedStudents = CreateClass::select('create_class.year','create_class.standard','create_class.student as id', 'admission.name', 'academic_year.year')
+                            ->join('admission', 'create_class.student', '=', 'admission.id')
+                            ->join('academic_year', 'create_class.year', '=', 'academic_year.id')
+                            ->where('create_class.year', $req->year)->where('create_class.standard', $req->clas)
+                            ->get();
 
-        // $year_id = AcademicYearModel::where("year",  $year)->first()->id;
-        $createClass = CreateClass::get();
-        $newAdmission = AdmissionModel::withTrashed()->where(["year"=>$req->year, "class" => $req->clas])->get();
-
-        foreach ($createClass as $cr) {
-            foreach ($newAdmission as $new) {
-                $new->acaYear;
-                
-                if ($cr->student == $new->id) {
-                    $new['id'] = null;
-                }
-            }
-        }
-
-        foreach($newAdmission as $new) {
-            $new['aca_year'] = $new->acaYear;
-            $new['standard'] = $new->classes;
+        $newAdmissions = AdmissionModel::select('admission.id', 'admission.name', 'admission.class', 'admission.year')
+                        ->leftJoin('create_class', 'admission.id', '=', 'create_class.student')
+                        ->whereNull('create_class.student')
+                        ->where('admission.class', '>=', $req->clas)
+                        ->get();
+        
+        foreach($newAdmissions as $new) {
+            $new['class'] = $new->classes->name;
+            $new['year'] = $new->acaYear->year;
         }
 
         return response()->json([
-            "new" => $newAdmission,
-            "old" => $crStudents,
+            "new" => $newAdmissions,
+            "old" => $prevClassStudents,
             "totalAmt" => $tuition,
-            "addedStd" => $added
+            "addedStd" => $alreadyAddedStudents
         ]);
     }
 

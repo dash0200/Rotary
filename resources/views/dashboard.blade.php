@@ -10,6 +10,9 @@
 
 <div class="flex flex-col">
     <div>
+        <h2>New Admissions this year</h2>: {{$newAdmission}}
+    </div>
+    <div>
         Academic Year - <b>{{$year}}</b> - Total Students Classes wise
     </div>
     <div class="flex justify-around flex-wrap mt-10">

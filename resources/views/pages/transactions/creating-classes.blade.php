@@ -51,9 +51,6 @@
                             Student Name
                         </x-th>
                         <x-th>
-                            Sur Name
-                        </x-th>
-                        <x-th>
                             Previous Class
                         </x-th>
                         <x-th>
@@ -80,9 +77,6 @@
                         </x-th>
                         <x-th>
                             Student Name
-                        </x-th>
-                        <x-th>
-                            Sur Name
                         </x-th>
                         <x-th>
                             Academic Year
@@ -118,12 +112,6 @@
                     </x-th>
                     <x-th>
                         Student Name
-                    </x-th>
-                    <x-th>
-                        Sur Name
-                    </x-th>
-                    <x-th>
-                        Current Class
                     </x-th>
                     <x-th>
                         Took Admission for
@@ -163,9 +151,6 @@
                     </x-th>
                     <x-th>
                         Student Name
-                    </x-th>
-                    <x-th>
-                        Sur Name
                     </x-th>
                     <x-th>
                         Current Class
@@ -231,41 +216,31 @@
                             </div>`);
            },
             success: function(res) {
-                console.log(res);
+                // console.log(res);
                 $("#pageLoad").html("");
                 let added = res.addedStd;
                 $("#amt").val(res.totalAmt.toFixed(2))
                 let news = res.new;
                 let prevs = res.old;
                 $("#newstd").html("");
-                for (let i = 0; i < news.length; i++) {
-                    if(news[i].id == null ) continue;
-
-                    if(news[i].lname == null) {
-                        news[i].lname = "";
-                    }
+                
+                res.new.forEach(std => {
                     $("#newstd").append(
-                        `<x-body-tr id="trN_${news[i].id}" class="${news[i].id}">
+                        `<x-body-tr id="trN_${std.id}" class="${std.id}">
                         <x-td-num>
-                            ${news[i].id}
+                            ${std.id}
                         </x-td-num>
                         <x-td>
-                            ${news[i].name}
+                            ${std.name}
                         </x-td>
                         <x-td>
-                            ${news[i].lname}
+                            ${std.class}
                         </x-td>
                         <x-td>
-                            new
+                            ${std.year}
                         </x-td>
-                        <x-td>
-                            ${news[i].classes.name}
-                        </x-td>
-                        <x-td>
-                            ${news[i].aca_year.year}
-                        </x-td>
-                        <x-td id="btn${news[i].id}">
-                          <button onclick="moveRow(${news[i].id})">
+                        <x-td id="btn${std.id}">
+                          <button onclick="moveRow(${std.id})">
                             <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 cursor-pointer text-violet-600" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
                                 <path stroke-linecap="round" stroke-linejoin="round" d="M5 10l7-7m0 0l7 7m-7-7v18" />
                               </svg>
@@ -273,33 +248,27 @@
                         </x-td>
                     </x-body-tr>`
                     )
-                }
+                });
 
                 $("#current").html("");
-                for (let i = 0; i < prevs.length; i++) {
-                    // removeAdmit(prevs[i].get_student.id)
-                    if(prevs[i].get_student.lname == null) {
-                        prevs[i].get_student.lname = "";
-                    }
+                
+                prevs.forEach(pstd => {
                     $("#current").append(
-                        `<x-body-tr id="trPre_${prevs[i].get_student.id}">
-                        <x-td-num id="${prevs[i].get_student.id}">
-                            ${prevs[i].get_student.id}
+                        `<x-body-tr id="trPre_${pstd.id}">
+                        <x-td-num id="${pstd.id}">
+                            ${pstd.id}
                         </x-td-num>
                         <x-td>
-                            ${prevs[i].get_student.name}
+                        ${pstd.name}
                         </x-td>
                         <x-td>
-                            ${prevs[i].get_student.lname}
+                        ${pstd.current_class}
                         </x-td>
                         <x-td>
-                            ${prevs[i].standard_class.name}
+                        ${pstd.year}
                         </x-td>
-                        <x-td>
-                            ${prevs[i].aca_year.year}
-                        </x-td>
-                        <x-td id="btnP${prevs[i].get_student.id}">
-                          <button onclick="movePrevRow(${prevs[i].get_student.id})">
+                        <x-td id="btnP${pstd.id}">
+                          <button onclick="movePrevRow(${pstd.id})">
                             <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 cursor-pointer text-violet-600" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
                                 <path stroke-linecap="round" stroke-linejoin="round" d="M5 10l7-7m0 0l7 7m-7-7v18" />
                               </svg>
@@ -307,36 +276,27 @@
                         </x-td>
                     </x-body-tr>`
                     )
-                    
-                }
+                });
 
                 $("#added").html("");
-                console.log(added);
-                for (let i = 0; i < added.length; i++) {
-                    if(added[i].get_student.lname == null) {
-                        added[i].get_student.lname = "";
-                    }
+                added.forEach(add => {
                     $("#added").append(
-                        `<x-body-tr id="tr_${added[i].get_student.id}" class="${added[i].get_student.id}">
+                        `<x-body-tr id="tr_${add.id}" class="${add.id}">
                         <x-td-num>
-                            ${added[i].get_student.id}
+                            ${add.id}
                         </x-td-num>
                         <x-td>
-                            ${added[i].get_student.name}
-                        </x-td>
-                        <x-td>
-                            ${added[i].get_student.lname}
-                            
+                            ${add.name}
                         </x-td>
                         
                         <x-td>
-                            ${added[i].aca_year.year}
+                            ${add.year}
                         </x-td>
                         
                     </x-body-tr>`
                     )
-                     removeAdmit(`#trPre_${added[i].get_student.id}`)
-                }
+                    removeAdmit(`#trPre_${add.id}`)
+                });
 
                 $("#amtError").text("");
                 $("#amtError2").text("");
@@ -421,14 +381,14 @@
 
     $("#search").on("keyup", function() {
         var value = $(this).val().toLowerCase();
-        $("#newstd tr_").filter(function() {
+        $("#newstd").filter(function() {
             $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
         });
     });
 
     $("#searchPrev").on("keyup", function() {
         var value = $(this).val().toLowerCase();
-        $("#current tr_").filter(function() {
+        $("#current").filter(function() {
             $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
         });
     });

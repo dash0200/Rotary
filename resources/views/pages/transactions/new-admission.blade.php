@@ -187,6 +187,9 @@
                     <x-label value="cat" />
                     <select name="cat" id="cat" class="w-full">
                         <option value="">Select Category</option>
+                        @foreach ($categories as $cat)
+                            <option value="{{$cat->id}}">{{ $cat->name }}</option>
+                        @endforeach
                     </select>
                 </div>
     
@@ -196,7 +199,7 @@
                     <select name="ac_year" id="year" class="w-full" required>
                         <option value="">Academic Year</option>
                         @foreach ($years as $year)
-                            <option value="{{$year->id}}">{{ $year->year }}</option>
+                            <option value="{{$year->id}}" @if($acaYear == $year->id) selected @endif>{{ $year->year }}</option>
                         @endforeach
                     </select>
                 </div>
@@ -228,26 +231,6 @@
             <x-button-primary value="Save" class="w-full"/>
     </form>
 </x-main-card>
-<script type="text/javascript">
-    function googleTranslateElementInit() {
-      new google.translate.TranslateElement({pageLanguage: 'en'}, 'google_translate_element');
-    }
-    </script>
-    
-    <script type="text/javascript" src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
-<script>
-    var inputs, index;
-    
-    inputs = document.getElementsByTagName('input');
-    console.log(inputs);
-    for (index = 1; index <= 22; index++) {
-        console.log(inputs[index]);
-            enableTransliteration(inputs[index], 'kn')
-        }
-
-        enableTransliteration(document.getElementById('address'), 'kn')
-
-</script>
 
 <script>
     $("#editStd").select2();
@@ -326,15 +309,7 @@
                 cast: id
             },
             success: function(res) {
-                let data = res.cats;
-                $("#cat").html("")
-                for (let i = 0; i < data.length; i++) {
-                    $("#cat").append(
-                        `<option value="${data[i].cat}"> ${data[i].category.name} </option>`
-                    )
-                }
-
-
+               
                 let subs = res.subcasts;
                 $("#subc").html("")
                 for (let i = 0; i < subs.length; i++) {
@@ -354,8 +329,8 @@
             return false;
     });
 
-    // $('.alphaonly').bind('keyup blur', function() {
-    //     var node = $(this);
-    //     node.val(node.val().replace(/[^aA-zZ]/g, ''));
-    // });
+    $('.alphaonly').bind('keyup blur', function() {
+        var node = $(this);
+        node.val(node.val().replace(/[^aA-zZ]/g, ''));
+    });
 </script>
