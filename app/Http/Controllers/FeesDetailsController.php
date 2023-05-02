@@ -248,8 +248,12 @@ class FeesDetailsController extends Controller
             $r['class'] = $r->classes->name;
             $r['year'] = $r->years->year;
         }
+       
+        if(!isset($receipts[0])) {
+            return redirect()->back();
+        }
 
-        $student = AdmissionModel::where("id", $receipts[0]->student)->withTrashed()->first(); 
+        $student = AdmissionModel::where("id", $receipts[0]->student)->withTrashed()->first();
 
         return view("pages.fees.receipts-std")->with([
             "receipts" => $receipts,

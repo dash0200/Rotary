@@ -86,9 +86,9 @@
             <td align="left" style="width: 100%;">
                 <table style="width: 100%;">
                     <tr>
-                        <td class="bb">{{ $lc->id }}</td>
+                        <td class="bb">{{ $lc->student }}</td>
                         <td align="center"><span class="fb" style="margin-right: 2rem;">2. Date of Admission:</span>
-                            <span class="bb">{{ date('d-m-Y', strtotime($lc->student->date_of_adm)) }}</span>
+                            <span class="bb">{{ $lc->date_of_adm }}</span>
                         </td>
                     </tr>
                 </table>
@@ -105,7 +105,7 @@
             <td class="fb">:</td>
 
             <td align="left" style="width: 100%;" class="bb">
-                {{ strtoupper($lc->student->name) }}
+                {{ strtoupper($lc->name) }}
             </td>
         </tr>
     </table>
@@ -119,7 +119,7 @@
             <td class="fb">:</td>
 
             <td align="left" style="width: 100%;" class="bb">
-                {{ $lc->student->fname == null ? '' : strtoupper($lc->student->fname) }}
+                {{ $lc->fname == null ? '' : strtoupper($lc->fname) }}
             </td>
         </tr>
     </table>
@@ -133,7 +133,7 @@
             <td class="fb">:</td>
 
             <td align="left" style="width: 100%;" class="bb">
-                {{ strtoupper($lc->student->mname) }}
+                {{ strtoupper($lc->mname) }}
             </td>
         </tr>
     </table>
@@ -147,7 +147,7 @@
             <td class="fb">:</td>
 
             <td align="left" style="width: 100%;" class="bb">
-                {{ $lc->student->lname == null ? '' : '.' . strtoupper($lc->student->lname) }}
+                {{ $lc->lname == null ? '' : '.' . strtoupper($lc->lname) }}
             </td>
         </tr>
     </table>
@@ -164,14 +164,10 @@
                 <table style="width: 100%;">
                     <tr>
                         <td class="bb">
-                            @if ($lc->student->gender == 1)
-                                MALE
-                            @else
-                                FEMALE
-                            @endif
+                            {{$lc->gender}}
                         </td>
                         <td align="center"><span class="fb" style="margin-right: 2rem;">8. Nationality: </span>
-                            <span class="bb"> {{ $lc->student->nationality }} </span> </td>
+                            <span class="bb"> {{ $lc->nationality }} </span> </td>
                     </tr>
                 </table>
             </td>
@@ -188,7 +184,7 @@
             <td class="fb">:</td>
 
             <td align="left" style="width: 100%;" class="bb">
-                {{ strtoupper($lc->student->religion) }}
+                {{ strtoupper($lc->religion) }}
             </td>
         </tr>
     </table>
@@ -203,7 +199,7 @@
             <td class="fb">:</td>
 
             <td align="left" style="width: 100%;" class="bb">
-                {{ strtoupper($lc->caste->name) }}
+                {{ strtoupper($lc->caste) }}
             </td>
         </tr>
     </table>
@@ -219,7 +215,7 @@
 
             <td align="left" style="width: 100%;" class="bb">
                 @if ($lc->subCaste !== null)
-                    {{ strtoupper($lc->subCaste->name) }}
+                    {{ strtoupper($lc->sub_caste) }}
                 @else
                     -
                 @endif
@@ -237,7 +233,7 @@
             <td class="fb">:</td>
 
             <td align="left" style="width: 100%;">
-                <u> {{ $lc->student->dob->format('d-m-Y') }} </u>
+                <u> {{ $lc->dob }} </u>
             </td>
         </tr>
     </table>
@@ -270,10 +266,10 @@
             <td align="left" style="width: 100%;">
                 <table style="width: 100%;">
                     <tr>
-                        <td class="bb"> {{ strtoupper($lc->student->birth_place) }} </td>
+                        <td class="bb"> {{ strtoupper($lc->birth_place) }} </td>
                         <td align="center">
                             <span class="fb" style="margin-right: 2rem;">15. District: </span>
-                            <span class="bb"> {{ strtoupper($lc->student->subDistrict->name) }}</span>
+                            <span class="bb"> {{ strtoupper($lc->sub_district == null ? '' : $lc->sub_district) }}</span>
                         </td>
                     </tr>
                 </table>
@@ -290,7 +286,7 @@
             <td class="fb">:</td>
 
             <td align="left" style="width: 100%;" class="bb">
-                {{ $lc->student->classes->name . ' STANDARD SINCE ' . strtoupper($lc->student->date_of_adm->format('F ')) . $lc->student->date_of_adm->format('Y') }}
+                {{ $lc->class . ' STANDARD SINCE ' . strtoupper($lc->date_of_adm) . $lc->date_of_adm }}
             </td>
         </tr>
     </table>
@@ -332,7 +328,7 @@
             <td class="fb">:</td>
 
             <td align="left" style="width: 50%;">
-                <u> {{ date('d-m-Y', strtotime($lc->lt)) }} </u>
+                <u> {{ $lc->lt }} </u>
             </td>
         </tr>
     </table>
@@ -346,7 +342,7 @@
             <td class="fb">:</td>
 
             <td align="left" style="width: 50%">
-                <u> {{ date('d-m-Y', strtotime($lc->doa)) }} </u>
+                <u> {{ $lc->doa }} </u>
             </td>
         </tr>
     </table>
@@ -396,7 +392,7 @@
             <td class="fb">:</td>
 
             <td align="left" style="width: 100%;">
-                {{ strtoupper($lc->student->sts) }}
+                {{ $lc->sts }}
             </td>
         </tr>
         <tr>

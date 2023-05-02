@@ -364,36 +364,85 @@ class TransactionController extends Controller
 
     public function printLC(Request $req) {
 
-        $lc = LCModel::where("student", $req->id)->first();
+        $lc = LCModel::select(
+                    'lc.*', 'admission.id', 'admission.date_of_adm', 'admission.name', 
+                    'admission.fname', 'admission.mname', 'admission.lname', 'admission.gender', 'admission.nationality', 'admission.religion',
+                    'admission.caste', 'admission.sub_caste', 'admission.dob', 'admission.birth_place', 'admission.sub_district', 'admission.class',
+                    'admission.sts'
+                    )
+                    ->join('admission', 'lc.student', '=', 'admission.id')
+                    ->where('lc.student', $req->id)
+                    ->first();
 
-        $lc['student'] = $lc->studentDetails;
-        $lc['studied_till'] = $lc->studiedTill;
-        $lc['till_aca_year'] = $lc->tillYear;
-  
-        $lc['caste'] = $lc->studentDetails->stdCast;
-        $lc['subCaste'] = $lc->studentDetails->subCaste;
-        $lc['subDistrict'] = $lc->studentDetails->subDistrict;
-        $lc['classes'] = $lc->studentDetails->classes;
+        $lc['district'] = '';
+        $lc['gender'] = $lc->gender == 1 ? 'Male' : 'Female';
 
-        $lc['dobWord'] = Controller::getWord($lc->student->dob->format("d")) ."- ".$lc->student->dob->format("F")." - ".Controller::getWord($lc->student->dob->format("Y"));
+        $lc['studied_till'] = ClassesModel::where('id', $lc->studied_till)->first(['name'])->name;
+        $lc['class'] = ClassesModel::where('id', $lc->class)->first(['name'])->name;
+        $lc['till_aca_year'] = AcademicYearModel::where('id', $lc->till_aca_year)->first(['year'])->year;
+        $lc['caste'] = $lc->caste == null ? '' : CasteModel::where('id', $lc->caste)->first(['name'])->name;
+
+        $lc['lt'] = Carbon::createFromFormat('Y-m-d', $lc->lt)->format('d-m-Y');
+        $lc['doa'] = Carbon::createFromFormat('Y-m-d', $lc->doa)->format('d-m-Y');
+        $lc['doil'] = Carbon::createFromFormat('Y-m-d', $lc->doil)->format('d-m-Y');
+        $lc['date_of_adm'] = Carbon::createFromFormat('Y-m-d', $lc->date_of_adm)->format('d-m-Y');
+
+        $lc['sub_caste'] = $lc->sub_caste == null ? '' : SubcastModel::where('id', $lc->sub_caste)->first(['name'])->name;
+
+        if($lc->sub_district != null) {
+            $subid = SubdistrictModel::where('id', $lc->sub_district)->first(['district'])->district;
+            $lc['district'] =  DistrictModel::where('id', $subid)->first(['name'])->name;
+        }
+        // dd($lc->dob);
+        $dob = Carbon::createFromFormat('Y-m-d', $lc->dob);
+     
+        $getW = new Controller();
+        $lc['dobWord'] = $getW->getWord($dob->format("d")) ."- ".$dob->format("F")." - ".$getW->getWord($dob->format("Y"));
+        $lc['dob'] = Carbon::createFromFormat('Y-m-d', $lc->dob)->format('d-m-Y');
+        // dd($lc);
         $pdf = PDF::loadView('pdfs.LC', ["lc" => $lc]);
-        return $pdf->stream($lc->student.'.pdf');
+        return $pdf->stream($lc->id.'.pdf');
     }
 
     public function printDuplicateLC(Request $req) {
 
-        $lc = LCModel::where("student", $req->id)->first();
+        $lc = LCModel::select(
+            'lc.*', 'admission.id', 'admission.date_of_adm', 'admission.name', 
+            'admission.fname', 'admission.mname', 'admission.lname', 'admission.gender', 'admission.nationality', 'admission.religion',
+            'admission.caste', 'admission.sub_caste', 'admission.dob', 'admission.birth_place', 'admission.sub_district', 'admission.class',
+            'admission.sts'
+            )
+            ->join('admission', 'lc.student', '=', 'admission.id')
+            ->where('lc.student', $req->id)
+            ->first();
 
-        $lc['student'] = $lc->studentDetails;
-        $lc['studied_till'] = $lc->studiedTill;
-        $lc['till_aca_year'] = $lc->tillYear;
-        $lc['caste'] = $lc->studentDetails->stdCast;
-        $lc['subCaste'] = $lc->studentDetails->subCaste;
-        $lc['subDistrict'] = $lc->studentDetails->subDistrict;
-        $lc['classes'] = $lc->studentDetails->classes;
-        $lc['dobWord'] = Controller::getWord($lc->student->dob->format("d")) ."- ".$lc->student->dob->format("F")." - ".Controller::getWord($lc->student->dob->format("Y"));
+        $lc['district'] = '';
+        $lc['gender'] = $lc->gender == 1 ? 'Male' : 'Female';
+
+        $lc['studied_till'] = ClassesModel::where('id', $lc->studied_till)->first(['name'])->name;
+        $lc['class'] = ClassesModel::where('id', $lc->class)->first(['name'])->name;
+        $lc['till_aca_year'] = AcademicYearModel::where('id', $lc->till_aca_year)->first(['year'])->year;
+        $lc['caste'] = $lc->caste == null ? '' : CasteModel::where('id', $lc->caste)->first(['name'])->name;
+
+        $lc['lt'] = Carbon::createFromFormat('Y-m-d', $lc->lt)->format('d-m-Y');
+        $lc['doa'] = Carbon::createFromFormat('Y-m-d', $lc->doa)->format('d-m-Y');
+        $lc['doil'] = Carbon::createFromFormat('Y-m-d', $lc->doil)->format('d-m-Y');
+        $lc['date_of_adm'] = Carbon::createFromFormat('Y-m-d', $lc->date_of_adm)->format('d-m-Y');
+
+        $lc['sub_caste'] = $lc->sub_caste == null ? '' : SubcastModel::where('id', $lc->sub_caste)->first(['name'])->name;
+
+        if($lc->sub_district != null) {
+            $subid = SubdistrictModel::where('id', $lc->sub_district)->first(['district'])->district;
+            $lc['district'] =  DistrictModel::where('id', $subid)->first(['name'])->name;
+        }
+        // dd($lc->dob);
+        $dob = Carbon::createFromFormat('Y-m-d', $lc->dob);
+
+        $getW = new Controller();
+        $lc['dobWord'] = $getW->getWord($dob->format("d")) ."- ".$dob->format("F")." - ".$getW->getWord($dob->format("Y"));
+        $lc['dob'] = Carbon::createFromFormat('Y-m-d', $lc->dob)->format('d-m-Y');
         $pdf = PDF::loadView('pdfs.LC', ["lc" => $lc, "duplicate" => "1"]);
-        return $pdf->stream($lc->student.'.pdf');
+        return $pdf->stream($lc->id.'.pdf');
     }
 
     //*********************Leaving Certificate*******************

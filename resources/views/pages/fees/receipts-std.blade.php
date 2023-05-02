@@ -38,7 +38,7 @@
                         {{$receipt->year}}
                     </x-td>
                     <x-td>
-                        {{$receipt->class}}
+                        {{$receipt->class==null?'':$receipt->class}}
                     </x-td>
                     <x-td>
                         {{$receipt->created_at->format("d-m-Y")}}

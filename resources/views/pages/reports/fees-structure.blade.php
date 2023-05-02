@@ -41,9 +41,8 @@
         }
 
         /* Firefox */
-        input[type=number] {
-            -moz-appearance: textfield;
-        }
+        input[type=number] { --moz-appearance: textfield; }
+
         </style>
 
         <meta charset="utf-8">
