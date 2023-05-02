@@ -9,8 +9,7 @@ use App\Http\Controllers\GeneralReceiptController;
 use App\Http\Controllers\MastersController;
 use App\Http\Controllers\ReportsController;
 use App\Http\Controllers\TransactionController;
-use App\Models\DistrictModel;
-use App\Models\StatesModel;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -27,6 +26,7 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', function () {
     return view('welcome');
 });
+
 
 Route::middleware([
     'auth:sanctum',
