@@ -26,6 +26,8 @@ class CertificateController extends Controller
             $exist = StudyCertificate::where("student", $req->id)->first();
             $print = false;
 
+            $adm = AdmissionModel::where('id', $req->id)->first();
+            
             if($exist !== null) {
                 $print = true;
                 $std = StudyCertificate::where("student", $req->id)->first();
@@ -91,8 +93,8 @@ class CertificateController extends Controller
                     'Rstd_to' =>null
                 ]);
             }
-            $from_year = $std_from->acaYear->year;
-            $std_from = $std_from->standardClass->name;
+            $from_year = $adm->acaYear->year;
+            $std_from = $adm->classes->name;
 
             $std_to = CreateClass::where("student", "$req->id")->orderBy('id', 'DESC')->first();
             $to_year = $std_to==null?'':$std_to->acaYear->year;
@@ -102,8 +104,8 @@ class CertificateController extends Controller
             $subCaste = $student->subCaste == null ? '-' : $student->subCaste->name;
 
             $Rstd_from = CreateClass::where("student", "$req->id")->orderBy('id', 'ASC')->first();
-            $Rfrom_year = $Rstd_from==null?'':$Rstd_from->acaYear->year;
-            $Rstd_from = $Rstd_from==null?'':$Rstd_from->standardClass->name;
+            $Rfrom_year = $adm->acaYear->year;
+            $Rstd_from = $adm->classes->name;
 
             $Rstd_to = CreateClass::where("student", "$req->id")->orderBy('id', 'DESC')->first();
             $Rto_year = $Rstd_to==null?'':$Rstd_to->acaYear->year;
