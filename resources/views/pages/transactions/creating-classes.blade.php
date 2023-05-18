@@ -41,6 +41,15 @@
                     </div>
                 </div>
 
+                <div>
+                    Search & Add
+                    <div class="mt-5">
+                        <select name="student" id="stdsearh" class="w-full">
+                            <option value="">Start Typing [ STS - Register_No, Name Father_Name Last_Name, (date_of_admission) ]</option>
+                        </select>
+                    </div>
+                </div>
+
                 <x-table>
 
                     <x-thead>
@@ -344,8 +353,8 @@
         $("#btnP" + id).append(`
         <button onclick="movePrevRow(${id})">
             <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 cursor-pointer text-violet-600" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-                                <path stroke-linecap="round" stroke-linejoin="round" d="M5 10l7-7m0 0l7 7m-7-7v18" />
-                              </svg>
+                <path stroke-linecap="round" stroke-linejoin="round" d="M5 10l7-7m0 0l7 7m-7-7v18" />
+            </svg>
         </button>`)
 
     }
@@ -399,6 +408,8 @@
             )
         });
 
+        console.log(ids);
+        return
         if(ids.length < 1) return;
         
         $.ajax({
@@ -425,6 +436,66 @@
 
     function removeAdmit(id) {
         $(id).remove();
+    }
+
+
+    $("#stdsearh").select2({
+        ajax: { 
+        url: "{{route('getStdId')}}",
+        type: "get",
+        dataType: 'json',
+        data: function (params) {
+            return {
+                term: params.term // search term
+            };
+        },
+        processResults: function (response) {
+            return {
+                results: response
+            };
+        },
+        cache: true
+        }
+    })
+
+    $("#stdsearh").on("select2:select", function(e){
+        let data = e.params.data;
+        $.ajax({
+            type: "get",
+            url: "{{route('trans.getStuddent')}}",
+            data: {
+                id: data.id
+            },
+            dataType: "json",
+            success: function (res) {
+                console.log(res);
+
+                $("#creating").append(
+                        `<x-body-tr id="sna_${res[0].id}">
+                        <x-td-num>
+                            ${res[0].id}
+                        </x-td-num>
+                        <x-td>
+                            ${res[0].name}
+                        </x-td>
+                        <x-td>
+                            
+                        </x-td>
+                        <x-td>
+                        </x-td>
+                        <x-td id="btn${res[0].id}">
+                          <button onclick="deleteSNA('sna_${res[0].id}')">
+                            Delete
+                          </button>
+                        </x-td>
+                    </x-body-tr>`
+                    )
+            }
+        });
+    })
+
+    function deleteSNA(id){
+        $('#'+id).remove();
     }
 
 </script>

@@ -259,7 +259,8 @@ class TransactionController extends Controller
         $newAdmissions = AdmissionModel::select('admission.id', 'admission.name', 'admission.class', 'admission.year')
                         ->leftJoin('create_class', 'admission.id', '=', 'create_class.student')
                         ->whereNull('create_class.student')
-                        ->where('admission.class', '>=', $req->clas)
+                        ->where('admission.class', '=', $req->clas)
+                        // ->where('admission.class', '>=', $req->clas)
                         ->get();
         
         foreach($newAdmissions as $new) {
