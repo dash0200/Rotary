@@ -212,7 +212,6 @@
             $("#pageLoad").append(`<x-page-loading />`);
            },
             success: function(res) {
-                // console.log(res);
                 $("#pageLoad").html("");
                 let added = res.addedStd;
                 $("#amt").val(res.totalAmt.toFixed(2))
@@ -408,8 +407,7 @@
             )
         });
 
-        console.log(ids);
-        return
+        
         if(ids.length < 1) return;
         
         $.ajax({
@@ -468,7 +466,6 @@
             },
             dataType: "json",
             success: function (res) {
-                console.log(res);
 
                 $("#creating").append(
                         `<x-body-tr id="sna_${res[0].id}">
