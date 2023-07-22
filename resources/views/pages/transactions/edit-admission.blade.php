@@ -20,7 +20,7 @@
 
                 <div class="m-2 w-full">
                     <x-label value="City" />
-                    <select name="city" id="city" required class="w-full">
+                    <select name="city" id="city" class="w-full">
                         <option value="">Select City</option>
                         @foreach ($districts as $district)
                             <option value="{{ $district->id }}" @if ($std->city == $district->id) selected @endif>
@@ -184,6 +184,7 @@
                 <div class="m-2 w-full">
                     <x-label value="District" />
                     <select name="district" id="district" class="w-full">
+			<option value=''> Select District </option>
                         @foreach ($districts as $district)
                             <option value="{{ $district->id }}" @if ($std->dist == $district->id) selected @endif>
                                 {{ $district->name }}
@@ -229,7 +230,7 @@
                 </div>
                 <div class="m-2 w-full">
                     <x-label value="nationaluty" />
-                    <select name="nationaluty" id="nationaluty" class="w-full">
+                    <select name="nationaluty" id="nationality" class="w-full">
                         <option value="IN">Indian</option>
                     </select>
                 </div>

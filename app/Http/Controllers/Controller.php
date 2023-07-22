@@ -685,4 +685,14 @@ class Controller extends BaseController
         }
         return redirect()->back();
     }
+
+public function checkReg(Request $req){
+        $exist = AdmissionModel::where('sts', $req->sts)->first();
+
+        if($exist){
+            return response()->json(['status'=>200, 'info' => $exist->name.' '.$exist->fname.' '.$exist->lname]);
+        }
+
+        return response()->json(['status'=>404]);
+    }
 }

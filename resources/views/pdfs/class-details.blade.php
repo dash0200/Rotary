@@ -99,7 +99,7 @@
                     A/C No
                 </th>
                 <th>
-                    Student / Father / Mother
+                    Student / Father / Surname
                 </th>
                 <th>D.O.B</th>
                 <th>CASTE</th>
@@ -112,13 +112,13 @@
                     <td>{{$d->id}}</td>
                     <td>
                         <div>
-                            {{strtoupper($d->name)." ".strtoupper($d->fname)}}
+                            {{strtoupper($d->name)}}
                         </div>
                         <div>
-                            {{strtoupper($d->fname)." ".strtoupper($d->fname)}}
+                            {{strtoupper($d->fname)}}
                         </div>
                         <div>
-                            {{strtoupper($d->mname)." ".strtoupper($d->fname)}}
+                            {{strtoupper($d->lname)}}
                         </div>
                     </td>
                     <td>{{$d->dob->format("d-m-Y")}}</td>

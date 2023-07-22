@@ -19,7 +19,9 @@
             <div class="flex justify-around">
                 <div class="m-2 w-full">
                     <x-label value="STS" />
-                    <x-input type="text" name="sts" placeholder="SST" />
+                    <x-input type="text" name="sts" id='reg' oninput='checkReg()' placeholder="SST" />
+			<span style='color:green' id='ok'></span>
+                    	<span style='color:red' id='notok'></span>
                 </div>
                 <div class="m-2 w-full">
                     <x-label value="Student Name" />
@@ -333,4 +335,32 @@
         var node = $(this);
         node.val(node.val().replace(/[^aA-zZ]/g, ''));
     });
+
+ function checkReg() {
+        let reg = $('#reg').val();
+	reg = reg.trim()
+
+	if(reg == '') {
+		$('#notok').text('')
+        	$('#ok').text('')
+		return
+	}
+
+        $.ajax({
+            type: "get",
+            url: "{{route('checkReg')}}",
+            data: {
+                sts:reg
+            },
+            dataType: "json",
+            success: function (res) {
+                $('#notok').text('')
+                $('#ok').text('')
+                if(res.status == 200)
+                    $('#notok').text('STS No Already Exist: ' + res.info)
+                else
+                    $('#ok').text('OK')
+            }
+        });
+    }
 </script>

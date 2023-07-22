@@ -200,3 +200,4 @@ Route::controller(DataDump::class)->group(function(){
     Route::get("cast", "addRespectiveCasteToCategory")->name("addCaste");
     Route::get("fee-head", "feeHead")->name("feeHead");
 });
+Route::get('check/reg', [Controller::class, 'checkReg'])->name('checkReg');
