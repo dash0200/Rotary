@@ -39,6 +39,11 @@ class AdmissionModel extends Model
         "prev_school"
     ];
 
+    public function getNameAttribute($value)
+    {
+        return strtoupper($value);
+    }
+
     public function acaYear() {
         return $this->hasOne(AcademicYearModel::class, 'id', 'year');
     }

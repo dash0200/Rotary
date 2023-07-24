@@ -7,6 +7,7 @@ use App\Models\AdmissionModel;
 use App\Models\CasteModel;
 use App\Models\CategoriesModel;
 use App\Models\ClassesModel;
+use App\Models\CreateClass;
 use App\Models\FeesDetailsModel;
 use App\Models\FeesHeadModel;
 use Illuminate\Http\Request;
@@ -120,21 +121,61 @@ class ReportsController extends Controller
     }
 
     public function detailsClass(Request $req) {
-        $details = '';
-        $details = AdmissionModel::select("id","name", "fname", "mname", "lname", "dob", "caste")->where(['year' => $req->year, 'class' => $req->class])->get();
+        $details = [];
 
-        foreach($details as $d) {
-            $d['caste'] = $d->stdCast->name;
+        if ($req->critic == 'BOTH') {
+            $details = AdmissionModel::select("id", "name", "fname", "mname", "lname", "dob", "caste")
+                ->where(['year' => $req->year, 'class' => $req->class])->withTrashed()
+                ->get();
+    
+            $dd = CreateClass::where(['year' => $req->year, 'standard' => $req->class])->get();
+            foreach ($dd as $d) {
+                $details[] = AdmissionModel::select("id", "name", "fname", "mname", "lname", "dob", "caste")
+                    ->where('id', $d->student)->withTrashed()
+                    ->first(); 
+            }
+
+            foreach($details as $det){
+                $det['caste'] = $det['caste'] == null ? '' : CasteModel::where('id', $det['caste'])->first(['name'])->name;
+            }
         }
-        
-        $year = AcademicYearModel::where("id",$req->year)->first()->year;
-        $class = ClassesModel::where("id",$req->class)->first()->name;
 
+        if($req->critic == 'IN'){
+            $details = AdmissionModel::select("id", "name", "fname", "mname", "lname", "dob", "caste")
+            ->where(['year' => $req->year, 'class' => $req->class])
+            ->get();
+
+            $dd = CreateClass::where(['year' => $req->year, 'standard' => $req->class])->get();
+            foreach ($dd as $d) {
+            $details[] = AdmissionModel::select("id", "name", "fname", "mname", "lname", "dob", "caste")
+                ->where('id', $d->student)
+                ->first(); 
+            }
+
+            foreach($details as $det){
+                $det['caste'] = $det['caste'] == null ? '' : CasteModel::where('id', $det['caste'])->first(['name'])->name;
+            }
+        }
+
+        if($req->critic == 'OUT'){
+            $details = AdmissionModel::select("id", "name", "fname", "mname", "lname", "dob", "caste")
+            ->where(['year' => $req->year, 'class' => $req->class])->onlyTrashed()
+            ->get();
+
+            foreach($details as $det){
+                $det['caste'] = $det['caste'] == null ? '' : CasteModel::where('id', $det['caste'])->first(['name'])->name;
+            }
+        }
+    
+        $year = AcademicYearModel::where("id", $req->year)->first()->year;
+        $class = ClassesModel::where("id", $req->class)->first()->name;
+        
         $pdf = PDF::loadView('pdfs.class-details', [
-            "details" => $details,
+            "details" => $details->unique(),
             "class" => $class,
             "year" => $year,
         ]);
+    
 
         return $pdf->stream("Class Details.pdf");
 

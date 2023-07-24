@@ -23,7 +23,6 @@ class LCModel extends Model
         "reason",
     ];
 
-
     public function studentDetails() {
         return $this->hasOne(AdmissionModel::class, 'id', 'student')->withTrashed();
     }
