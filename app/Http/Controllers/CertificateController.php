@@ -26,7 +26,7 @@ class CertificateController extends Controller
             $exist = StudyCertificate::where("student", $req->id)->first();
             $print = false;
 
-            $adm = AdmissionModel::where('id', $req->id)->first();
+            $adm = AdmissionModel::where('id', $req->id)->withTrashed()->first();
             
             if($exist !== null) {
                 $print = true;
