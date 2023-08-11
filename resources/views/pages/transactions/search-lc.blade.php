@@ -43,8 +43,13 @@
                 id: $("#id").val(),
             },
             dataType: "json",
+            beforeSend: function(){
+                $("#byId").html("");
+                $("#byId").append(
+                    `<x-loading-button/>`
+                );
+            },
             success: function (res) {
-                console.log(res);
                 $("#byId").html("")
                 
                 res.forEach(std => {

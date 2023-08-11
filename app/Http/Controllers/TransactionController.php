@@ -168,26 +168,15 @@ class TransactionController extends Controller
     } 
 
     public function getByName(Request $req) {
-
-        if($req->year == null ) {
-            $stds = AdmissionModel::withTrashed()->where("name", 'LIKE', '%'.strtolower($req->name).'%')->limit(10)->get();
+            $stds = AdmissionModel::withTrashed()->where("name",  'LIKE', '%'.$req->name.'%')
+            ->where('year', $req->year) 
+            ->limit(10)->get();
             foreach($stds as $std) {
                 $std['dob1'] = $std["dob"]->format("d-m-Y");
                 $std['exist'] = LCModel::where("student", $std->id)->first();
                 $std['exist'] = $std['exist'] == null ? "" : 1;
             }
-            return response()->json($stds);
-        } else {
-            $stds = AdmissionModel::withTrashed()->where(["name"=> strtolower($req->name), "year"=>$req->year])->get();
-            foreach($stds as $std) {
-                $std['dob1'] = $std["dob"]->format("d-m-Y");
-                $std['exist'] = LCModel::where("student", $std->id)->first();
-                $std['exist'] = $std['exist'] == null ? "" : 1;
-            }
-            return response()->json($stds);
-        }
-
-        
+            return response()->json($stds);        
     } 
 
 
