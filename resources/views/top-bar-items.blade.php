@@ -35,6 +35,11 @@
         Leaving Certificate
     </x-dropdown-link>
 
+    <x-dropdown-link href="{{route('trans.searchLC')}}" class="border-b border-b-indigo-200"
+        :active="request()->routeIs('trans.searchLC')">
+        Search LC
+    </x-dropdown-link>
+
     <x-dropdown-link href="{{ route('trans.getStudentId') }}" class="border-b border-b-indigo-200" :active="request()->routeIs('trans.getStudentId')">
         Get Student ID
     </x-dropdown-link>

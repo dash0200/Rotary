@@ -34,6 +34,11 @@
             margin-top: 25rem;
             margin-left: 2rem;
         }
+
+        .lcid{
+            position: absolute;
+            width: 100%;
+        }
     </style>
 
 </head>
@@ -44,6 +49,10 @@
         D U P L I C A T E
     </div>
     @endif
+
+    <div class='lcid'>
+        {{$lc->id}}
+    </div>
     <table style="width: 100%;" class="bb">
         <tr>
             <td align="center">
@@ -269,7 +278,7 @@
                         <td class="bb"> {{ strtoupper($lc->birth_place) }} </td>
                         <td align="center">
                             <span class="fb" style="margin-right: 2rem;">15. District: </span>
-                            <span class="bb"> {{ strtoupper($lc->sub_district == null ? '' : $lc->sub_district) }}</span>
+                            <span class="bb"> {{ strtoupper($lc->district == null ? '' : $lc->district) }}</span>
                         </td>
                     </tr>
                 </table>
@@ -286,7 +295,7 @@
             <td class="fb">:</td>
 
             <td align="left" style="width: 100%;" class="bb">
-                {{ $lc->class . ' STANDARD SINCE ' . strtoupper($lc->date_of_adm) . $lc->date_of_adm }}
+                {{ $lc->class . ' STANDARD SINCE ' . strtoupper($lc->date_of_adm) .' to '. $lc->date_of_adm }}
             </td>
         </tr>
     </table>

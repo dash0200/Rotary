@@ -1,12 +1,8 @@
 <x-main-card>
-    <div class="flex justify-between">
+    <div class="flex justify-end">
         <a href="{{route('trans.searchLC')}}">
-            <x-button-primary value="PRINT LC" />
+            <x-button-primary value="Search LC" />
         </a>
-
-        <div class="text-orange-500" id="exist">
-            
-        </div>
     </div>
     <div>
         <x-label value="Register Number" />
@@ -114,7 +110,7 @@
                 <x-input type="date" name="doi" value="{{date('Y-m-d')}}" />
             </div>
             <div class="w-full">
-                <x-label value="REASONING for Leaving the School" />
+                <x-label value="REASON for Leaving the School" />
                 <x-input type="text" name="reason" value="PARENTS REQUEST" />
             </div>
         </div>
@@ -228,19 +224,16 @@
                 );
             },
             success: function (res) {
-                $("#save").html('')
-                $("#save").append(
-                    `
-                    <x-button-primary class="w-1/4" value="SUBMIT" id="svBtn" onclick="submitLC('${id}', )" />
-                    `
-                );
+                window.open('/transaction/print-lc?id=${res.lc}', '_blank');
+
+                location.reload()
             }
         });
     }
     
     $("#stdsearh").select2({
         ajax: { 
-        url: "{{route('getStdId')}}",
+        url: "{{route('trans.getStdId')}}",
         type: "get",
         dataType: 'json',
         data: function (params) {
@@ -268,11 +261,7 @@
             dataType: "json",
             success: function (res) {
 
-                if(res[0].deleted_at !== null) {
-                    $("#exist").text("LC for the selected student has already been Generated if you click on submit the information will be update")
-                } else {
-                    $("#exist").text("")
-                }
+                
                 console.log(res[1]);
                 $("#adm").html('')
                 $("#adm").append(
@@ -325,7 +314,7 @@
                     </x-body-tr>
                     `
                 )
-
+                $("#save").html('')
                 $("#save").append(
                     `
                     <x-button-primary class="w-1/4" value="SUBMIT" id="svBtn" onclick="submitLC('${res[0].id}', )" />

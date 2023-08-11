@@ -1,7 +1,7 @@
 <?php
 
 namespace App\Http\Controllers;
-
+use Illuminate\Support\Facades\Log;
 use App\Models\AcademicYearModel;
 use App\Models\AdmissionModel;
 use App\Models\CasteModel;
@@ -18,14 +18,16 @@ use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use PDF;
+use Illuminate\Support\Facades\Crypt;
 
 class TransactionController extends Controller
 {
     // *************New Admission************************************************************************************************************************************************************************************
     public function newAdmission()
     {
-        $id = AdmissionModel::select("id")->orderBy("id", "DESC")->withTrashed()->first();
-        $id = $id == null ? 1 : $id->id + 1;
+          // Get the latest admission ID
+        $latestAdmission = AdmissionModel::select("id")->orderBy("id", "DESC")->withTrashed()->first();
+        $id = $latestAdmission ? $latestAdmission->id + 1 : 1;
 
         $year = '';
 
@@ -38,9 +40,8 @@ class TransactionController extends Controller
             $nxt = date("Y")[2].date("Y")[3];
             $year = $crr."-".(int)$nxt;
         }
-
         $year = AcademicYearModel::where('year', $year)->first();
-
+        
         return view('pages.transactions.new-admission')->with([
             'classes' => ClassesModel::get(),
             'states' => StatesModel::get(),
@@ -149,6 +150,9 @@ class TransactionController extends Controller
         $std['exist'] = $std['exist'] == null ? "" : 1;
 
         $std['dob1'] = $std["dob"]->format("d-m-Y");
+
+        $std['ide'] = Crypt::encryptString($std->id);
+
         return response()->json($std);
     } 
 
@@ -303,7 +307,7 @@ class TransactionController extends Controller
 
     public function getStuddent(Request $req) {
         
-        $student = AdmissionModel::withTrashed()->where('id', $req->id)->first();
+        $student = AdmissionModel::where('id', $req->id)->first();
         $student['c'] = $student->classes;
         $student['year'] = $student->acaYear;
         $student['doy'] = $student->date_of_adm->format("d-m-Y");
@@ -320,7 +324,55 @@ class TransactionController extends Controller
             $standard['yr'] = '';
         }
 
+        $standard["std"]  = $standard !== null ? $standard->standardClass : '';
+        $standard['yr'] = $standard !== null ? $standard->acaYear : '';
+
         return response()->json([$student, $standard, $qualify]);
+    }
+
+    public function getStdId(Request $req)
+    {
+        if (!isset($req->term)) {
+            return response()->json();
+        }
+        $q = $req->term;
+
+        $students = AdmissionModel::select('id', 'date_of_adm', 'sts', 'name', 'fname', 'mname', 'lname')->where("name", "LIKE", "%" . $q . "%")
+            ->orWhere("fname", "LIKE", "%" . $q . "%")
+            ->orWhere("mname", "LIKE", "%" . $q . "%")
+            ->orWhere("lname", "LIKE", "%" . $q . "%")
+            ->orWhere("id", "LIKE", "%" . $q . "%")
+            ->orWhere("date_of_adm", "LIKE", "%" . $q . "%")
+            ->orWhere("sts", "LIKE", "%" . $q . "%")
+            ->limit(10)->get();
+
+        $student = array();
+
+        foreach ($students as $std) {
+            $student[] = array(
+                'id' => $std->id,
+                'text' => $std->id . "-" . $std->sts . ", " . $std->name . " " . $std->fname . " " . $std->lname . ", (" . $std->date_of_adm->format("d-m-Y") . ")"
+            );
+        }
+        return response()->json($student);
+    }
+
+    public function getLC(Request $req)
+    {
+        $students = DB::table('lc')
+        ->leftJoin('admission', 'lc.student', '=', 'admission.id')
+        ->select('lc.*', 'admission.date_of_adm', 'admission.name', 'admission.fname', 'admission.mname', 'admission.lname', 'admission.gender', 'admission.nationality', 'admission.religion', 'admission.caste', 'admission.sub_caste', 'admission.dob', 'admission.birth_place', 'admission.sub_district', 'admission.class', 'admission.sts')
+        ->where(function ($query) use ($req) {
+            $query->where('lc.student', $req->id)
+                ->orWhere('lc.id', $req->id)
+                ->orWhere('admission.id', $req->id);
+        })
+        ->get();
+        foreach ($students as $student) {
+            $student->student_ide = Crypt::encryptString($student->student);
+            $student->lc_ide = Crypt::encryptString($student->id);
+        }
+        return response()->json($students);
     }
 
     public function leavingCertificate()
@@ -344,65 +396,114 @@ class TransactionController extends Controller
             "doil" => $req->doi,
             "reason" => $req->reason,
         ];
+        // $lc = null;
+        // if( LCModel::where("student", $req->id)->first() == null ) {
+        //     $lc = LCModel::create($data);
+        //     AdmissionModel::where("id", $req->id)->delete();
+        // } else {
+        //     $lc = LCModel::where("student", $req->id)->update($data);
+        // }
 
-        if( LCModel::where("student", $req->id)->first() == null ) {
-            LCModel::create($data);
-            AdmissionModel::where("id", $req->id)->delete();
-        } else {
-            LCModel::where("student", $req->id)->update($data);
-        }
+        $lc = LCModel::create($data);
+        AdmissionModel::where("id", $req->id)->delete();
 
-        return response()->json(["msg" => "success"]);
+        $id = Crypt::encryptString($lc->student);
+        return response()->json(["lc" => $id]);
+        
+    }
+
+    public function updateLc(Request $req) {
+        // dd($req->id);
+        $data = [
+            "studied_till" => $req->stdTill,
+            "till_aca_year" => $req->tillYear,
+            "was_studying" => $req->wasStd,
+            "whether_qualified" => $req->qualified,
+            "lt" => $req->la,
+            "doa" => Carbon::parse($req->doa)->format("Y-m-d"),
+            "doil" => $req->doi,
+            "reason" => $req->reason,
+        ];
+
+        LCModel::where("id", $req->id)->update($data);
+
+        $lc = LCModel::find($req->id);
+        
+        $id = Crypt::encryptString($lc->student);
+        return response()->json(["lc" => $id]);
         
     }
 
     public function searchLC() {
+        
         return view("pages.transactions.search-lc")->with([
             'classes' => ClassesModel::get(),
             'years' => AcademicYearModel::get()
         ]);
     }
 
+    public function editLC(Request $req) {
+        $lc_id = Crypt::decryptString($req->id);
+
+        $lc = LCModel::where('id', $lc_id)->first();
+
+        return view("pages.transactions.edit-lc")->with([
+            'classes' => ClassesModel::get(),
+            'years' => AcademicYearModel::get(),
+            'lc' => $lc
+        ]);
+    }
+
     public function printLC(Request $req) {
-
+        $id = Crypt::decryptString($req->id);
         $lc = LCModel::select(
-                    'lc.*', 'admission.id', 'admission.date_of_adm', 'admission.name', 
-                    'admission.fname', 'admission.mname', 'admission.lname', 'admission.gender', 'admission.nationality', 'admission.religion',
-                    'admission.caste', 'admission.sub_caste', 'admission.dob', 'admission.birth_place', 'admission.sub_district', 'admission.class',
-                    'admission.sts'
-                    )
-                    ->join('admission', 'lc.student', '=', 'admission.id')
-                    ->where('lc.student', $req->id)
-                    ->first();
+            'lc.*', 'admission.id AS admission_id', 'admission.date_of_adm', 'admission.name', 
+            'admission.fname', 'admission.mname', 'admission.lname', 'admission.gender', 'admission.nationality', 'admission.religion',
+            'admission.caste', 'admission.sub_caste', 'admission.dob', 'admission.birth_place', 'admission.sub_district', 'admission.class',
+            'admission.sts'
+        )
+        ->join('admission', 'lc.student', '=', 'admission.id')
+        ->where('lc.student',$id)
+        ->first();
 
-        $lc['district'] = '';
         $lc['gender'] = $lc->gender == 1 ? 'Male' : 'Female';
-
-        $lc['studied_till'] = ClassesModel::where('id', $lc->studied_till)->first(['name'])->name;
-        $lc['class'] = ClassesModel::where('id', $lc->class)->first(['name'])->name;
-        $lc['till_aca_year'] = AcademicYearModel::where('id', $lc->till_aca_year)->first(['year'])->year;
-        $lc['caste'] = $lc->caste == null ? '' : CasteModel::where('id', $lc->caste)->first(['name'])->name;
-
-        $lc['lt'] = Carbon::createFromFormat('Y-m-d', $lc->lt)->format('d-m-Y');
-        $lc['doa'] = Carbon::createFromFormat('Y-m-d', $lc->doa)->format('d-m-Y');
-        $lc['doil'] = Carbon::createFromFormat('Y-m-d', $lc->doil)->format('d-m-Y');
-        $lc['date_of_adm'] = Carbon::createFromFormat('Y-m-d', $lc->date_of_adm)->format('d-m-Y');
-
-        $lc['sub_caste'] = $lc->sub_caste == null ? '' : SubcastModel::where('id', $lc->sub_caste)->first(['name'])->name;
-
-        if($lc->sub_district != null) {
-            $subid = SubdistrictModel::where('id', $lc->sub_district)->first(['district'])->district;
-            $lc['district'] =  DistrictModel::where('id', $subid)->first(['name'])->name;
+        
+        $classesModel = ClassesModel::select('name')->where('id', $lc->studied_till)->first();
+        $lc['studied_till'] = $classesModel ? $classesModel->name : '';
+        
+        $classesModel = ClassesModel::select('name')->where('id', $lc->class)->first();
+        $lc['class'] = $classesModel ? $classesModel->name : '';
+        
+        $academicYearModel = AcademicYearModel::select('year')->where('id', $lc->till_aca_year)->first();
+        $lc['till_aca_year'] = $academicYearModel ? $academicYearModel->year : '';
+        
+        $casteModel = CasteModel::select('name')->where('id', $lc->caste)->first();
+        $lc['caste'] = $casteModel ? $casteModel->name : '';
+        
+        $lcDateFormats = ['lt', 'doa', 'doil', 'date_of_adm'];
+        foreach ($lcDateFormats as $format) {
+            if($lc[$format] !== null)
+                    $lc[$format] = Carbon::createFromFormat('Y-m-d', $lc->$format)->format('d-m-Y');
         }
-        // dd($lc->dob);
+        
+        $subcastModel = SubcastModel::select('name')->where('id', $lc->sub_caste)->first();
+        $lc['sub_caste'] = $subcastModel ? $subcastModel->name : '';
+        
+        if ($lc->sub_district != null) {
+            $subdistrictModel = SubdistrictModel::select('district')->where('id', $lc->sub_district)->first();
+            // dd($subdistrictModel);
+            if ($subdistrictModel) {
+                $districtModel = DistrictModel::select('name')->where('id', $subdistrictModel->district)->first();
+                $lc['district'] = $districtModel ? $districtModel->name : '';
+            }
+        }
         $dob = Carbon::createFromFormat('Y-m-d', $lc->dob);
-     
         $getW = new Controller();
-        $lc['dobWord'] = $getW->getWord($dob->format("d")) ."- ".$dob->format("F")." - ".$getW->getWord($dob->format("Y"));
-        $lc['dob'] = Carbon::createFromFormat('Y-m-d', $lc->dob)->format('d-m-Y');
-        // dd($lc);
+        $lc['dobWord'] = $getW->getWord($dob->format("d")) . "- " . $dob->format("F") . " - " . $getW->getWord($dob->format("Y"));
+        $lc['dob'] = $dob->format('d-m-Y');
         $pdf = PDF::loadView('pdfs.LC', ["lc" => $lc]);
-        return $pdf->stream($lc->id.'.pdf');
+        return $pdf->stream($lc->id . '.pdf');
+        
     }
 
     public function printDuplicateLC(Request $req) {
@@ -436,6 +537,7 @@ class TransactionController extends Controller
             $subid = SubdistrictModel::where('id', $lc->sub_district)->first(['district'])->district;
             $lc['district'] =  DistrictModel::where('id', $subid)->first(['name'])->name;
         }
+
         // dd($lc->dob);
         $dob = Carbon::createFromFormat('Y-m-d', $lc->dob);
 

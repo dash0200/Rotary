@@ -79,12 +79,16 @@ Route::controller(TransactionController::class)->prefix('transaction')->name('tr
     Route::get('get-curyear', 'getCurrentClass')->name('getCurrentClass');
     Route::post('get-creat-class', 'createClass')->name('createClass');
 
-    Route::get('leaving-certificate', 'leavingCertificate')->name('leavingCertificate');
+    Route::get('leaving-certificate', 'leavingCertificate')->name(' ');
     Route::post('save-lc', 'saveLc')->name('saveLc');
     Route::get('search-lc', 'searchLC')->name('searchLC');
-    Route::post('print-lc', 'printLC')->name('printLC');
+    Route::get('print-lc', 'printLC')->name('printLC');
     Route::post('print-duplicate-lc', 'printDuplicateLC')->name('printDuplicateLC');
     Route::get('get-studdent', 'getStuddent')->name('getStuddent');
+    Route::get('getStdId', 'getStdId')->name('getStdId');
+    Route::get('getLC', 'getLC')->name('getLC');
+    Route::get('editLC', 'editLC')->name('editLC');
+    Route::post('updateLc', 'updateLc')->name('updateLc');
 
 
     Route::get('transaction-get-student-id', 'getStudentId')->name('getStudentId');
