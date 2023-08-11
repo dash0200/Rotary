@@ -3,7 +3,7 @@
     <div class="w-full bg-gray-200" style="height: 1px;"></div>
     <form action="{{ route('trans.saveAdmission') }}" method="post">
         @csrf
-        <input type="text" value="{{ $std->id }}" name="id" hidden>
+        <input type="text" value="{{ $std->id }}" name="id" >
         <div class="flex flex-col justify-around">
             <div class="flex justify-around items-center">
                 <div class="m-2 w-full">
@@ -257,18 +257,24 @@
 
     $('#caste').on("select2:select", function(e) {
         let data = e.params.data;
-
+        cat(data.id)
     });
 
     $('#states').on("select2:select", function(e) {
         let data = e.params.data;
-
+        dist(data.id)
     });
 
     $('#district').on("select2:select", function(e) {
         let data = e.params.data;
-
+        taluk(data.id)
     })
+
+    $(document).ready(function() {
+        dist(11)
+        taluk(1)
+    });
+
 
     function dist(id) {
         $.ajax({
@@ -343,8 +349,5 @@
             return false;
     });
 
-    $('.alphaonly').bind('keyup blur', function() {
-        var node = $(this);
-        node.val(node.val().replace(/[^aA-zZ]/g, ''));
-    });
+
 </script>

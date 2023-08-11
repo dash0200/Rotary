@@ -30,16 +30,6 @@
         Creating Classes
     </x-dropdown-link>
 
-    <x-dropdown-link href="{{ route('trans.leavingCertificate') }}" class="border-b border-b-indigo-200"
-        :active="request()->routeIs('trans.leavingCertificate')">
-        Leaving Certificate
-    </x-dropdown-link>
-
-    <x-dropdown-link href="{{route('trans.searchLC')}}" class="border-b border-b-indigo-200"
-        :active="request()->routeIs('trans.searchLC')">
-        Search LC
-    </x-dropdown-link>
-
     <x-dropdown-link href="{{ route('trans.getStudentId') }}" class="border-b border-b-indigo-200" :active="request()->routeIs('trans.getStudentId')">
         Get Student ID
     </x-dropdown-link>
@@ -99,13 +89,21 @@
     </x-dropdown-link>
 </x-drop>
 
-<x-drop :name="'Certificates'" :active="request()->routeIs('certificate.*')">
+<x-drop :name="'Certificates'" :active="request()->routeIs('certificate.*') || request()->routeIs('trans.*')">
 
     <x-dropdown-link href="{{ route('certificate.certificate') }}" class="border-b border-b-indigo-200"
         :active="request()->routeIs('certificate.certificate')">
         Certificate
     </x-dropdown-link>
+    <x-dropdown-link href="{{ route('trans.leavingCertificate') }}" class="border-b border-b-indigo-200"
+        :active="request()->routeIs('trans.leavingCertificate')">
+        Leaving Certificate
+    </x-dropdown-link>
 
+    <x-dropdown-link href="{{route('trans.searchLC')}}" class="border-b border-b-indigo-200"
+        :active="request()->routeIs('trans.searchLC')">
+        Search LC
+    </x-dropdown-link>
 </x-drop>
 
 {{-- <x-drop :name="'Building Fund'" :active="request()->routeIs('building.*')">

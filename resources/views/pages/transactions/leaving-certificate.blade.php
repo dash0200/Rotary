@@ -224,9 +224,10 @@
                 );
             },
             success: function (res) {
-                window.open('/transaction/print-lc?id=${res.lc}', '_blank');
+                console.log(res.lc);
+                // window.open('/transaction/print-lc?id=${res.lc}', '_blank');
 
-                location.reload()
+                // location.reload()
             }
         });
     }

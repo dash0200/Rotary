@@ -79,7 +79,7 @@ Route::controller(TransactionController::class)->prefix('transaction')->name('tr
     Route::get('get-curyear', 'getCurrentClass')->name('getCurrentClass');
     Route::post('get-creat-class', 'createClass')->name('createClass');
 
-    Route::get('leaving-certificate', 'leavingCertificate')->name(' ');
+    Route::get('leaving-certificate', 'leavingCertificate')->name('leavingCertificate');
     Route::post('save-lc', 'saveLc')->name('saveLc');
     Route::get('search-lc', 'searchLC')->name('searchLC');
     Route::get('print-lc', 'printLC')->name('printLC');

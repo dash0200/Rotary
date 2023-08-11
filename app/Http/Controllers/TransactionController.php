@@ -123,7 +123,6 @@ class TransactionController extends Controller
             "handicap" => $req->handicap,
             "prev_school" => strtolower($req->prevSchool),
         ];
-
         if(isset($req->id)) {
             AdmissionModel::where("id", $req->id)->update($data);
         } else {
@@ -207,7 +206,7 @@ class TransactionController extends Controller
         $std['sub_districts'] = SubdistrictModel::where("district", $std['dist'])->get();
 
         $std["sub_castes"] = SubcastModel::where("caste", $std->caste)->get();
-
+        
         return view("pages.transactions.edit-admission")->with([
             'classes' => ClassesModel::get(),
             'categories'  => CategoriesModel::get(),
@@ -465,7 +464,7 @@ class TransactionController extends Controller
         ->join('admission', 'lc.student', '=', 'admission.id')
         ->where('lc.student',$id)
         ->first();
-
+            
         $lc['gender'] = $lc->gender == 1 ? 'Male' : 'Female';
         
         $classesModel = ClassesModel::select('name')->where('id', $lc->studied_till)->first();
