@@ -67,7 +67,7 @@
                 ${res.id}
             </x-td>
             <x-td>
-                ${res.name} (${res.student})
+                ${res.name} <b>(${res.student})</b>
             </x-td>
             <x-td>
                 ${res.fname}
