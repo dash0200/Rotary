@@ -27,16 +27,9 @@ Route::get('/', function () {
     return redirect()->route('dashboard');
 });
 
-
-Route::middleware([
-    'auth:sanctum',
-    config('jetstream.auth_session'),
-    'verified'
-])->group(function () {
-    Route::get('/dashboard',[Controller::class, 'dashboard'])->name('dashboard');
-});
-
 Route::middleware(['auth:sanctum', config('jetstream.auth_session'), 'verified'])->group(function () {
+
+    Route::get('/dashboard',[Controller::class, 'dashboard'])->name('dashboard');
 
     Route::controller(MastersController::class)->prefix('master')->name('master.')->group(function(){
         //Fees Heads

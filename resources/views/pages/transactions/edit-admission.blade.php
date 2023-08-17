@@ -270,10 +270,10 @@
         taluk(data.id)
     })
 
-    $(document).ready(function() {
-        dist(11)
-        taluk(1)
-    });
+    // $(document).ready(function() {
+    //     dist(11)
+    //     taluk(1)
+    // });
 
 
     function dist(id) {
