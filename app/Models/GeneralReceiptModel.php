@@ -9,6 +9,7 @@ class GeneralReceiptModel extends Model
 {
     use HasFactory;
     protected $table = 'general_receipt';
+    protected $dates = ['date'];
     protected $fillable = [
         "date",
         "amount",

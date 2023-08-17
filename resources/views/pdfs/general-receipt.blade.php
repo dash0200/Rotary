@@ -79,19 +79,14 @@
 
     <table style="width: 100%; padding: 0px" class="bb">
         <tr>
-            <td align="right" class="fb">
+            <td align="center" class="fb">
                 <div style="font-size: 20px; padding: 0.3rem;">
                     GENERAL RECEIPT DAY BOOK
                 </div>
             </td>
 
-            <td align="right">
-                @if(isset($from))
-                {{date('d-m-Y',strtotime($from))}} - {{date('d-m-Y',strtotime($to))}}
-                @else
-                {{date('d-m-Y',strtotime($receipts[0]->date))}}
-                @endif
-               
+            <td align="center">
+               Date: {{$date}}               
             </td>
         </tr>
     </table>
@@ -100,10 +95,7 @@
     <table style="width: 100%; padding: 0px" class="bb fb" id="customers">
         <thead>
             <tr>
-                <th>SL No</th>
-                @if(isset($from))
-                    <th>Date</th>
-                @endif
+                <th>#</th>
                 <th>Receipt No</th>
                 <th>Towards/Particulars</th>
                 <th>Amount</th>
@@ -117,9 +109,6 @@
             @foreach($receipts as $r)
                 <tr>
                     <td>{{$loop->iteration}}</td>
-                    @if(isset($from))
-                    <td>{{date('d-m-Y',strtotime($r->date))}}</td>
-                    @endif
                     <td>{{$r->id}}</td>
                     <td>{{$r->cause}}</td>
                     <td>{{$r->amount}}</td> @php $total += $r->amount; @endphp

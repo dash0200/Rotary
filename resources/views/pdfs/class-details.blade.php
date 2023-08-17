@@ -82,8 +82,11 @@
             <td align="center">
                 Academic Year: {{$year}}
             </td>
-            <td align="center">
+            <td>
                 Standard:{{$class}}
+            </td>
+            <td>
+                Total:{{$total}}
             </td>
         </tr>
     </table>

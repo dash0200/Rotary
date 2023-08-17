@@ -72,10 +72,11 @@ class FeesDetailsController extends Controller
 
         $details = CreateClass::where(['year' => $req->year, 'standard' => $req->class])->get();
         foreach($details as $detail) {
-            $detail['student'] = $detail->getStudent;
+            $detail['std_id'] = $detail->getStudent->id;
+            $detail['name'] = $detail->getStudent->name;
         }
-        
-        $pdf = PDF::loadView('pdfs.classwisefees', ["fees" => $details, 
+
+        $pdf = PDF::loadView('pdfs.classwisefees', ["fees" => $details->sortBy('name'), 
             'year' => AcademicYearModel::where("id", $req->year)->first()->year, 
             'class' => ClassesModel::where('id', $req->class)->first()->name
         ]);
@@ -123,9 +124,9 @@ class FeesDetailsController extends Controller
     }
 
     public function pdfFeesRegister(Request $req) {
-
-       $fees = FeeReceiptModel::where(['year' => $req->year, 'class' => $req->class])->get();
-
+        // dd($req->all());
+       $fees = FeeReceiptModel::where(['year' => $req->year, 'class' => $req->class])->get()->take(10);
+        
        $year_id = '';
 
        if((int)date("m") >= 6) {
@@ -141,14 +142,19 @@ class FeesDetailsController extends Controller
        $year = AcademicYearModel::where('year', $year_id)->first();
 
         foreach($fees as $fee) {
-            $fee['student'] = $fee->studentDetail;
+            $std = $fee->studentDetail;
+            $fee['std_id'] = $std->id;
+            $fee['name'] = $std->name;
 
-            $fee['type'] = $fee->student->year == $year->id ? 'NEW' : 'OLD';
+            $fee['type'] = $std->year == $year->id ? 'NEW' : 'OLD';
         }
 
        $totalAmt = FeesDetailsModel::where(['year' => $req->year, 'class' => $req->class])->first()->amt_per_annum;
 
-       $pdf = PDF::loadView('pdfs.feesregister', ["fees" => $fees, 'amount' => $totalAmt]);
+       $year = AcademicYearModel::where('id', $req->year)->first(['year'])->year;
+       $class = ClassesModel::where('id', $req->class)->first(['name'])->name;
+       $total = count($fees);
+       $pdf = PDF::loadView('pdfs.feesregister', ["total" => $total, "fees" => $fees->sortBy('name'), 'amount' => $totalAmt, 'year' => $year, 'class' => $class]);
 
        return $pdf->stream("Fees Register.pdf");
     }

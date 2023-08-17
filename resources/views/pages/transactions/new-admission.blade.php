@@ -32,7 +32,7 @@
                 <div class="m-2 w-full">
                     <x-label value="City" />
                     <select name="city" id="city" required class="w-full">
-                        <option value="">Select City</option>
+                        <option value="">--</option>
                         @foreach ($districts as $district)
                             <option value="{{ $district->id }}">{{ $district->name }}</option>
                         @endforeach
@@ -219,8 +219,8 @@
                 </div>  
     
                 <div class="m-2 w-full">
-                    <x-label value="nationaluty" />
-                    <select name="nationaluty" id="nationaluty" class="w-full">
+                    <x-label value="nationality" />
+                    <select name="nationality" id="nationality" class="w-full">
                         <option value="INDIAN">Indian</option>
                     </select>
                 </div>
@@ -276,6 +276,7 @@
             success: function(data) {
                 // dists = [{"id":1, "text":"sdfdsf"}];
                 $("#district").html("")
+                $("#district").append(`<option value="">--</option>`)
                 for (let i = 0; i < data.length; i++) {
                     $("#district").append(
                         `<option value="${data[i].id}"> ${data[i].text} </option>`
@@ -294,6 +295,7 @@
             },
             success: function(data) {
                 $("#taluk").html("")
+                $("#taluk").append(`<option value="">--</option>`)
                 for (let i = 0; i < data.length; i++) {
                     $("#taluk").append(
                         `<option value="${data[i].id}"> ${data[i].text} </option>`
@@ -314,6 +316,7 @@
                
                 let subs = res.subcasts;
                 $("#subc").html("")
+                $("#subc").append(`<option value="">--</option>`)
                 for (let i = 0; i < subs.length; i++) {
                     $("#subc").append(
                         `<option value="${subs[i].id}"> ${subs[i].name} </option>`
@@ -329,11 +332,6 @@
         if ((event.which != 46 || $(this).val().indexOf('.') != -1) && (event.which < 48 || event.which >
                 57))
             return false;
-    });
-
-    $('.alphaonly').bind('keyup blur', function() {
-        var node = $(this);
-        node.val(node.val().replace(/[^aA-zZ]/g, ''));
     });
 
  function checkReg() {

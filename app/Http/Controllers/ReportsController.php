@@ -143,6 +143,7 @@ class ReportsController extends Controller
         if($req->critic == 'IN'){
             $details = AdmissionModel::select("id", "name", "fname", "mname", "lname", "dob", "caste")
             ->where(['year' => $req->year, 'class' => $req->class])
+            ->orderBy('name')
             ->get();
 
             $dd = CreateClass::where(['year' => $req->year, 'standard' => $req->class])->get();
@@ -169,11 +170,16 @@ class ReportsController extends Controller
     
         $year = AcademicYearModel::where("id", $req->year)->first()->year;
         $class = ClassesModel::where("id", $req->class)->first()->name;
+
+        $total = count($details->unique());
         
+        $details = $details->unique();
+
         $pdf = PDF::loadView('pdfs.class-details', [
-            "details" => $details->unique(),
+            "details" => $details->sortby('name'),
             "class" => $class,
             "year" => $year,
+            "total" => $total
         ]);
     
 

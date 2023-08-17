@@ -128,7 +128,7 @@
             <td class="fb">:</td>
 
             <td align="left" style="width: 100%;" class="bb">
-                {{ $lc->fname == null ? '' : strtoupper($lc->fname) }}
+                {{ $lc->fname }}
             </td>
         </tr>
     </table>

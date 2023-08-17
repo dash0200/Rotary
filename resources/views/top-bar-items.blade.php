@@ -8,7 +8,7 @@
     </x-dropdown-link>
 
     <x-dropdown-link href="{{ route('master.feesDetails') }}" class="border-b border-b-indigo-200" :active="request()->routeIs('master.feesDetails')">
-        Feees Details
+        Fees Details
     </x-dropdown-link>
 
     <x-dropdown-link href="{{ route('master.castDetails') }}" class="border-b border-b-indigo-200" :active="request()->routeIs('master.castDetails')">
@@ -28,6 +28,11 @@
     <x-dropdown-link href="{{ route('trans.creatingClasses') }}" class="border-b border-b-indigo-200"
         :active="request()->routeIs('trans.creatingClasses')">
         Creating Classes
+    </x-dropdown-link>
+
+    <x-dropdown-link href="{{route('trans.editPage')}}" class="border-b border-b-indigo-200"
+        :active="request()->routeIs('trans.editPage')">
+        Edit Student Details    
     </x-dropdown-link>
 
     <x-dropdown-link href="{{ route('trans.getStudentId') }}" class="border-b border-b-indigo-200" :active="request()->routeIs('trans.getStudentId')">

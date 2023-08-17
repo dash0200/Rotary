@@ -97,8 +97,7 @@
             </td>
 
             <td align="left" style="width: 100%;" class="bb fb">
-                {{ $student->fname == null ? '' : strtoupper($student->fname) . ' .' }}
-                {{ $student->lname == null ? '' : strtoupper($student->lname) }}
+                {{ $student->fname }}
             </td>
         </tr>
     </table>

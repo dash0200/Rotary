@@ -126,10 +126,10 @@
                         {{ $loop->iteration }}
                     </td>
                     <td>
-                        {{$fee->student->id}}
+                        {{$fee->std_id}}
                     </td>
                     <td>
-                        {{ $fee->student->name }} {{$fee->student->fname == null ? '' : '.'.strtoupper($fee->student->fname)[0].'. '}}
+                        {{ $fee->name }}
                     </td>
                     <td>
                         {{ $fee->total }} @php $totalExpected = $totalExpected + $fee->total @endphp

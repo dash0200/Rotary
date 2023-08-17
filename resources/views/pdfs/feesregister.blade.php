@@ -80,9 +80,18 @@
     <table style="width: 100%; padding: 0px" class="bb fb">
         <tr>
             <td align="center">
+                Year: {{$year}}
+            </td>
+            <td align="center">
                 <div style="font-size: 20px; padding: 0.3rem;">
                     FEES REGISTER
                 </div>
+            </td>
+            <td>
+                Class: {{$class}}
+            </td>
+            <td>
+                Total: {{$total}}
             </td>
         </tr>
     </table>
@@ -118,10 +127,10 @@
                         {{$loop->iteration }}
                     </td>
                     <td align="center">
-                        {{$fee->student->id}}
+                        {{$fee->std_id}}
                     </td>
                     <td align="left">
-                        {{strtoupper($fee->student->name)}}  {{$fee->student->fname == null ? '' : '.'.strtoupper($fee->student->fname)[0].'.'}}  {{$fee->student->lname==null ? '':strtoupper($fee->student->lname)}}
+                        {{strtoupper($fee->name)}}
                     </td>
                     <td align="right">
                         {{$fee->id}}

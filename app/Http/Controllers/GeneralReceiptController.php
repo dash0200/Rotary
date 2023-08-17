@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\AcademicYearModel;
 use App\Models\GeneralReceiptModel;
 use Illuminate\Http\Request;
+use Carbon\Carbon;
 use PDF;
 
 class GeneralReceiptController extends Controller
@@ -41,9 +42,11 @@ class GeneralReceiptController extends Controller
     }
 
     public function getReceipt(Request $req) {
+ 
         $receipts = GeneralReceiptModel::where("date", $req->date)->get();
         $pdf = PDF::loadView("pdfs.general-receipt", [
-            "receipts" => $receipts
+            "receipts" => $receipts,
+            "date" => $formattedDate = Carbon::createFromFormat('Y-m-d', $req->date)->format('d-m-Y')
         ]);
 
         return $pdf->stream("General reciept.pdf");
