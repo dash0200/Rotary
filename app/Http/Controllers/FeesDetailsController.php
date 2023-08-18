@@ -125,7 +125,7 @@ class FeesDetailsController extends Controller
 
     public function pdfFeesRegister(Request $req) {
         // dd($req->all());
-       $fees = FeeReceiptModel::where(['year' => $req->year, 'class' => $req->class])->get()->take(10);
+       $fees = FeeReceiptModel::where(['year' => $req->year, 'class' => $req->class])->get();
         
        $year_id = '';
 
