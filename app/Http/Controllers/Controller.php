@@ -1,8 +1,9 @@
 <?php
 
 namespace App\Http\Controllers;
-
+use Carbon\Carbon;
 use App\Models\AcademicYearModel;
+use Illuminate\Support\Facades\Log;
 use App\Models\AdmissionModel;
 use App\Models\ClassesModel;
 use App\Models\CreateClass;
@@ -76,17 +77,14 @@ class Controller extends BaseController
         $stds = CreateClass::where("student", $req->id)->orderBy("id", "DESC")->get();
 
         foreach ($stds as $std) {
-
+            
             $std['fees'] = FeesDetailsModel::select("fee_head", "amount")->where(["year" => $std->year, "class" => $std->standard])->get();
-
             foreach ($std['fees'] as $fee) {
                 $fee["name"] = $fee->feeHead->desc;
             }
-
             $std["std"] = $std->standardClass;
             $std["yr"] = $std->acaYear;
         }
-
         return response()->json([$student, $standard, $fees, "prev" => $stds]);
     }
 
@@ -131,65 +129,58 @@ class Controller extends BaseController
 
     public function dashboard() {
 
-        $totalStudents = AdmissionModel::get()->count();
+        $totalStudents = AdmissionModel::withTrashed()->count();
 
-        $nurseryStudents = CreateClass::where("standard", 1)->get()->count();
-        
         $year = '';
 
-        if((int)date("m") >= 4) {
-            $crr = date("Y");
-            $nxt = date("Y")[2].date("Y")[3];
-            $year = $crr."-".(int)$nxt+1;
+        $currentYear = Carbon::now()->year;
+        $currentMonth = Carbon::now()->month;
+
+        if ($currentMonth >= 4) {
+            $startYear = $currentYear;
+            $endYear = $currentYear + 1;
         } else {
-            $crr = date("Y")-1;
-            $nxt = date("Y")[2].date("Y")[3];
-            $year = $crr."-".(int)$nxt;
+            $startYear = $currentYear - 1;
+            $endYear = $currentYear;
         }
 
-        $year = AcademicYearModel::where('year', $year)->first();
+        $year = $startYear . '-' . substr($endYear, -2);
+       
+        $yearId = AcademicYearModel::where('year', $year)->first(['id'])->id;
         
-        $nurseryStudents = CreateClass::where(["standard" => 1, 'year' => $year->id])->get()->count();
-        $lkgStudents = CreateClass::where(["standard" => 2, 'year' => $year->id])->get()->count();
-        $ukgStudents = CreateClass::where(["standard" => 3, 'year' => $year->id])->get()->count();
-        $firstStudents = CreateClass::where(["standard" => 4, 'year' => $year->id])->get()->count();
-        $secondStudents = CreateClass::where(["standard" => 5, 'year' => $year->id])->get()->count();
-        $thirdStudents = CreateClass::where(["standard" => 6, 'year' => $year->id])->get()->count();
-        $fourthStudents = CreateClass::where(["standard" => 7, 'year' => $year->id])->get()->count();
-        $fifthStudents = CreateClass::where(["standard" => 8, 'year' => $year->id])->get()->count();
-        $sixthStudents = CreateClass::where(["standard" => 9, 'year' => $year->id])->get()->count();
-        $seventhStudents = CreateClass::where(["standard" => 10, 'year' => $year->id])->get()->count();
-        $eighthStudents = CreateClass::where(["standard" => 11, 'year' => $year->id])->get()->count();
-        $ninethStudents = CreateClass::where(["standard" => 12, 'year' => $year->id])->get()->count();
-        $tenthStudents = CreateClass::where(["standard" => 12, 'year' => $year->id])->get()->count();
-
-        $totalStudentThisYear = CreateClass::where(["year" => $year->id])->count();
+        $standards = range(1, 12); // Create an array of standards from 1 to 12
         
-        $newAdmission = AdmissionModel::where('year', $year->id)->get()->count();
+        $studentCounts = CreateClass::whereIn("standard", $standards)
+            ->where("year", $yearId)
+            ->select("standard", \DB::raw("COUNT(*) as count"))
+            ->groupBy("standard")
+            ->pluck("count", "standard")
+            ->toArray();
 
+            $totalStudentThisYear = array_sum($studentCounts);
+
+            $standardNames = ClassesModel::whereIn('id', array_keys($studentCounts))
+            ->pluck('name', 'id')
+            ->toArray();
+
+
+        foreach ($studentCounts as $standard => $count) {
+            $studentCounts[$standard] = [
+                'count' => $count,
+                'name' => $standardNames[$standard] ?? 'Unknown' // Default to 'Unknown' if name not found
+            ];
+        }
+
+        $newAdmission = AdmissionModel::where('year', $yearId)->count();
+        
         return view('dashboard')->with([
             "students" => $totalStudents,
-
-            'nursery' => $nurseryStudents,
-            "lkg" => $lkgStudents,
-            "ukg" => $ukgStudents,
-            "first" => $firstStudents,
-            "second" => $secondStudents,
-            "third" => $thirdStudents,
-            "fourth" => $fourthStudents,
-            "fifth" => $fifthStudents,
-            "sixth" => $sixthStudents,
-            "seventh" => $seventhStudents,
-            "eighth" => $eighthStudents,
-            "nineth" => $ninethStudents,
-            "tenth" => $tenthStudents,
-
-            "year" => $year->year,
-
-            'totalStudentThisYear' => $totalStudentThisYear,
-
-            'newAdmission' => $newAdmission
+            "year" => $year,
+            "totalStudentThisYear" => $totalStudentThisYear,
+            "newAdmission" => $newAdmission,
+            "studentCounts" => $studentCounts
         ]);
+
     }
 
     public function getCurrentAcadmicYear() {

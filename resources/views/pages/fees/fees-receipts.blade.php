@@ -342,7 +342,7 @@
                     if(parseInt(res.prev[i].balance) == 0) {
                         continue;
                     }
-
+                    console.log(res.prev[i]);
                     for(let j=0; j < res.prev[i].fees.length; j++) {
                         $(`#feeBody${res.prev[i].id}`).append(
                             `

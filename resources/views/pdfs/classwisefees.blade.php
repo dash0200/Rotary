@@ -126,7 +126,7 @@
                         {{ $loop->iteration }}
                     </td>
                     <td>
-                        {{$fee->std_id}}
+                        {{$fee->id}}
                     </td>
                     <td>
                         {{ $fee->name }}

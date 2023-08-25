@@ -166,7 +166,7 @@
                 amt: $(`input[name='desc_${i}']`).val()
             })
         }
-
+        
         $.ajax({
             type: "post",
             url: "{{ route('master.saveDetails') }}",

@@ -19,18 +19,21 @@ class FeesDetailsController extends Controller
     }
 
     public function feePaying(Request $req) {
-
-        Validator::make($req->all(), [
-                "id" => ["required", "numeric"],
-                "annualFee" => ["required", "numeric"],
-                "feesPaid" => ["required", "numeric"],
-                "balance" => ["required", "numeric"],
-                "paying" => ["required", "numeric"],
-        ])->validate();
-
+        $validator = Validator::make($req->all(), [
+            "id" => ["required", "numeric"],
+            "annualFee" => ["required", "numeric"],
+            "feesPaid" => ["required", "numeric"],
+            "balance" => ["required", "numeric"],
+            "paying" => ["required", "numeric"],
+        ]);
+    
+        if ($validator->fails()) {
+            return response()->json(["msg" => "failed"]);
+        }
+    
         $paying = $req->paying + $req->feesPaid;
         $balance = $req->annualFee - $paying;
-
+    
         $data = [
             "student" => $req->student,
             "year" => $req->year,
@@ -38,22 +41,21 @@ class FeesDetailsController extends Controller
             "amt_paid" => $req->paying,
             "receipt_no" => $req->receipt_no
         ];
-
+    
         $receipt = FeeReceiptModel::create($data);
-
-        if(isset($receipt->id)) {
-            if(CreateClass::where("id", $req->id)->update([
-                "paid" =>$paying,
+    
+        if ($receipt) {
+            $updatedRows = CreateClass::where("id", $req->id)->update([
+                "paid" => $paying,
                 "balance" => $balance
-               ]) > 0) {
+            ]);
+    
+            if ($updatedRows > 0) {
                 return response()->json(["msg" => "success"]);
-            } else {
-                return response()->json(["msg" => "failed"]);
             }
-        } else {
-            return response()->json(["msg" => "failed"]);
         }
-        
+    
+        return response()->json(["msg" => "failed"]);
     }
 
     public function receiptCancellation() {
@@ -69,12 +71,15 @@ class FeesDetailsController extends Controller
     }
 
     public function submitFeesArrears(Request $req) {
-
-        $details = CreateClass::where(['year' => $req->year, 'standard' => $req->class])->get();
-        foreach($details as $detail) {
-            $detail['std_id'] = $detail->getStudent->id;
-            $detail['name'] = $detail->getStudent->name;
-        }
+        $details = CreateClass::with(['getStudent:id,name'])
+        ->where(['year' => $req->year, 'standard' => $req->class])
+        ->get()->take(10);
+        $details->transform(function ($detail) {
+            $student = $detail->getStudent;
+            $detail->id = $student->id;
+            $detail->name = $student->name;
+            return $detail;
+        });
 
         $pdf = PDF::loadView('pdfs.classwisefees', ["fees" => $details->sortBy('name'), 
             'year' => AcademicYearModel::where("id", $req->year)->first()->year, 
@@ -83,36 +88,38 @@ class FeesDetailsController extends Controller
 
         return $pdf->stream("Classwise Fees Arrears".'.pdf');
     }
+    
 
     public function dayBook() {
         return view('pages.fees.day-book');
     }
     public function daybookSubmit(Request $req) {
-
-        $receipts = '';
-
-        if($req->section == 1) {
-            $receipts =  FeeReceiptModel::whereDate('created_at', '=', $req->date)->where('class', '>', 0)->where('class', '<', 11)->get();
+        $section = $req->section;
+        $date = $req->date;
+    
+        $query = FeeReceiptModel::whereDate('created_at', '=', $date);
+    
+        if ($section == 1) {
+            $query->where('class', '>', 0)->where('class', '<', 11);
         } else {
-            $receipts =  FeeReceiptModel::whereDate('created_at', '=', $req->date)->where('class', '>', 10)->get();
+            $query->where('class', '>', 10);
         }
-
-       
-       
-       $total = 0;
-       foreach($receipts as $receipt) {
-            $receipt['student'] = $receipt->studentDetail;
-            $receipt['class'] = $receipt->classes->name;
-            $total = $total + $receipt->amt_paid;
-       }
-
-       $pdf = PDF::loadView('pdfs.daybook', ["receipts" => $receipts, 
-            'date' => date('d-m-Y', strtotime($req->date)),
-            'section' => $req->section == 1 ? "PRIMARY" : "HIGHER",
-        ]);
-
-        return $pdf->stream("Day Book".$req->section == 1 ? "PRIMARY" : "HIGHER".'.pdf');
-
+    
+        $receipts = $query->get();
+    
+        $total = $receipts->sum('amt_paid');
+    
+        $receipts->transform(function ($receipt) {
+            $receipt->student = $receipt->studentDetail;
+            $receipt->class = $receipt->classes->name;
+            return $receipt;
+        });
+    
+        $sectionName = $section == 1 ? "PRIMARY" : "HIGHER";
+    
+        $pdf = PDF::loadView('pdfs.daybook', compact('receipts', 'date', 'sectionName'));
+    
+        return $pdf->stream("Day Book $sectionName.pdf");
     }
 
     public function feesRegister() {
