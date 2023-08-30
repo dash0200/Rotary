@@ -83,7 +83,7 @@
             </td>
 
             <td align="left" style="width: 100%;" class="bb fb">
-              {{$student->fname}}
+              {{strtoupper($student->fname)}}
             </td>
         </tr>
     </table>
