@@ -21,6 +21,7 @@
                 <div class="m-2 w-full">
                     <x-label value="City" />
                     <select name="city" id="city" class="w-full">
+                        <option value="">--</option>
                         <option value="">Select City</option>
                         @foreach ($districts as $district)
                             <option value="{{ $district->id }}" @if ($std->city == $district->id) selected @endif>
@@ -150,6 +151,7 @@
                 <div class="m-2 w-full ">
                     <x-label value="Sub Caste" />
                     <select name="subc" id="subc" class="w-full">
+                    <option value=""> -- </option>
                         @foreach ($std->sub_castes as $sub_caste)
                             <option value="{{ $sub_caste->id }}" @if ($std->sub_caste == $sub_caste->id) selected @endif>
                                 {{ $sub_caste->name }}</option>
@@ -184,7 +186,7 @@
                 <div class="m-2 w-full">
                     <x-label value="District" />
                     <select name="district" id="district" class="w-full">
-			<option value=''> Select District </option>
+			        <option value=''> -- </option>
                         @foreach ($districts as $district)
                             <option value="{{ $district->id }}" @if ($std->dist == $district->id) selected @endif>
                                 {{ $district->name }}
@@ -217,6 +219,7 @@
                 <div class="m-2 w-full">
                     <x-label value="Taluk" />
                     <select name="taluk" id="taluk" class="w-full">
+                        <option value="">--</option>
                         @foreach ($std->sub_districts as $sub_district)
                             <option value="{{ $sub_district->id }}"
                                 @if ($std->sub_district == $sub_district->id) selected @endif>
@@ -229,8 +232,8 @@
                     <x-input type="text" value="{{ $std->religion }}" name="religion" id="religion" />
                 </div>
                 <div class="m-2 w-full">
-                    <x-label value="nationaluty" />
-                    <select name="nationaluty" id="nationality" class="w-full">
+                    <x-label value="nationality" />
+                    <select name="nationality" id="nationality" class="w-full">
                         <option value="IN">Indian</option>
                     </select>
                 </div>
@@ -286,6 +289,7 @@
             success: function(data) {
                 // dists = [{"id":1, "text":"sdfdsf"}];
                 $("#district").html("")
+                $("#district").append(`<option value="">--</option>`)
                 for (let i = 0; i < data.length; i++) {
                     $("#district").append(
                         `<option value="${data[i].id}"> ${data[i].text} </option>`
@@ -304,6 +308,7 @@
             },
             success: function(data) {
                 $("#taluk").html("")
+                $("#taluk").append(`<option value="">--</option>`)
                 for (let i = 0; i < data.length; i++) {
                     $("#taluk").append(
                         `<option value="${data[i].id}"> ${data[i].text} </option>`
@@ -332,6 +337,7 @@
 
                 let subs = res.subcasts;
                 $("#subc").html("")
+                $("#subc").append(`<option value=""> -- </option>`)
                 for (let i = 0; i < subs.length; i++) {
                     $("#subc").append(
                         `<option value="${subs[i].id}"> ${subs[i].name} </option>`
