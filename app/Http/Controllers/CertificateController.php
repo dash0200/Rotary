@@ -331,23 +331,10 @@ class CertificateController extends Controller
 
         public function castePDF(Request $req) {
 
-            // $casteC = CasteCertificateModel::where('student', $req->id)->first();
-
-            // $student = AdmissionModel::where("id", $req->id)->withTrashed()->first();
-    
-            // $caste = $student->stdCast == null ? "-" : $student->stdCast->name;
-            // $subCaste = $student->subCaste == null ? "-" : $student->subCaste->name;
-
-            // $pdf = PDF::loadView('pdfs.caste', ["student" => $student,
-            // 'caste' => $caste, 'subCaste' => $subCaste, 'cert' => $casteC]);
-            // return $pdf->stream($student->id.'.pdf');
-
-            $student = AdmissionModel::withTrashed()->with(['stdCast:name', 'subCaste:name'])
-            ->where("id", $req->id)
-            ->first();
+            $student = AdmissionModel::withTrashed()->where("id", $req->id)->first();
             
-            $caste = optional($student->stdCast)->name ?? '-';
-            $subCaste = optional($student->subCaste)->name ?? '-';
+            $caste = $student->stdCast == null ? '-' : $student->stdCast->name;
+            $subCaste = $student->subCaste == null ? '-' : $student->subCaste->name;
             $casteC = CasteCertificateModel::where('student', $req->id)->first();
 
             $pdf = PDF::loadView('pdfs.caste', [
