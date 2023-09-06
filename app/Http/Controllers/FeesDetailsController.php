@@ -117,7 +117,7 @@ class FeesDetailsController extends Controller
     
         $sectionName = $section == 1 ? "PRIMARY" : "HIGHER";
     
-        $pdf = PDF::loadView('pdfs.daybook', compact('receipts', 'date', 'sectionName'));
+        $pdf = PDF::loadView('pdfs.daybook', ['receipts' => $receipts, 'date'=>$date, 'section'=>$section]);
     
         return $pdf->stream("Day Book $sectionName.pdf");
     }
