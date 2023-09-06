@@ -39,14 +39,30 @@ class AdmissionModel extends Model
         "prev_school"
     ];
 
-    public function getNameAttribute($value)
+    public function setNameAttribute($value)
     {
-        return strtoupper($value);
+        $this->attributes['name'] = strtoupper($value);
+    }
+
+    public function setFnameAttribute($value)
+    {
+        $this->attributes['fname'] = strtoupper($value);
+    }
+
+    public function setMnameAttribute($value)
+    {
+        $this->attributes['mname'] = strtoupper($value);
+    }
+
+    public function setLnameAttribute($value)
+    {
+        $this->attributes['lname'] = strtoupper($value);
     }
 
     public function acaYear() {
         return $this->hasOne(AcademicYearModel::class, 'id', 'year');
     }
+    
     public function district() {
         return $this->hasOne(SubdistrictModel::class, 'id', 'sub_district');
     }
