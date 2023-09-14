@@ -59,6 +59,21 @@ class AdmissionModel extends Model
         $this->attributes['lname'] = strtoupper($value);
     }
 
+    public function setReligionAttribute($value)
+    {
+        $this->attributes['religion'] = strtoupper($value);
+    }
+
+    public function setAddressAttribute($value)
+    {
+        $this->attributes['address'] = strtoupper($value);
+    }
+
+    public function setBirthPlaceAttribute($value)
+    {
+        $this->attributes['birth_place'] = strtoupper($value);
+    }
+
     public function acaYear() {
         return $this->hasOne(AcademicYearModel::class, 'id', 'year');
     }

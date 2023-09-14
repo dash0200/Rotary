@@ -92,6 +92,7 @@ Route::middleware(['auth:sanctum', config('jetstream.auth_session'), 'verified']
         Route::get('get-by-id', 'getByID')->name('getByID');
         Route::get('get-by-sts', 'getBysts')->name('getBysts');
         Route::get('get-by-name', 'getByName')->name('getByName');
+        Route::get('get-by-nameLanme', 'getByNameLnameDob')->name('getByNameLnameDob');
         Route::get('get-by-info', 'getByInfo')->name('getByInfo');
         Route::post('edit-student', 'editStudent')->name('editStudent');
     

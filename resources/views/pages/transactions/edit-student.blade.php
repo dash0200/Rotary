@@ -26,6 +26,28 @@
        <x-button-primary value="GET" onclick="getByNameYear()" />
         
     </div>
+    <div class="flex flex-col items-center mt-6">
+
+       <div class="flex space-x-2 items-center">
+         <div>
+             <x-label value="First Name" />
+             <x-input type="text" id="name" name="name" placeholder="First Name" />
+         </div>
+
+         <div>
+             <x-label value="Last Name" />
+             <x-input type="text" id="lname" name="lname" placeholder="Last Name" />
+         </div>
+        
+         <div>
+             <x-label value="DOB" />
+             <x-input type="date" name="dob" id="dob"/>
+         </div>
+       </div>
+
+       <x-button-primary value="GET" onclick="getByNameLnameDob()" />
+        
+    </div>
     <div class="mt-10 flex justify-center">OR</div>
     <div class="flex flex-col space-y-4">
         <div>
@@ -163,6 +185,55 @@
                     </x-td></tr>
                         `
                 )
+            }
+        });
+    }
+
+    function getByNameLnameDob() {
+        $.ajax({
+            type: "get",
+            url: "{{route('trans.getByNameLnameDob')}}",
+            data: {
+                name: $("#name").val(),
+                lanme: $("#lname").val(),
+                dob: $("#dob").val(),
+            },
+            dataType: "json",
+            success: function (res) {
+                $("#byId").html('')
+                console.log(res);
+                for(let i=0; i<res.length; i++) {
+                    $("#byId").append(
+                    `
+                    <tr>
+                    <x-td>
+                        ${res[i].id}
+                    </x-td>
+                    <x-td>
+                        ${res[i].sts}
+                    </x-td>
+                    <x-td>
+                        ${res[i].name}
+                    </x-td>
+                    <x-td>
+                        ${res[i].fname}
+                    </x-td>
+                    <x-td>
+                        ${res[i].lname}
+                    </x-td>
+                    <x-td>
+                        ${res[i].dob1}
+                    </x-td>
+                    <x-td>
+                        <form action="{{route('trans.editStudent')}}" method="post">
+                            @csrf
+                            <input type="text" name="id" value="${res[i].id}" hidden>
+                            <x-button-primary value="edit" />
+                        </form>
+                    </x-td></tr>
+                        `
+                )
+                }
             }
         });
     }
