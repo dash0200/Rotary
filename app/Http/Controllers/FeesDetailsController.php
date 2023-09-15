@@ -72,7 +72,7 @@ class FeesDetailsController extends Controller
 
     public function submitFeesArrears(Request $req) {
         $details = CreateClass::with(['getStudent:id,name'])
-        ->where(['year' => $req->year, 'standard' => $req->class])
+        ->where(['year' => $req->year, 'standard' => $req->class])->limit(10)
         ->get();
         $details->transform(function ($detail) {
             $student = $detail->getStudent;
@@ -80,7 +80,7 @@ class FeesDetailsController extends Controller
             $detail->name = $student->name;
             return $detail;
         });
-
+        // dd($details);
         $pdf = PDF::loadView('pdfs.classwisefees', ["fees" => $details->sortBy('name'), 
             'year' => AcademicYearModel::where("id", $req->year)->first()->year, 
             'class' => ClassesModel::where('id', $req->class)->first()->name
@@ -173,67 +173,51 @@ class FeesDetailsController extends Controller
     public function receiptToday(Request $req) {
         $receipts = '';
 
-        if($req->section == 1) {
-            $receipts =  FeeReceiptModel::whereDate('created_at', '=', $req->date)->where('class', '>', 0)->where('class', '<', 11)->get();
-        } else if($req->section == 2) {
-            $receipts =  FeeReceiptModel::whereDate('created_at', '=', $req->date)->where('class', '>', 10)->get();
-        } else {
-            $receipts =  FeeReceiptModel::whereDate('created_at', '=', $req->date)->get();
+        $receiptsQuery = \DB::table('fee_receipt AS fr')
+        ->select('fr.student AS register_id','fr.id', 'fr.receipt_no', 'a.name AS student_name', 'fr.class', 'fr.amt_paid', 'c.name AS class')
+        ->whereDate('fr.created_at', '=', $req->date)
+        ->join('admission AS a', 'fr.student', '=', 'a.id')
+        ->join('classes AS c', 'fr.class', '=', 'c.id')
+        ->groupBy('fr.student','fr.id', 'a.name', 'fr.class', 'c.name', 'fr.amt_paid', 'fr.receipt_no');
+
+        if ($req->section == 1) {
+            $receiptsQuery->where('fr.class', '>', 0)->where('fr.class', '<', 11);
+        } elseif ($req->section == 2) {
+            $receiptsQuery->where('fr.class', '>', 10);
         }
-
-       $total = 0;
-       foreach($receipts as $receipt) {
-            $receipt['student'] = $receipt->studentDetail;
-            $receipt['class'] = $receipt->classes->name;
-            $total = $total + $receipt->amt_paid;
-       }
-
-       $name = '';
-
-       if($req->section == 1) {
-           $name = "PRIMARY";
-       } else if($req->section == 2) {
-           $name = "HIGHER";
-       } else if($req->section == 0){
-           $name = "";
-       }
+        
+        $receipts = $receiptsQuery->get();
+        $name = ($req->section == 1) ? "PRIMARY" : (($req->section == 2) ? "HIGHER" : "");
 
        $d = date('d-m-Y', strtotime($req->date));
 
        $pdf = PDF::loadView('pdfs.datewisereceipt', ["fees" => $receipts, 
             'date' => $d,
             'section' => $name,
+            'total' => $receipts->sum('amt_paid')
         ]);
 
         return $pdf->stream("Datewise Receipt $name ($d).pdf");
     }
 
     public function receiptBetweenDates(Request $req) {
-        $receipts = '';
-        if($req->section == 1) {
-            $receipts =  FeeReceiptModel::whereDate('created_at', '>=', $req->from_date)->whereDate('created_at', '<=', $req->to_date)->where('class', '>', 0)->where('class', '<', 11)->get();
-        } else if($req->section == 2) {
-            $receipts =  FeeReceiptModel::whereDate('created_at', '>=', $req->from_date)->whereDate('created_at', '<=', $req->to_date)->where('class', '>', 10)->get();
-        } else {
-            $receipts =  FeeReceiptModel::whereDate('created_at', '>=', $req->from_date)->whereDate('created_at', '<=', $req->to_date)->get();
+       
+        $receiptsQuery = \DB::table('fee_receipt AS fr')
+        ->select('fr.student AS register_id','fr.id', 'fr.receipt_no', 'a.name AS student_name', 'fr.class', 'fr.amt_paid', 'c.name AS class')
+        ->whereDate('fr.created_at', '>=', $req->from_date)
+        ->whereDate('fr.created_at', '<=', $req->to_date)
+        ->join('admission AS a', 'fr.student', '=', 'a.id')
+        ->join('classes AS c', 'fr.class', '=', 'c.id')
+        ->groupBy('fr.student','fr.id', 'a.name', 'fr.class', 'c.name', 'fr.amt_paid', 'fr.receipt_no');
+
+        if ($req->section == 1) {
+            $receiptsQuery->where('fr.class', '>', 0)->where('fr.class', '<', 11);
+        } elseif ($req->section == 2) {
+            $receiptsQuery->where('fr.class', '>', 10);
         }
-
-       $total = 0;
-       foreach($receipts as $receipt) {
-            $receipt['student'] = $receipt->studentDetail;
-            $receipt['class'] = $receipt->classes->name;
-            $total = $total + $receipt->amt_paid;
-       }
-
-       $name = '';
-
-       if($req->section == 1) {
-           $name = "PRIMARY";
-       } else if($req->section == 2) {
-           $name = "HIGHER";
-       } else {
-           $name = "";
-       }
+        
+        $receipts = $receiptsQuery->get();
+        $name = ($req->section == 1) ? "PRIMARY" : (($req->section == 2) ? "HIGHER" : "");
 
        $from_d = date('d-m-Y', strtotime($req->from_date));
        $to_d = date('d-m-Y', strtotime($req->to_date));
@@ -242,6 +226,7 @@ class FeesDetailsController extends Controller
             'date' => $from_d,
             'section' => $name,
             'to_date' => $to_d,
+            'total' => $receipts->sum('amt_paid')
         ]);
         
         return $pdf->stream("Datewise Receipt $name ($from_d / $to_d) .pdf");

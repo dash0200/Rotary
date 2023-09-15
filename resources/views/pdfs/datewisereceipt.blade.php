@@ -86,7 +86,7 @@
             </td>
         </tr>
     </table>
-
+       
     <table style="border: 1px solid black; width: 100%;" id="customers">
         <thead>
             <tr>
@@ -111,11 +111,7 @@
             </tr>
         </thead>
         <tbody>
-            @php
-                $totalExpected = 0;
-                $totalCollected = 0;
-            @endphp
-            @forelse($fees as $fee)
+             @forelse($fees as $fee)
                 <tr>
                     <td>
                         {{ $loop->iteration }}
@@ -124,16 +120,16 @@
                         {{$fee->id}}
                     </td>
                     <td>
-                        {{ $fee->student->id }}
+                        {{ $fee->register_id}}
                     </td>
                     <td style="width: 17rem;">
-                        {{ strtoupper($fee->student->name) }}{{ $fee->student->fname == null ? '' : '. '.strtoupper($fee->student->fname)[0].' .'}}{{$fee->student->lname == null ? "" :strtoupper($fee->student->lname)}}
+                        {{ strtoupper($fee->student_name) }}
                     </td>
                     <td>
                         {{ $fee->class }}
                     </td>
                     <td>
-                        {{ $fee->amt_paid }} @php $totalExpected = $totalExpected + $fee->amt_paid @endphp
+                        {{ $fee->amt_paid }}
                     </td>
                 </tr>
             @empty
@@ -142,12 +138,12 @@
                         No Data Found
                     </td>
                 </tr>
-            @endforelse
+            @endforelse 
         </tbody>
     </table>
 
     <table class="fb" style="border: 2px solid black; width: 70%; margin-left: 5rem; padding-left: 0.4rem; padding-right: 0.4rem;padding-top: 0.4rem;">
-        <tr>
+    {{-- <tr>
             <td align="left" style="width: 70%;">
                 <span class="fb"> AMOUNT EXPECTED </span>
             </td>
@@ -155,9 +151,9 @@
             <td class="fb">:</td>
 
             <td align="right" style="width: 100%;">
-              {{$totalExpected}}
+              $totalExpected
             </td>
-        </tr>
+        </tr>--}}
         <tr >
             <td align="left" style="width: 100% ; padding-top: 1rem; padding-bottom: 1rem">
                 <span class="fb"> AMOUNT COLLECTED  </span>
@@ -166,10 +162,10 @@
             <td class="fb" style="padding-top: 1rem; padding-bottom: 1rem">:</td>
 
             <td align="right" style="width: 100%; padding-top: 1rem; padding-bottom: 1rem">
-                {{$totalCollected}}
+                {{$total}}
             </td>
         </tr>
-        <tr>
+        {{--<tr>
             <td align="left" style="width: 75%;">
                 <span class="fb"> BALANCE  </span>
             </td>
@@ -177,9 +173,9 @@
             <td class="fb">:</td>
 
             <td align="right" style="width: 100%;">
-                {{$totalExpected - $totalCollected}}
+                {{--$totalExpected - $totalCollected--}}
             </td>
-        </tr>
+        </tr>--}}
     </table>
 
 
