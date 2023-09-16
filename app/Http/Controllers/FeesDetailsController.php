@@ -71,16 +71,16 @@ class FeesDetailsController extends Controller
     }
 
     public function submitFeesArrears(Request $req) {
-        $details = CreateClass::with(['getStudent:id,name'])
-        ->where(['year' => $req->year, 'standard' => $req->class])
-        ->get();
-        $details->transform(function ($detail) {
-            $student = $detail->getStudent;
-            $detail->id = $student->id;
-            $detail->name = $student->name;
-            return $detail;
-        });
-        // dd($details);
+            $details = CreateClass::with(['getStudent:id,name'])
+            ->where(['year' => $req->year, 'standard' => $req->class])
+            ->where('balance', '!=', 0)
+            ->get();
+            $details->transform(function ($detail) {
+                $student = $detail->getStudent;
+                $detail->id = $student->id;
+                $detail->name = $student->name;
+                return $detail;
+            }); 
         $pdf = PDF::loadView('pdfs.classwisefees', ["fees" => $details->sortBy('name'), 
             'year' => AcademicYearModel::where("id", $req->year)->first()->year, 
             'class' => ClassesModel::where('id', $req->class)->first()->name
