@@ -116,10 +116,7 @@
             </tr>
         </thead>
         <tbody>
-            @php
-                $totalExpected = 0;
-                $totalCollected = 0;
-            @endphp
+            
             @forelse($fees as $fee)
                 <tr>
                     <td>
@@ -132,10 +129,10 @@
                         {{ $fee->name }}
                     </td>
                     <td>
-                        {{ $fee->total }} @php $totalExpected = $totalExpected + $fee->total @endphp
+                        {{ $fee->total }}
                     </td>
                     <td>
-                        {{ $fee->paid }} @php $totalCollected = $totalCollected + $fee->paid @endphp
+                        {{ $fee->paid }} 
                     </td>
                     <td>
                         {{ $fee->balance }}
@@ -160,7 +157,7 @@
             <td class="fb">:</td>
 
             <td align="right" style="width: 100%;">
-              {{$totalExpected}}
+              {{$amt_exp}}
             </td>
         </tr>
         <tr >
@@ -171,7 +168,7 @@
             <td class="fb" style="padding-top: 1rem; padding-bottom: 1rem">:</td>
 
             <td align="right" style="width: 100%; padding-top: 1rem; padding-bottom: 1rem">
-                {{$totalCollected}}
+                {{$collected}}
             </td>
         </tr>
         <tr>
@@ -182,7 +179,7 @@
             <td class="fb">:</td>
 
             <td align="right" style="width: 100%;">
-                {{$totalExpected - $totalCollected}}
+                {{$balance}}
             </td>
         </tr>
     </table>

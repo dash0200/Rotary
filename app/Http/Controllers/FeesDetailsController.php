@@ -73,17 +73,22 @@ class FeesDetailsController extends Controller
     public function submitFeesArrears(Request $req) {
             $details = CreateClass::with(['getStudent:id,name'])
             ->where(['year' => $req->year, 'standard' => $req->class])
-            ->where('balance', '!=', 0)
+            ->where('balance', '!=', 0)->limit(10)
             ->get();
+            
             $details->transform(function ($detail) {
                 $student = $detail->getStudent;
                 $detail->id = $student->id;
                 $detail->name = $student->name;
                 return $detail;
-            }); 
+            });
+            
         $pdf = PDF::loadView('pdfs.classwisefees', ["fees" => $details->sortBy('name'), 
             'year' => AcademicYearModel::where("id", $req->year)->first()->year, 
-            'class' => ClassesModel::where('id', $req->class)->first()->name
+            'class' => ClassesModel::where('id', $req->class)->first()->name,
+            'amt_exp' => $details->sum('total'),
+            'balance' => $details->sum('balance'),  
+            'collected' => $details->sum('paid')
         ]);
 
         return $pdf->stream("Classwise Fees Arrears".'.pdf');
