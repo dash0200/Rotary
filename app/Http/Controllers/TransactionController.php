@@ -105,26 +105,28 @@ class TransactionController extends Controller
             "sub_caste" => $req->subc,
             "category" => $req->cat,
             "class" => $req->class,
-            "sts" => strtolower($req->sts),
-            "name" => strtolower($req->fname),
-            "fname" => strtolower($req->father),
-            "mname" => strtolower($req->mname),
-            "lname" => strtolower($req->surname),
-            "address" => strtolower($req->address),
-            "city" => strtolower($req->city),
+            "sts" => $req->sts,
+            "name" => $req->fname,
+            "fname" => $req->father,
+            "mname" => $req->mname,
+            "lname" => $req->surname,
+            "address" => $req->address,
+            "city" => $req->city,
             "phone" => $req->phone,
             "mobile" => $req->mobile,
             "dob" => $req->dob,
-            "birth_place" => strtolower($req->birthPlace),
+            "birth_place" => $req->birthPlace,
             "sub_district" => $req->taluk,
-            "religion" => strtolower($req->religion),
+            "religion" => $req->religion,
             "nationality" => $req->nationality,
             "gender" => $req->gender,
             "handicap" => $req->handicap,
-            "prev_school" => strtolower($req->prevSchool),
+            "prev_school" => $req->prevSchool,
         ];
         if(isset($req->id)) {
-            AdmissionModel::where("id", $req->id)->update($data);
+            $admission = AdmissionModel::find($req->id);
+            $admission->fill($data);
+            $admission->save();
         } else {
             AdmissionModel::create($data);
         }
