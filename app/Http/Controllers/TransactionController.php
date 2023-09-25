@@ -84,8 +84,8 @@ class TransactionController extends Controller
 
         $subcast = SubcastModel::select('id', 'name')->where('caste', $req->cast)->get();
 
-        foreach ($cats as $d) {
-            $d['category'] = $d->category->name;
+        foreach ($cats as $cat) {
+            $cat['category'] = $cat->category->name;
         }
         return response()->json(['cats' => $cats, 'subcasts' => $subcast]);
     }

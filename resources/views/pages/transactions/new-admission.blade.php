@@ -277,11 +277,11 @@
                 // dists = [{"id":1, "text":"sdfdsf"}];
                 $("#district").html("")
                 $("#district").append(`<option value="">--</option>`)
-                for (let i = 0; i < data.length; i++) {
+                data.forEach(district => {
                     $("#district").append(
-                        `<option value="${data[i].id}"> ${data[i].text} </option>`
+                         `<option value="${district.id}"> ${district.text} </option>`
                     )
-                }
+                });
             },
         });
     }
@@ -296,11 +296,11 @@
             success: function(data) {
                 $("#taluk").html("")
                 $("#taluk").append(`<option value="">--</option>`)
-                for (let i = 0; i < data.length; i++) {
+                data.forEach(taluk => {
                     $("#taluk").append(
-                        `<option value="${data[i].id}"> ${data[i].text} </option>`
+                         `<option value="${taluk.id}"> ${taluk.text} </option>`
                     )
-                }
+                });
             },
         });
     }
@@ -317,11 +317,12 @@
                 let subs = res.subcasts;
                 $("#subc").html("")
                 $("#subc").append(`<option value="">--</option>`)
-                for (let i = 0; i < subs.length; i++) {
+                subs.forEach(sub => {
                     $("#subc").append(
-                        `<option value="${subs[i].id}"> ${subs[i].name} </option>`
-                    )
-                }
+                        `<option value="${sub.id}"> ${sub.name} </option>`
+                    )  
+                });
+               $('#cat').val(res.cats[0].cat).trigger('change')
             },
         });
     }
