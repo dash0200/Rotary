@@ -73,7 +73,7 @@ class FeesDetailsController extends Controller
     public function submitFeesArrears(Request $req) {
             $details = CreateClass::with(['getStudent:id,name'])
             ->where(['year' => $req->year, 'standard' => $req->class])
-            ->where('balance', '!=', 0)->limit(10)
+            ->where('balance', '!=', 0)
             ->get();
             
             $details->transform(function ($detail) {
