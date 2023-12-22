@@ -60,21 +60,10 @@ class Controller extends BaseController
     public function getStuddent(Request $req)
     {
 
-        $student = AdmissionModel::where('id', $req->id)->withTrashed()->first();
-        $student['doy'] = $student->date_of_adm->format("Y");
-        $student['dob1'] = $student->dob->format("d-m-Y");
+        $student = AdmissionModel::where('id', $req->id)->withTrashed()->first(['id', 'name', 'fname']);
 
-        $standard = CreateClass::where("student", $req->id)->orderBy("id", "DESC")->first();
-        $fees = FeesDetailsModel::select("fee_head", "amount")->where(["year" => $standard->year, "class" => $standard->standard])->get();
-
-        foreach ($fees as $fee) {
-            $fee["name"] = $fee->feeHead->desc;
-        }
-
-        $standard["std"] = $standard->standardClass;
-        $standard['yr'] = $standard->acaYear;
-
-        $stds = CreateClass::where("student", $req->id)->orderBy("id", "DESC")->get();
+        $stds = CreateClass::where("student", $req->id)->where('balance','!=', 0)
+        ->orderBy("id", "DESC")->get();
 
         foreach ($stds as $std) {
             
@@ -85,7 +74,8 @@ class Controller extends BaseController
             $std["std"] = $std->standardClass;
             $std["yr"] = $std->acaYear;
         }
-        return response()->json([$student, $standard, $fees, "prev" => $stds]);
+
+        return response()->json([$student, "prev" => $stds]);
     }
 
     public function getStdId(Request $req)
