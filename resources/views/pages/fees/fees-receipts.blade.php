@@ -118,10 +118,13 @@
             confirmButtonText: 'Yes, save it!'
         }).then((result) => {
             if (result.isConfirmed) {
-                if($("input[name='paying']").val() == "" || $("input[name='paying']").val() == null || $("input[name='paying']").val() == undefined) {
-            $("#payingError").text("Amount Paying Cannot be Empty");
-            return;
-        }
+                let payableAmount = $("input[name='paying']").val();
+                if(payableAmount == "" || payableAmount == null || payableAmount == undefined || payableAmount > bal) {
+                    $("#payingError").text("Amount cannot be empty or greater than Balance");
+                    return;
+                } else {
+                    $("#payingError").text("");
+                }
 
         if($("input[name='feesPaid']").val() == "" || $("input[name='feesPaid']").val() == null || $("input[name='feesPaid']").val() == undefined) return;
         if($("input[name='balanceFee']").val() == "" || $("input[name='balanceFee']").val() == null || $("input[name='balanceFee']").val() == undefined) return;
@@ -158,6 +161,13 @@
     }
 
     function savePrevAmount(annualFee, feesPaid, balance, id, year, student, standard) {
+        let payableAmnt = $("#paying"+id).val()
+            if(payableAmnt > balance || payableAmnt == null ||  payableAmnt == undefined ||  payableAmnt == ""){
+                $(`#success${id}`).append(`<span class='text-red-600'>Amount cannot be greater than Balance</span>`)
+                return
+            } else {
+                $(`#success${id}`).html('')
+            }
         Swal.fire({
             title: 'Are you sure?',
             text: "You won't be able to revert this!",
@@ -167,9 +177,9 @@
             cancelButtonColor: '#d33',
             confirmButtonText: 'Yes, save it!'
         }).then((result) => {
+            
             if (result.isConfirmed){
-                if( $("#paying"+id).val() == null ||  $("#paying"+id).val() == undefined ||  $("#paying"+id).val() == "") return;
-               
+                               
                 $.ajax({
                     type: "post",
                     url: "{{route('fees.savePaidFees')}}",
@@ -214,7 +224,7 @@
         cache: true
         }
     });
-
+    var bal
     $("#stdsearh").on("select2:select", function(e){
         let data = e.params.data;
         
@@ -240,6 +250,7 @@
 
                 $("input[name='annualFee']").val(res[1].total)
                 $("input[name='feesPaid']").val(res[1].paid)
+                bal = res[1].balance
                 $("input[name='balanceFee']").val(res[1].balance)
                 $("#btn").html("")
                 if(res[1].balance == 0) {
@@ -342,7 +353,7 @@
                     if(parseInt(res.prev[i].balance) == 0) {
                         continue;
                     }
-                    console.log(res.prev[i]);
+
                     for(let j=0; j < res.prev[i].fees.length; j++) {
                         $(`#feeBody${res.prev[i].id}`).append(
                             `

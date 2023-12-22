@@ -19,8 +19,8 @@
             <div class="flex justify-around">
                 <div class="m-2 w-full">
                     <x-label value="STS" />
-                    <x-input type="text" name="sts" id='reg' oninput='checkReg()' placeholder="SST" />
-			<span style='color:green' id='ok'></span>
+                    <x-input type="text" autofocus name="sts" id='reg' oninput='checkReg()' placeholder="SST" />
+			            <span style='color:green' id='ok'></span>
                     	<span style='color:red' id='notok'></span>
                 </div>
                 <div class="m-2 w-full">

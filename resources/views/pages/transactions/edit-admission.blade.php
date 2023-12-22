@@ -8,7 +8,7 @@
             <div class="flex justify-around items-center">
                 <div class="m-2 w-full">
                     <x-label value="STS" />
-                    <x-input type="text" name="sts" value="{{ $std->sts }}" placeholder="SST" />
+                    <x-input type="text" autofocus name="sts" value="{{ $std->sts }}" placeholder="SST" />
                 </div>
 
                 <div class="m-2 w-full">
