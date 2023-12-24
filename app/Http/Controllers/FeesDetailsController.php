@@ -245,11 +245,10 @@ class FeesDetailsController extends Controller
 
     public function stdReceiptID(Request $req) {
 
-        $receipts = FeeReceiptModel::where("student", $req->id)->get();
-
+        $receipts = FeeReceiptModel::with(['classes', 'years'])->where("student", $req->id)->get();
         foreach($receipts as $r) {
-            $r['class'] = $r->classes->name;
-            $r['year'] = $r->years->year;
+            $r['class'] = $r->class == null ? '' : $r->classes->name;
+            $r['year'] = $r->year == null ? '' : $r->years->year;
         }
        
         if(!isset($receipts[0])) {
@@ -265,18 +264,16 @@ class FeesDetailsController extends Controller
     }
 
     public function getDuplicate(Request $req) {
-        
         $receipt = FeeReceiptModel::where("id", $req->id)->first();
-
-        $fees = FeesDetailsModel::where(["year" => $receipt->year, "class" => $receipt->class])->get();
+        $fees = FeesDetailsModel::with('feeHead')->where(["year" => $receipt->year, "class" => $receipt->class])->get();
         foreach($fees as $fee) {
             $fee['fee_head'] = $fee->feeHead->desc;
         }
         $tpb = CreateClass::select("total", "paid", "balance")->where(["year" => $receipt->year, "standard" => $receipt->class])->first();
-        $receipt['class'] = $receipt->classes->name;
-        $receipt['year'] = $receipt->years->year;
+        $receipt['class'] = $receipt->class == null ? '' : $receipt->classes->name;
+        $receipt['year'] =  $receipt->year == null ? '' : $receipt->years->year;
         $student = AdmissionModel::where("id", $receipt->student)->withTrashed()->first();
-
+        
         $pdf = PDF::loadView('pdfs.duplicate-receipt', [
             "receipt" => $receipt,
             "student" => $student,

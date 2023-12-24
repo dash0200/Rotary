@@ -62,12 +62,11 @@ class Controller extends BaseController
 
         $student = AdmissionModel::where('id', $req->id)->withTrashed()->first(['id', 'name', 'fname']);
 
-        $stds = CreateClass::where("student", $req->id)->where('balance','!=', 0)
-        ->orderBy("id", "DESC")->get();
+        $stds = CreateClass::where("student", $req->id)->where('balance','!=', 0)->orderBy("id", "DESC")->get();
 
         foreach ($stds as $std) {
             
-            $std['fees'] = FeesDetailsModel::select("fee_head", "amount")->where(["year" => $std->year, "class" => $std->standard])->get();
+            $std['fees'] = FeesDetailsModel::with('feeHead')->select("fee_head", "amount")->where(["year" => $std->year, "class" => $std->standard])->get();
             foreach ($std['fees'] as $fee) {
                 $fee["name"] = $fee->feeHead->desc;
             }
