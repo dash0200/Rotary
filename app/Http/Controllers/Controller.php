@@ -62,7 +62,7 @@ class Controller extends BaseController
 
         $student = AdmissionModel::where('id', $req->id)->withTrashed()->first(['id', 'name', 'fname']);
 
-        $stds = CreateClass::where("student", $req->id)->where('balance','!=', 0)->orderBy("id", "DESC")->get();
+        $stds = CreateClass::where("student", $req->id)->orderBy("id", "DESC")->get();
 
         foreach ($stds as $std) {
             
