@@ -122,9 +122,9 @@ Route::middleware(['auth:sanctum', config('jetstream.auth_session'), 'verified']
         Route::post('duplicate-receipt-id', 'stdReceiptID')->name('stdReceiptID');
         Route::get('duplicate-receipt-get', 'getDuplicate')->name('getDuplicate');
 
-        Route::get('edit-receipt', 'editReceipt')->name('editreceipts');
-        Route::get('editReceipt', 'updateRecipt')->name('updateRecipt');
-        Route::post('update-receipt', 'update')->name('feeUpdate');
+        // Route::get('edit-receipt', 'editReceipt')->name('editreceipts');
+        // Route::get('editReceipt', 'updateRecipt')->name('updateRecipt');
+        // Route::post('update-receipt', 'update')->name('feeUpdate');
     });
     
     Route::controller(ReportsController::class)->prefix('report')->name('report.')->group(function(){
