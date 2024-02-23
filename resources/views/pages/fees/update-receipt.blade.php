@@ -10,11 +10,15 @@
             <div class="mt-3">
                 <label for="" class="mt-2">Receipt No</label>
                 <x-input type="text" name="id" value="{{ $re->id }}" readonly />
+                <input type="text" name="student" value="{{ $id }}" readonly hidden>
+                <input type="text" name="year" value="{{ $year }}" readonly hidden>
+                <input type="text" name="class" value="{{ $class }}" readonly hidden>
             </div>
 
             <div class="mt-3">
                 <label for="" class="mt-2">Amount</label>
                 <x-input type="text" name="amount" value="{{ $re->amt_paid }}" />
+                <input type="text" name="old_amount" value="{{ $re->amt_paid }}" readonly hidden>
             </div>
 
             <x-button-primary>update</x-button-primary>
