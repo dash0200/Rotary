@@ -136,7 +136,7 @@
             },
             dataType: "json",
             success: function(res) {
-                console.log(res);
+                
                 $("#prev").html("");
                 res.prev.forEach((prev, i) => {
                     if (i === 0) {

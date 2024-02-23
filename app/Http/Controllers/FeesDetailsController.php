@@ -284,4 +284,52 @@ class FeesDetailsController extends Controller
 
         return $pdf->stream("Duplicate Receipt.pdf");
     }
+
+    public function editReceipt(){
+
+        return view('pages.fees.edit-receipt')->with([
+            'years' => AcademicYearModel::get(),
+            'calsses' => ClassesModel::get(),
+        ]);
+    }
+
+    public function updateRecipt(Request $request){
+        $request->validate([
+            'student' => ['required'],
+            'class' => ['required'],
+            'year' => ['required'],
+        ]);
+        // dd($request->class);
+
+        $receipts = FeeReceiptModel::where([
+            'student' => $request->student,
+            'year' => $request->year,
+            'class' => $request->class
+            ])->get();
+
+            $class = ClassesModel::where('id', $request->class)->first(['name'])->name;
+            $year = AcademicYearModel::where('id', $request->year)->first(['year'])->year;
+
+            $detail = "$class , $year";
+        
+        $student = AdmissionModel::where('id', $request->student)->first(['fname', 'lname']);
+        return view('pages.fees.update-receipt', [
+            'student' => "$student->fname, $student->lname",
+            'id' => $request->student,
+            'detail' => $detail,
+            'receipts' => $receipts
+        ]);
+    }
+
+    public function update(Request $request){
+        $request->validate([
+            'id' => ['required'],
+            'amount' => ['required', 'numeric'],
+        ]);
+
+        FeeReceiptModel::where('id', $request->id)->update([
+            'amt_paid' => $request->amount
+        ]);
+        return back();
+    }
 }

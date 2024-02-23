@@ -200,7 +200,6 @@
             dataType: "json",
             success: function (res) {
                 $("#byId").html('')
-                console.log(res);
                 for(let i=0; i<res.length; i++) {
                     $("#byId").append(
                     `
@@ -251,7 +250,7 @@
             dataType: "json",
             success: function (res) {
                 $("#byId").html('')
-                console.log(res);
+                 (res);
                 for(let i=0; i<res.length; i++) {
                     $("#byId").append(
                     `

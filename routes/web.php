@@ -3,13 +3,11 @@
 use App\Http\Controllers\BuildingFundController;
 use App\Http\Controllers\CertificateController;
 use App\Http\Controllers\Controller;
-use App\Http\Controllers\DataDump;
 use App\Http\Controllers\FeesDetailsController;
 use App\Http\Controllers\GeneralReceiptController;
 use App\Http\Controllers\MastersController;
 use App\Http\Controllers\ReportsController;
 use App\Http\Controllers\TransactionController;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -123,6 +121,10 @@ Route::middleware(['auth:sanctum', config('jetstream.auth_session'), 'verified']
         Route::get('duplicate-receipt', 'duplicateReceipt')->name('duplicateReceipt');
         Route::post('duplicate-receipt-id', 'stdReceiptID')->name('stdReceiptID');
         Route::get('duplicate-receipt-get', 'getDuplicate')->name('getDuplicate');
+
+        Route::get('edit-receipt', 'editReceipt')->name('editreceipts');
+        Route::get('editReceipt', 'updateRecipt')->name('updateRecipt');
+        Route::post('update-receipt', 'update')->name('feeUpdate');
     });
     
     Route::controller(ReportsController::class)->prefix('report')->name('report.')->group(function(){

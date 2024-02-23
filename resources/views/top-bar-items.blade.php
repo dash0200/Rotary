@@ -71,6 +71,11 @@
         :active="request()->routeIs('fees.duplicateReceipt')">
         Duplicate Receipt
     </x-dropdown-link>
+
+    <x-dropdown-link href="{{ route('fees.editreceipts') }}" class="border-b border-b-indigo-200"
+        :active="request()->routeIs('fees.editreceipts')">
+        Edit Receipts
+    </x-dropdown-link>
 </x-drop>
 
 <x-drop :name="'Reports'" :active="request()->routeIs('report.*')">

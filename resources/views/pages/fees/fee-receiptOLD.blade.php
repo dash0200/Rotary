@@ -236,7 +236,7 @@
             },
             dataType: "json",
             success: function (res) {
-                console.log(res);
+                 (res);
                 if(parseInt(res.doy) == new Date().getFullYear()) {
                     $("#admType").val("NEW")
                 } else {

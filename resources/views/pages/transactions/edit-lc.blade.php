@@ -95,7 +95,6 @@
                 );
             },
             success: function (res) {
-                console.log(res)
                 
                 window.open(`/transaction/print-lc?id=${res.lc}`, '_blank');
 

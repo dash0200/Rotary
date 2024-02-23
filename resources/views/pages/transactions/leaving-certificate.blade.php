@@ -261,7 +261,7 @@
             success: function (res) {
 
                 
-                console.log(res[1]);
+               
                 $("#adm").html('')
                 $("#adm").append(
                     `
