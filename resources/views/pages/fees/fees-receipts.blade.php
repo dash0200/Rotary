@@ -274,13 +274,13 @@
 
 
     function saveAmount(student, year, standard) {
-    //    let payableAmount = $("input[name='paying']").val();
-      //  if (payableAmount == "" || payableAmount == null || payableAmount == undefined || payableAmount > bal) {
-       //     $("#payingError").text("Amount cannot be empty or greater than Balance");
-       //     return;
-       // } else {
-       //     $("#payingError").text("");
-        //}
+       let payableAmount = $("input[name='paying']").val();
+       if (payableAmount == "" || payableAmount == null || payableAmount == undefined || payableAmount > bal) {
+           $("#payingError").text("Amount cannot be empty or greater than Balance");
+           return;
+       } else {
+           $("#payingError").text("");
+        }
 
         let feePaid = $("input[name='feesPaid']").val();
         let balaFee = $("input[name='balanceFee']").val();
