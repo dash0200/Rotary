@@ -38,7 +38,7 @@
         .lcid{
             position: absolute;
             width: 100%;
-            margin-left: 41.5rem;
+            margin-left: 38rem;
         }
     </style>
 
@@ -52,7 +52,7 @@
     @endif
 
     <div class='lcid'>
-        {{$lc->id}}
+        LC-NO: {{$lc->id}}
     </div>
     <table style="width: 100%;" class="bb">
         <tr>
