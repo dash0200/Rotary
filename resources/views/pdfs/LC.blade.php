@@ -38,6 +38,7 @@
         .lcid{
             position: absolute;
             width: 100%;
+            margin-left: 41.5rem;
         }
     </style>
 
@@ -293,9 +294,12 @@
             </td>
 
             <td class="fb">:</td>
-
+            @php
+                $date = date('F d', strtotime($lc->date_of_adm)); // Format 'd' for day and 'F' for full month name
+                $uppercased_date = strtoupper($date);
+            @endphp
             <td align="left" style="width: 100%;" class="bb">
-                {{ $lc->class . ' STANDARD SINCE ' . strtoupper($lc->date_of_adm) .' to '. $lc->date_of_adm }}
+                {{ $lc->class . ' STANDARD SINCE ' . $uppercased_date}}
             </td>
         </tr>
     </table>
@@ -323,7 +327,8 @@
             <td class="fb">:</td>
 
             <td align="left" style="width: 100%;" class="bb">
-                {{ $lc->whether_qualified }}
+                {{-- {{ $lc->whether_qualified }} --}}
+                YES, QUALIFIED FOR NEXT STANDARD
             </td>
         </tr>
     </table>
@@ -392,7 +397,7 @@
         </tr>
     </table>
 
-    <table style="width: 100%; padding-left: 0.5rem; margin-top: 0.5rem;">
+    <table style="width: 50%; padding-left: 0.5rem; margin-top: 0.5rem;">
         <tr>
             <td align="left" style="width: 60%; margin: 1rem;">
                 <span class="fb"> STS NO </span>

@@ -63,7 +63,7 @@
     <div class="flex flex-col space-y-4">
         <div class="flex space-x-2 mt-5 items-center justify-around">
             <div>
-                <x-label value="Studied Till Class" />
+                <div class="flex"><x-label value="Studied Till Class" /><span class="text-red-400">*</span></div>
                 <select name="class" id="class" required>
                     <option value="">Select Class</option>
                     @foreach ($classes as $class)
@@ -73,7 +73,7 @@
                 <span id="tillClassError" class="text-red-500"></span>
             </div>
             <div>
-                <x-label value="Till Academic Year" />
+                <div class="flex"><x-label value="Till Academic Year" /><span class="text-red-400">*</span></div>
                 <select name="year" id="year" required>
                     <option value="">Select Year</option>
                     @foreach ($years as $year)
@@ -97,7 +97,7 @@
         
         <div class="flex justify-between mt-5 space-x-2">
             <div class="w-full">
-                <x-label value="LAST ATTENDANCE" />
+                <div class="flex"><x-label value="LAST ATTENDANCE" /><span class="text-red-400">*</span></div>
                 <x-input type="date" name="la" />
                 <span id="laError" class="text-red-500"></span>
             </div>
@@ -260,7 +260,8 @@
             dataType: "json",
             success: function (res) {
 
-                
+                $('#father').val(`${res[0].fname}`)
+                $('#mother').val(`${res[0].mname}`)
                
                 $("#adm").html('')
                 $("#adm").append(

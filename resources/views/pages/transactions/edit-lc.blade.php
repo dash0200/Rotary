@@ -47,7 +47,7 @@
             </div>
             <div class="w-full">
                 <x-label value="DATE OF APPLICATION" />
-                <x-input type="date" name="dop" value="{{$lc->doa}}" />
+                <x-input type="date" name="doa" value="{{$lc->doa}}" />
             </div>
             <div class="w-full">
                 <x-label value="DATE OF ISSUING L.C" />

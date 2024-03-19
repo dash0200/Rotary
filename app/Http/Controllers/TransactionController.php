@@ -410,11 +410,10 @@ class TransactionController extends Controller
             "was_studying" => $req->wasStd,
             "whether_qualified" => $req->qualified,
             "lt" => $req->la,
-            "doa" => Carbon::parse($req->doa)->format("Y-m-d"),
+            "doa" => $req->doa,
             "doil" => $req->doi,
             "reason" => $req->reason,
         ];
-
         LCModel::where("id", $req->id)->update($data);
 
         $lc = LCModel::find($req->id);
@@ -469,7 +468,7 @@ class TransactionController extends Controller
         
         $casteModel = CasteModel::select('name')->where('id', $lc->caste)->first();
         $lc['caste'] = $casteModel ? $casteModel->name : '';
-        
+
         $lcDateFormats = ['lt', 'doa', 'doil', 'date_of_adm'];
         foreach ($lcDateFormats as $format) {
             if($lc[$format] !== null)
@@ -491,6 +490,7 @@ class TransactionController extends Controller
         $getW = new Controller();
         $lc['dobWord'] = $getW->getWord($dob->format("d")) . "- " . $dob->format("F") . " - " . $getW->getWord($dob->format("Y"));
         $lc['dob'] = $dob->format('d-m-Y');
+        // dd($lc);
         $pdf = PDF::loadView('pdfs.LC', ["lc" => $lc]);
         return $pdf->stream($lc->id . '.pdf');
         
