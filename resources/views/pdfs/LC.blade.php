@@ -294,12 +294,8 @@
             </td>
 
             <td class="fb">:</td>
-            @php
-                $date = date('F d', strtotime($lc->date_of_adm)); // Format 'd' for day and 'F' for full month name
-                $uppercased_date = strtoupper($date);
-            @endphp
             <td align="left" style="width: 100%;" class="bb">
-                {{ $lc->class . ' STANDARD SINCE ' . $uppercased_date}}
+                {{ $lc->was_studying}}
             </td>
         </tr>
     </table>
@@ -325,10 +321,12 @@
             </td>
 
             <td class="fb">:</td>
-
+            @php
+                $date = date('F d', strtotime($lc->date_of_adm)); // Format 'd' for day and 'F' for full month name
+                $uppercased_date = strtoupper($date);
+            @endphp
             <td align="left" style="width: 100%;" class="bb">
-                {{-- {{ $lc->whether_qualified }} --}}
-                YES, QUALIFIED FOR NEXT STANDARD
+                {{ $lc->whether_qualified }}
             </td>
         </tr>
     </table>

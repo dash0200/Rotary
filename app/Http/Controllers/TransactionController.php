@@ -393,7 +393,6 @@ class TransactionController extends Controller
         // } else {
         //     $lc = LCModel::where("student", $req->id)->update($data);
         // }
-
         $lc = LCModel::create($data);
         AdmissionModel::where("id", $req->id)->delete();
 

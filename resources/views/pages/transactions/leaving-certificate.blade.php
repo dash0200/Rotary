@@ -91,7 +91,7 @@
             </div>
             <div class="w-full">
                 <x-label value="WHETHER QUALIFIED FOR PROMOTION" />
-                <x-input name="qualif" placeholder="WHETHER QUALIFIED FOR PROMOTION" />
+                <x-input name="qualif" value="YES, QUALIFIED FOR NEXT STANDARD" placeholder="WHETHER QUALIFIED FOR PROMOTION" />
             </div>
         </div>
         
@@ -320,9 +320,10 @@
                     <x-button-primary class="w-1/4" value="SUBMIT" id="svBtn" onclick="submitLC('${res[0].id}', )" />
                     `
                 )
-
+                    console.log(res);
                 $("input[name='wasStd']").val(`WAS STUDYING IN ${res[1] == '' ? '' : res[1].std.name} CLASS`)
-                $("input[name='qualif']").val(`YES QUALIFIED FOR  ${res[2].name} CLASS`)
+                $("input[name='qualif']").val(`YES, QUALIFIED FOR NEXT STANDARD`)
+                // $("input[name='qualif']").val(`YES QUALIFIED FOR  ${res[2].name} CLASS`)
                 $("input[name='atc']").val(`${res[0].classes.name}`)
                 $("input[name='ay']").val(`${res[0].aca_year.year}`)
                 $("input[name='doa']").val(`${res[0].doy}`)
