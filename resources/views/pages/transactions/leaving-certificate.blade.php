@@ -210,7 +210,7 @@
                 wasStd: $("input[name='wasStd']").val(),
                 qualified: $("input[name='qualif']").val(),
                 la: $("input[name='la']").val(),
-                doa: $("input[name='doa']").val(),
+                doa: $("input[name='dop']").val(),
                 doi: $("input[name='doi']").val(),
                 reason: $("input[name='reason']").val(),
             },
