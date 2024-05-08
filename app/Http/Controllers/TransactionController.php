@@ -454,7 +454,7 @@ class TransactionController extends Controller
         ->where('lc.student',$id)
         ->first();
             
-        $lc['gender'] = $lc->gender == 1 ? 'Male' : 'Female';
+        $lc['gender'] = $lc->gender == 1 ? 'MALE' : 'FEMALE';
         
         $classesModel = ClassesModel::select('name')->where('id', $lc->studied_till)->first();
         $lc['studied_till'] = $classesModel ? $classesModel->name : '';
