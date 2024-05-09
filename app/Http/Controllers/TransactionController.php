@@ -124,8 +124,7 @@ class TransactionController extends Controller
             "prev_school" => $req->prevSchool,
         ];
         if(isset($req->id)) {
-            $admission = AdmissionModel::find($req->id);
-            // dd($data);
+            $admission = AdmissionModel::withTrashed()->find($req->id);
             $admission->fill($data);
             $admission->save();
         } else {
