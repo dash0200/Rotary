@@ -125,6 +125,7 @@ class TransactionController extends Controller
         ];
         if(isset($req->id)) {
             $admission = AdmissionModel::find($req->id);
+            // dd($data);
             $admission->fill($data);
             $admission->save();
         } else {

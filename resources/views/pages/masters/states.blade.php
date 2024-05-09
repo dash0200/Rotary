@@ -5,6 +5,7 @@
     <div class="flex justify-around">
         <div class="w-1/4 border p-4">
             <form action="{{route('master.addState')}}" method="post">
+                @csrf
                  <div>
                      <x-label value="State Name" />
                      <x-input type="text" name="state" />

@@ -14,6 +14,7 @@ use App\Models\SubcastModel;
 use App\Models\SubdistrictModel;
 use Exception;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 
 class MastersController extends Controller
@@ -224,22 +225,40 @@ class MastersController extends Controller
     }
 
     public function addDist(Request $req) {
+        if(DistrictModel::where(["name" => $req->dist, "state" => $req->state])->first() == null) {
+            DB::transaction(function() use($req){
+                $dist = DistrictModel::create([
+                    "name" => $req->dist,
+                    "state" => $req->state
+                ]);
 
-        DistrictModel::create([
-            "name" => $req->dist,
-            "state" => $req->state
-        ]);
-
+                SubdistrictModel::create([
+                    "name" => null,
+                    "district" => $dist->id
+                ]);
+            });
+        }
         return redirect()->back();
     }
 
     public function addSub(Request $req) {
 
-        $sub = SubdistrictModel::create([
-            "name" => $req->sub,
-            "district" => $req->dist
-        ]);
+        $sub = SubdistrictModel::where(['district' => $req->dist, 'name' => $req->sub])->first();
 
+        if($sub !== null){
+            return back();
+        }
+        
+        if(SubdistrictModel::where('district', $req->dist)->first('name')?->name == null){
+            $sub = SubdistrictModel::where([
+                "district" => $req->dist
+            ])->update(["name" => $req->sub]);
+        } else {
+            $sub = SubdistrictModel::create([
+                "name" => $req->sub,
+                "district" => $req->dist
+            ]);
+        }
         return redirect()->back();
     }
 }

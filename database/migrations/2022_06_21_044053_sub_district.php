@@ -16,7 +16,7 @@ return new class extends Migration
         Schema::create('sub_district', function (Blueprint $table) {
             $table->id();
             $table->string("name");
-            $table->unsignedBigInteger('district');
+            $table->unsignedBigInteger('district')->nullable()->default(null);
             $table->foreign('district')->references('id')->on('district');
             $table->timestamps();
         });

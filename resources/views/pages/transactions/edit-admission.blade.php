@@ -288,6 +288,9 @@
             },
             success: function(data) {
                 // dists = [{"id":1, "text":"sdfdsf"}];
+                $("#taluk").html("")
+                $("#taluk").append(`<option value="">--</option>`)
+                
                 $("#district").html("")
                 $("#district").append(`<option value="">--</option>`)
                 for (let i = 0; i < data.length; i++) {

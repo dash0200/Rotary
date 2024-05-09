@@ -15,7 +15,7 @@ return new class extends Migration
     {
         Schema::create('district', function (Blueprint $table) {
             $table->id();
-            $table->string("name");
+            $table->string("name")->nullable()->default(null);
             $table->unsignedBigInteger('state');
             $table->foreign('state')->references('id')->on('states');
             $table->timestamps();
