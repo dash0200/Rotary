@@ -177,7 +177,7 @@
                             {{$lc->gender}}
                         </td>
                         <td align="center"><span class="fb" style="margin-right: 2rem;">8. Nationality: </span>
-                            <span class="bb"> {{ $lc->nationality }} </span> </td>
+                            <span class="bb"> INDIAN </span> </td>
                     </tr>
                 </table>
             </td>
