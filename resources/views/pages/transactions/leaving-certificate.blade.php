@@ -321,7 +321,7 @@
                     `
                 )
                     console.log(res);
-                $("input[name='wasStd']").val(`${res[1] == '' ? '' : res[1].std.name} STANDARD SINCE `)
+                $("input[name='wasStd']").val(`${res[1] == '' ? '' : res[1].std.name} STANDARD SINCE JUNE 2023 `)
                 $("input[name='qualif']").val(`YES, QUALIFIED FOR NEXT STANDARD`)
                 // $("input[name='qualif']").val(`YES QUALIFIED FOR  ${res[2].name} CLASS`)
                 $("input[name='atc']").val(`${res[0].classes.name}`)
