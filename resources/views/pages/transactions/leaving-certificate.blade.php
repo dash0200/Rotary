@@ -86,8 +86,8 @@
 
         <div class="flex justify-between mt-5 space-x-2">
             <div class="w-full">
-                <x-label value="WAS STUDYING WHILE LEAVING" />
-                <x-input name="wasStd" placeholder="WAS STUDYING WHILE LEAVING" />
+                <x-label value=" STANDARD SINCE" />
+                <x-input name="wasStd" placeholder="" />
             </div>
             <div class="w-full">
                 <x-label value="WHETHER QUALIFIED FOR PROMOTION" />
@@ -321,7 +321,7 @@
                     `
                 )
                     console.log(res);
-                $("input[name='wasStd']").val(`WAS STUDYING IN ${res[1] == '' ? '' : res[1].std.name} CLASS`)
+                $("input[name='wasStd']").val(`${res[1] == '' ? '' : res[1].std.name} STANDARD SINCE `)
                 $("input[name='qualif']").val(`YES, QUALIFIED FOR NEXT STANDARD`)
                 // $("input[name='qualif']").val(`YES QUALIFIED FOR  ${res[2].name} CLASS`)
                 $("input[name='atc']").val(`${res[0].classes.name}`)
