@@ -304,8 +304,9 @@ class TransactionController extends Controller
         $student['dob1'] = $student->dob->format("d-m-Y");
         $standard = CreateClass::where("student", $req->id)->orderBy("id", "DESC")->first();
 
-        $since = Carbon::parse($student?->date_of_adm)?->format('F Y');
-        $student['since'] = $since !== null ? strtoupper($since) : '';
+        // $since = Carbon::parse($student?->date_of_adm)?->format('F Y');
+        // $student['since'] = $since !== null ? strtoupper($since) : '';
+        $student['since'] = Carbon::now()->year - 1;
 
         $qualify = $standard == null ? '' : ClassesModel::where('id', $standard->standard + 1)->first();
 
