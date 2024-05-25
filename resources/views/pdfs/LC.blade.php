@@ -224,7 +224,7 @@
             <td class="fb">:</td>
 
             <td align="left" style="width: 100%;" class="bb">
-                @if ($lc->subCaste !== null)
+                @if ($lc->sub_caste !== null)
                     {{ strtoupper($lc->sub_caste) }}
                 @else
                     -

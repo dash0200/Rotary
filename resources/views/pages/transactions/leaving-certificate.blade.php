@@ -322,7 +322,7 @@
                 )
                     console.log(res);
                 // $("input[name='wasStd']").val(`${res[0] == '' ? '' : res[0].classes.name} STANDARD SINCE ${res[0].since}`)
-                $("input[name='wasStd']").val(`${res[1] == '' ? '' : res[1].std.name} STANDARD SINCE ${res[0].since}`)
+                $("input[name='wasStd']").val(`${res[1] == '' ? '' : res[1].std.name} STANDARD SINCE JUNE ${res[0].since}`)
                 $("input[name='qualif']").val(`YES, QUALIFIED FOR NEXT STANDARD`)
                 // $("input[name='qualif']").val(`YES QUALIFIED FOR  ${res[2].name} CLASS`)
                 $("input[name='atc']").val(`${res[0].classes.name}`)

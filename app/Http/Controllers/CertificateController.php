@@ -366,9 +366,10 @@ class CertificateController extends Controller
 
                 $student = $char->studentDetails;
 
-                $Rstd_from = CreateClass::where("student", "$req->id")->orderBy('id', 'ASC')->first();
+                $Rstd_from = AdmissionModel::where("id", "$req->id")->first();
+
                 $Rfrom_year = $Rstd_from==null?'':$Rstd_from->acaYear->year;
-                $Rstd_from = $Rstd_from==null?'':$Rstd_from->standardClass->name;
+                $Rstd_from = $Rstd_from==null?'':$Rstd_from->classes->name;
     
                 $Rstd_to = CreateClass::where("student", "$req->id")->orderBy('id', 'DESC')->first();
                 $Rto_year = $Rstd_to==null?'':$Rstd_to->acaYear->year;
@@ -394,17 +395,17 @@ class CertificateController extends Controller
 
             $student = AdmissionModel::where("id", $req->id)->withTrashed()->first();
 
-            $std_from = CreateClass::where("student", "$req->id")->orderBy('id', 'ASC')->first();
+            $std_from =  AdmissionModel::where("id", "$req->id")->first();
             $from_year = $std_from==null?'':$std_from->acaYear->year;
-            $std_from = $std_from==null?'':$std_from->standardClass->name;
+            $std_from = $std_from==null?'':$std_from->classes->name;
 
             $std_to = CreateClass::where("student", "$req->id")->orderBy('id', 'DESC')->first();
             $to_year = $std_to==null?'':$std_to->acaYear->year;
             $std_to = $std_to==null?'':$std_to->standardClass->name;
 
-            $Rstd_from = CreateClass::where("student", "$req->id")->orderBy('id', 'ASC')->first();
+            $Rstd_from = AdmissionModel::where("id", "$req->id")->first();
             $Rfrom_year = $Rstd_from==null?'':$Rstd_from->acaYear->year;
-            $Rstd_from = $Rstd_from==null?'':$Rstd_from->standardClass->name;
+            $Rstd_from = $Rstd_from==null?'':$Rstd_from->classes->name;
 
             $Rstd_to = CreateClass::where("student", "$req->id")->orderBy('id', 'DESC')->first();
             $Rto_year = $Rstd_to==null?'':$Rstd_to->acaYear->year;
@@ -455,6 +456,11 @@ class CertificateController extends Controller
             $stdcert = CharacterModel::where("student", $req->id)->first();
             $student = $stdcert->studentDetails;
 
+            $admission = AdmissionModel::find($req->id);
+
+            $stdcert['cast'] = $admission->stdCast?->name;
+            $stdcert['subcast'] = $admission->subCaste?->name;
+   
             $pdf = PDF::loadView('pdfs.character', ["study" => $stdcert, "student" => $student]);
             return $pdf->stream($stdcert->student.'.pdf');
         }

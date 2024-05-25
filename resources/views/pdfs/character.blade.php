@@ -140,9 +140,6 @@
             <td align="center" class="bb fb">
               {{$student->id}}              
             </td>
-            <td>
-                and He/She belongs to caste
-            </td>
         </tr>
     </table>
 
